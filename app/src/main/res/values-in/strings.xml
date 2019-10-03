@@ -24,6 +24,4 @@
     <string name="tt_btn_favorite_detail">Tandai sebagai Favorit</string>
     <string name="cd_backdrop_movie">Backdrop Movie</string>
     <string name="lbl_overview">Gambaran</string>
-    <string name="title_page_movie">Detail Film</string>
-    <string name="title_page_tvshow">Detail acara TV</string>
 </resources>

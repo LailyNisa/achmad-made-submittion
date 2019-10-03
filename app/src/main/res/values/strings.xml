@@ -26,7 +26,4 @@
     <string name="tt_btn_favorite_detail">Mark as Favorite</string>
     <string name="cd_backdrop_movie">Backdrop Movie</string>
     <string name="lbl_overview">Overview</string>
-    <string name="title_page_movie">Movie Detail</string>
-    <string name="title_page_tvshow">TvShow Detail</string>
-    <string name="label_title_marquee">This will run the marquee animation forever</string>
 </resources>

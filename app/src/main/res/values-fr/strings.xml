@@ -27,6 +27,4 @@
     <string name="tt_btn_favorite_detail">Marquer comme favori</string>
     <string name="cd_backdrop_movie">Backdrop Movie</string>
     <string name="lbl_overview">Vue d ensemble</string>
-    <string name="title_page_movie">Détail du film</string>
-    <string name="title_page_tvshow">TV Show Detail</string>
 </resources>
