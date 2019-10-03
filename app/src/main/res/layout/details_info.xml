@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:descendantFocusability="blocksDescendants"
+    tools:showIn="@layout/activity_detail_constraint">
+
+
+    <ImageButton
+        android:id="@+id/favorite_button_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/roundbutton"
+        android:padding="12dp"
+        app:layout_constraintEnd_toStartOf="@id/bookmark_button_detail"
+        app:layout_constraintTop_toTopOf="@+id/view_divider"
+        app:srcCompat="@drawable/ic_favorite_white_24dp" />
+
+    <ImageButton
+        android:id="@+id/bookmark_button_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/roundbutton"
+        android:padding="12dp"
+        app:layout_constraintEnd_toStartOf="@id/share_button_detail"
+        app:layout_constraintTop_toTopOf="@+id/view_divider"
+        app:srcCompat="@drawable/ic_bookmark_white_24dp" />
+
+    <ImageButton
+        android:id="@+id/share_button_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/roundbutton"
+        android:padding="12dp"
+        app:layout_constraintEnd_toStartOf="@id/btnplay_trailer_detail"
+        app:layout_constraintTop_toTopOf="@+id/view_divider"
+        app:srcCompat="@drawable/ic_share_white_24dp" />
+
+    <ImageButton
+        android:id="@+id/btnplay_trailer_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/roundbutton"
+        android:padding="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view_divider"
+        app:srcCompat="@drawable/ic_play_arrow_white_24dp" />
+
+    <TextView
+        android:id="@+id/tv_title_detail_constraint"
+        style="@style/TextAppearance.MaterialComponents.Headline5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:maxLines="6"
+        android:text="@string/value_judul"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/cardView"
+        app:layout_constraintTop_toTopOf="@+id/guideline_detail" />
+
+    <TextView
+        android:id="@+id/tv_release_detail_constraint"
+        style="@style/TextAppearance.MaterialComponents.Subtitle1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/value_releasedate"
+        app:layout_constraintStart_toEndOf="@+id/cardView"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title_detail_constraint" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="lbl_userscore_constraint,donute_progress_constraint,share_button_detail,btnplay_trailer_detail,favorite_button_detail,bookmark_button_detail,view_divider"
+        tools:layout_editor_absoluteY="538dp" />
+
+    <TextView
+        android:id="@+id/lbl_userscore_constraint"
+        style="@style/TextAppearance.MaterialComponents.Subtitle2"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/label_user_score"
+        app:layout_constraintStart_toEndOf="@+id/donute_progress_constraint"
+        app:layout_constraintTop_toTopOf="@+id/view_divider" />
+
+    <TextView
+        android:id="@+id/lbl_overview"
+        style="@style/TextAppearance.MaterialComponents.Headline5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/lbl_overview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_divider_bottom" />
+
+    <TextView
+        android:id="@+id/tv_overview_detail_constraint"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/value_releasedate"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_overview" />
+
+    <TextView
+        android:id="@+id/lbl_cast_detail"
+        style="@style/TextAppearance.MaterialComponents.Headline5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/field_penggalang"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_overview_detail_constraint" />
+
+    <TextView
+        android:id="@+id/tv_cast_constraint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/value_releasedate"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_cast_constraint" />
+
+    <View
+        android:id="@+id/view_divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="32dp"
+        android:background="?attr/colorPrimaryDark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView" />
+
+    <View
+        android:id="@+id/view_divider_bottom"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="?attr/colorPrimaryDark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/barrier" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:layout_marginStart="16dp"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardElevation="@dimen/activity_horizontal_margin"
+        app:layout_constraintDimensionRatio="w,2:3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/img_poster_constraint"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            tools:background="@tools:sample/backgrounds/scenic" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="40dp" />
+
+    <com.github.lzyzsd.circleprogress.DonutProgress
+        android:id="@+id/donute_progress_constraint"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        app:donut_background_color="@android:color/black"
+        app:donut_finished_color="@android:color/holo_green_light"
+        app:donut_finished_stroke_width="5dp"
+        app:donut_inner_bottom_text_size="12sp"
+        app:donut_progress="79"
+        app:donut_text_color="@android:color/background_light"
+        app:donut_text_size="12sp"
+        app:donut_unfinished_color="#1B5E20"
+        app:donut_unfinished_stroke_width="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view_divider" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/img_cast_constraint"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/ic_launcher"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_cast_detail" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
