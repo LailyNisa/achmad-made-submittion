@@ -24,4 +24,6 @@
     <string name="tt_btn_favorite_detail">Mark as Favorite</string>
     <string name="cd_backdrop_movie">Backdrop Movie</string>
     <string name="lbl_overview">Overview</string>
+    <string name="tablayout_movie">Movies</string>
+    <string name="tablayout_tvshow">Tv Show</string>
 </resources>

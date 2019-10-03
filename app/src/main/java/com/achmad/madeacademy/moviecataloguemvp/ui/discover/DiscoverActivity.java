@@ -34,8 +34,8 @@ public class DiscoverActivity extends AppCompatActivity implements ListDiscoverA
         tabLayout = findViewById(R.id.tab_layout);
         viewPager = findViewById(R.id.view_pager);
         adapter = new DiscoverTabLayoutAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        adapter.addFragment(new MovieFragment(), "Movie");
-        adapter.addFragment(new TvShowFragment(), "TvShow");
+        adapter.addFragment(new MovieFragment(), getString(R.string.tablayout_movie));
+        adapter.addFragment(new TvShowFragment(), getString(R.string.tablayout_tvshow));
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
         if (getSupportActionBar() != null) {
