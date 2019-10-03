@@ -90,8 +90,6 @@ public class DetailMovieActivity extends AppCompatActivity {
                     scrollRange = appBarLayout.getTotalScrollRange();
                 }
                 if (scrollRange + verticalOffset == 0) {
-//                    collapsingToolbarLayout.setTitle(movie.getTitle());
-//                    toolbar.setTitle(movie.getTitle());
                     tvTitleBar.setText(movie.getTitle());
                     isShow = true;
                 } else if (isShow) {

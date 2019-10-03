@@ -63,7 +63,6 @@ public class DiscoverActivity extends AppCompatActivity implements ListDiscoverA
     @Override
     public void onFragmentInteraction(Movie movie) {
         Movie movieObject = new Movie();
-        String title = getString(R.string.title_page_tvshow);
         movieObject.setTitle(movie.getTitle());
         movieObject.setRelease(movie.getRelease());
         movieObject.setUser_score(movie.getUser_score());
@@ -74,7 +73,6 @@ public class DiscoverActivity extends AppCompatActivity implements ListDiscoverA
         movieObject.setImg_Backdrop(movie.getImg_Backdrop());
         Intent moveToDetail = new Intent(this, DetailMovieActivity.class);
         moveToDetail.putExtra(DetailMovieActivity.EXTRA_OBJECT, movieObject);
-        moveToDetail.putExtra(DetailMovieActivity.EXTRA_TITLE, title);
         startActivity(moveToDetail);
     }
 }
