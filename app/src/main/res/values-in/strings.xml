@@ -25,5 +25,5 @@
     <string name="cd_backdrop_movie">Backdrop Movie</string>
     <string name="lbl_overview">Gambaran</string>
     <string name="tablayout_movie">Film</string>
-    <string name="tablayout_tvshow">Tvshow</string>
+    <string name="tablayout_tvshow">Acara Tv</string>
 </resources>

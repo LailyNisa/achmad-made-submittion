@@ -15,14 +15,9 @@ import com.github.lzyzsd.circleprogress.DonutProgress;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
-import java.util.ArrayList;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class DetailMovieActivity extends AppCompatActivity {
-
-    public ArrayList<Movie> movies;
-
     public static final String EXTRA_OBJECT = "object_extra";
     public static final String EXTRA_TITLE = "object_title";
     TextView tvTitle, tvRelease, tvOverView, tvCast, tvTitleBar;
@@ -33,7 +28,6 @@ public class DetailMovieActivity extends AppCompatActivity {
     AppBarLayout appbar;
     CollapsingToolbarLayout collapsingToolbarLayout;
     Movie movie;
-    String titleDetail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +35,6 @@ public class DetailMovieActivity extends AppCompatActivity {
         setTheme(R.style.BaseTheme);
         setContentView(R.layout.activity_detail_constraint);
         movie = getIntent().getParcelableExtra(EXTRA_OBJECT);
-        titleDetail = getIntent().getStringExtra(EXTRA_TITLE);
         imgBackdrop = findViewById(R.id.image_movie_backdrop);
         tvTitle = findViewById(R.id.tv_title_detail_constraint);
         tvRelease = findViewById(R.id.tv_release_detail_constraint);

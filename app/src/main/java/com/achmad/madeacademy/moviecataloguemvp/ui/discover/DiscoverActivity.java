@@ -62,17 +62,16 @@ public class DiscoverActivity extends AppCompatActivity implements ListDiscoverA
 
     @Override
     public void onFragmentInteraction(Movie movie) {
-        Movie movieObject = new Movie();
-        movieObject.setTitle(movie.getTitle());
-        movieObject.setRelease(movie.getRelease());
-        movieObject.setUser_score(movie.getUser_score());
-        movieObject.setImg_poster(movie.getImg_poster());
-        movieObject.setOverview(movie.getOverview());
-        movieObject.setImg_featured_crew(movie.getImg_featured_crew());
-        movieObject.setFeatured_crew(movie.getFeatured_crew());
-        movieObject.setImg_Backdrop(movie.getImg_Backdrop());
+        movie.setTitle(movie.getTitle());
+        movie.setRelease(movie.getRelease());
+        movie.setUser_score(movie.getUser_score());
+        movie.setImg_poster(movie.getImg_poster());
+        movie.setOverview(movie.getOverview());
+        movie.setImg_featured_crew(movie.getImg_featured_crew());
+        movie.setFeatured_crew(movie.getFeatured_crew());
+        movie.setImg_Backdrop(movie.getImg_Backdrop());
         Intent moveToDetail = new Intent(this, DetailMovieActivity.class);
-        moveToDetail.putExtra(DetailMovieActivity.EXTRA_OBJECT, movieObject);
+        moveToDetail.putExtra(DetailMovieActivity.EXTRA_OBJECT, movie);
         startActivity(moveToDetail);
     }
 }
