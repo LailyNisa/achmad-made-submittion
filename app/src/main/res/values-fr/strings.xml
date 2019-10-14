@@ -27,4 +27,5 @@
     <string name="lbl_overview">Vue d ensemble</string>
     <string name="tablayout_movie">Films</string>
     <string name="tablayout_tvshow">Emission de télévision</string>
+    <string name="setting_language">fr-FR</string>
 </resources>

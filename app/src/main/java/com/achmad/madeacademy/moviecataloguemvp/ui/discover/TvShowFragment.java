@@ -13,21 +13,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.achmad.madeacademy.moviecataloguemvp.R;
-import com.achmad.madeacademy.moviecataloguemvp.data.Movie;
 import com.achmad.madeacademy.moviecataloguemvp.data.source.local.DiscoverData;
+import com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.Movie;
 import com.achmad.madeacademy.moviecataloguemvp.ui.discover.adapter.ListDiscoverAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class TvShowFragment extends Fragment {
 
-    RecyclerView rvTvShow;
-    private ArrayList<Movie> tvShowList = new ArrayList<>();
+    private List<Movie> tvShowList;
     private ListDiscoverAdapter.OnFragmentInteractionListener onFragmentInteractionListener;
-    private ListDiscoverAdapter mAdapter;
 
     public TvShowFragment() {
         // Required empty public constructor
@@ -43,15 +42,15 @@ public class TvShowFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_movie, container, false);
-        tvShowList.addAll(new DiscoverData().getTvShow());
-        mAdapter = new ListDiscoverAdapter(tvShowList, onFragmentInteractionListener);
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            rvTvShow = (RecyclerView) view;
-            rvTvShow.setHasFixedSize(true);
-            rvTvShow.setLayoutManager(new LinearLayoutManager(context));
-            rvTvShow.setAdapter(mAdapter);
-        }
+//        tvShowList.addAll(new DiscoverData().getTvShow());
+//        ListDiscoverAdapter mAdapter = new ListDiscoverAdapter(tvShowList, onFragmentInteractionListener);
+//        if (view instanceof RecyclerView) {
+//            Context context = view.getContext();
+//            RecyclerView rvTvShow = (RecyclerView) view;
+//            rvTvShow.setHasFixedSize(true);
+//            rvTvShow.setLayoutManager(new LinearLayoutManager(context));
+//            rvTvShow.setAdapter(mAdapter);
+//        }
         return view;
     }
 

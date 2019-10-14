@@ -26,4 +26,5 @@
     <string name="lbl_overview">Overview</string>
     <string name="tablayout_movie">Movies</string>
     <string name="tablayout_tvshow">Tv Show</string>
+    <string name="setting_language">en-US</string>
 </resources>

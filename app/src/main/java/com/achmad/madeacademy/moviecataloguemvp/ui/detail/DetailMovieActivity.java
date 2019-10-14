@@ -9,6 +9,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.achmad.madeacademy.moviecataloguemvp.R;
 import com.achmad.madeacademy.moviecataloguemvp.data.Movie;
+import com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.Result;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.github.lzyzsd.circleprogress.DonutProgress;
@@ -27,7 +28,7 @@ public class DetailMovieActivity extends AppCompatActivity {
     Toolbar toolbar;
     AppBarLayout appbar;
     CollapsingToolbarLayout collapsingToolbarLayout;
-    Movie movie;
+    Result movie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,19 +55,19 @@ public class DetailMovieActivity extends AppCompatActivity {
         }
 
         tvTitle.setText(movie.getTitle());
-        tvRelease.setText(movie.getRelease());
-        dntProgressDetail.setProgress(Integer.parseInt(movie.getUser_score()));
+        tvRelease.setText(movie.getReleaseDate());
+        dntProgressDetail.setProgress((int) movie.getVoteAverage());
         tvOverView.setText(movie.getOverview());
-        tvCast.setText(movie.getFeatured_crew());
+//        tvCast.setText(movie.getFeatured_crew());
         Glide.with(this)
-                .load(movie.getImg_poster())
+                .load("https://image.tmdb.org/t/p/w185"+movie.getPosterPath())
                 .apply(new RequestOptions().override(350, 550))
                 .into(imgPoster);
+//        Glide.with(this)
+//                .load(movie.getImg_featured_crew())
+//                .into(imgCast);
         Glide.with(this)
-                .load(movie.getImg_featured_crew())
-                .into(imgCast);
-        Glide.with(this)
-                .load(movie.getImg_Backdrop())
+                .load("https://image.tmdb.org/t/p/w500"+movie.getBackdropPath())
                 .into(imgBackdrop);
         /* TODO
          *   Make tooltips on button */

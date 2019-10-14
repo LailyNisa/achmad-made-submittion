@@ -11,19 +11,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.achmad.madeacademy.moviecataloguemvp.R;
 import com.achmad.madeacademy.moviecataloguemvp.data.Movie;
+import com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.Result;
 import com.bumptech.glide.Glide;
 import com.github.lzyzsd.circleprogress.DonutProgress;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ListDiscoverAdapter extends RecyclerView.Adapter<ListDiscoverAdapter.ViewHolder> {
     RecyclerView rvMovies;
     //    private ArrayList<Movie> movieList = new ArrayList<>();
     private ListDiscoverAdapter mAdapter;
-    private final ArrayList<Movie> mValues;
+    private final List<Result> mValues;
     private final OnFragmentInteractionListener mListener;
 
-    public ListDiscoverAdapter(ArrayList<Movie> mValues, OnFragmentInteractionListener mListener) {
+    public ListDiscoverAdapter(List<Result> mValues, OnFragmentInteractionListener mListener) {
         this.mValues = mValues;
         this.mListener = mListener;
     }
@@ -39,7 +41,8 @@ public class ListDiscoverAdapter extends RecyclerView.Adapter<ListDiscoverAdapte
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        final Movie movie = mValues.get(position);
+        final Result movie = mValues.get(position);
+
         holder.tvTitle.setText(movie.getTitle());
         holder.tvTitle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,10 +50,10 @@ public class ListDiscoverAdapter extends RecyclerView.Adapter<ListDiscoverAdapte
                 mListener.onFragmentInteraction(mValues.get(holder.getAdapterPosition()));
             }
         });
-        holder.tvRelease.setText(movie.getRelease());
-        holder.dntProgress.setProgress(Integer.parseInt(movie.getUser_score()));
+        holder.tvRelease.setText(movie.getReleaseDate());
+        holder.dntProgress.setProgress((int) movie.getVoteAverage());
         Glide.with(holder.itemView.getContext())
-                .load(movie.getImg_poster())
+                .load("https://image.tmdb.org/t/p/w185"+movie.getBackdropPath())
                 .into(holder.imgPhoto);
         holder.imgPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,12 +75,12 @@ public class ListDiscoverAdapter extends RecyclerView.Adapter<ListDiscoverAdapte
         return (mValues == null) ? 0 : mValues.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvTitle, tvRelease, tvOverview, tvMore;
         ImageView imgPhoto;
         DonutProgress dntProgress;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tv_title);
             tvRelease = itemView.findViewById(R.id.tv_date_release);
@@ -86,9 +89,19 @@ public class ListDiscoverAdapter extends RecyclerView.Adapter<ListDiscoverAdapte
             dntProgress = itemView.findViewById(R.id.donute_progress);
             tvMore = itemView.findViewById(R.id.tv_more_info);
         }
+
+//        void bind(Result movie){
+//            tvTitle.setText(movie.getTitle());
+//            tvRelease.setText(movie.getReleaseDate());
+//            tvOverview.setText(movie.getOverview());
+//            Glide.with(itemView)
+//                    .load("https://image.tmdb.org/t/p/w185"+movie.getBackdropPath())
+//                    .into(imgPhoto);
+//            dntProgress.setProgress((int) movie.getVoteAverage());
+//        }
     }
 
     public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Movie movie);
+        void onFragmentInteraction(Result movie);
     }
 }
