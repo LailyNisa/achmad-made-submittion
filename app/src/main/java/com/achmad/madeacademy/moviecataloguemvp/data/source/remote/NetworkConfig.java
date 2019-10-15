@@ -12,35 +12,17 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import static com.achmad.madeacademy.moviecataloguemvp.utils.Constans.BASE_URL;
 
 public class NetworkConfig {
-    private OkHttpClient okHttpClient;
-    private static ApiService mInstance;
+    private static Retrofit retrofit = new Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
 
-    private OkHttpClient getInterceptor(){
-        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
-        httpLoggingInterceptor.level(HttpLoggingInterceptor.Level.BASIC);
-
-        okHttpClient.newBuilder()
-                .addInterceptor(httpLoggingInterceptor)
-                .connectTimeout(30, TimeUnit.SECONDS)
-                .writeTimeout(30, TimeUnit.SECONDS)
-                .retryOnConnectionFailure(true)
-                .build();
-
-        return okHttpClient;
+    public static <S> S createService(Class<S> serviceClass){
+        return retrofit.create(serviceClass);
     }
-
-    public Retrofit getNetwork(){
-
-        return new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .client(getInterceptor())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-    }
-
-    public ApiService api(){
-        return getNetwork().create(ApiService.class);
-    }
+//    public ApiService api(){
+//        return getNetwork().create(ApiService.class);
+//    }
 
 
 }

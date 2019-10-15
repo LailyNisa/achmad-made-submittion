@@ -1,5 +1,6 @@
 package com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.annotations.SerializedName;
 
@@ -12,7 +13,7 @@ public class Movie {
     @SerializedName("total_pages")
     private int totalPages;
     @SerializedName("results")
-    private List<Result> results = null;
+    private ArrayList<Result> results = null;
 
     public int getPage() {
         return page;
@@ -38,11 +39,11 @@ public class Movie {
         this.totalPages = totalPages;
     }
 
-    public List<Result> getResults() {
+    public ArrayList<Result> getResults() {
         return results;
     }
 
-    public void setResults(List<Result> results) {
+    public void setResults(ArrayList<Result> results) {
         this.results = results;
     }
 

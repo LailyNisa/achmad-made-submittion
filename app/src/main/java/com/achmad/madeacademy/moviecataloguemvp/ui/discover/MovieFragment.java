@@ -12,75 +12,77 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.achmad.madeacademy.moviecataloguemvp.R;
+import com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.Movie;
 import com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.Result;
 import com.achmad.madeacademy.moviecataloguemvp.ui.discover.adapter.ListDiscoverAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class MovieFragment extends Fragment {
 
-
     private RecyclerView rvMovies;
-
+    ArrayList<Result> movieResult = new ArrayList<>();
     private ListDiscoverAdapter.OnFragmentInteractionListener mListener;
     private ProgressBar progressBar;
-    private DiscoverViewModel viewModel;
+    ListDiscoverAdapter mAdapter;
+    DiscoverViewModel discoverViewModel;
     public MovieFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        progressBar = container.findViewById(R.id.progressBar);
         return  inflater.inflate(R.layout.fragment_movie, container, false);
-
-
-//        DiscoverViewModel viewModel = new ViewModelProvider(this,new ViewModelProvider.NewInstanceFactory()).get(DiscoverViewModel.class);
-
-//        DiscoverViewModel viewModel = new ViewModelProvider(this).get(DiscoverViewModel.class);
-
-
-
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        viewModel = new ViewModelProvider(this,new ViewModelProvider.NewInstanceFactory()).get(DiscoverViewModel.class);
-        viewModel.getStatus().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                if (aBoolean) {
-                    rvMovies.setVisibility(View.GONE);
-                    progressBar.setVisibility(View.VISIBLE);
-                } else {
-                    rvMovies.setVisibility(View.VISIBLE);
-                    progressBar.setVisibility(View.GONE);
-                }
-            }
+        progressBar = Objects.requireNonNull(getActivity()).findViewById(R.id.progressBar);
+        rvMovies = Objects.requireNonNull(getActivity()).findViewById(R.id.rv_movies);
+
+//        DiscoverViewModel viewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(DiscoverViewModel.class);
+        discoverViewModel = new ViewModelProvider(this).get(DiscoverViewModel.class);
+        discoverViewModel.init();
+        discoverViewModel.getMovieRepository().observe(this,movieResponse->{
+            movieResult.addAll(movieResponse.getResults());
+            mAdapter.notifyDataSetChanged();
         });
-        rvMovies.setLayoutManager(new LinearLayoutManager(getActivity()));
-        viewModel.setData().observe(this, new Observer<com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.Movie>() {
-            @Override
-            public void onChanged(com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.Movie listMovie) {
-                showData(listMovie.getResults());
-            }
-        });
-
-
-
+        setRvMovies();
+//
+//        viewModel.getStatus().observe(this, new Observer<Boolean>() {
+//            @Override
+//            public void onChanged(Boolean aBoolean) {
+//                if (aBoolean) {
+//                    rvMovies.setVisibility(View.GONE);
+//                    progressBar.setVisibility(View.VISIBLE);
+//                } else {
+//                    rvMovies.setVisibility(View.VISIBLE);
+//                    progressBar.setVisibility(View.GONE);
+//                }
+//            }
+//        });
+//        viewModel.setData().observe(this, new Observer<com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.Movie>() {
+//            @Override
+//            public void onChanged(com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.Movie listMovie) {
+//                showData(listMovie.getResults());
+//            }
+//        });
     }
 
+
     public static MovieFragment newInstance() {
-        MovieFragment fragment = new MovieFragment();
-        return fragment;
+        return new MovieFragment();
     }
 
     @Override
@@ -100,8 +102,18 @@ public class MovieFragment extends Fragment {
         mListener = null;
     }
 
-    private void showData(List<Result> data) {
-        rvMovies.setHasFixedSize(true);
-        rvMovies.setAdapter(new ListDiscoverAdapter(data, mListener));
+//    private void showData(List<Result> data) {
+//
+//        rvMovies.setLayoutManager(new LinearLayoutManager(getActivity()));
+//        rvMovies.setHasFixedSize(true);
+//        rvMovies.setAdapter(new ListDiscoverAdapter(data, mListener));
+//    }
+
+    private void setRvMovies(){
+        if (mAdapter ==null){
+            mAdapter = new ListDiscoverAdapter(movieResult,mListener);
+            rvMovies.setLayoutManager(new LinearLayoutManager(getActivity()));
+            rvMovies.setAdapter(mAdapter);
+        }
     }
 }

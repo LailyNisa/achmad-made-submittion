@@ -44,30 +44,16 @@ public class ListDiscoverAdapter extends RecyclerView.Adapter<ListDiscoverAdapte
         final Result movie = mValues.get(position);
 
         holder.tvTitle.setText(movie.getTitle());
-        holder.tvTitle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mListener.onFragmentInteraction(mValues.get(holder.getAdapterPosition()));
-            }
-        });
+        final View.OnClickListener onClickListener = view -> mListener.onFragmentInteraction(mValues.get(holder.getAdapterPosition()));
+        holder.tvTitle.setOnClickListener(onClickListener);
         holder.tvRelease.setText(movie.getReleaseDate());
-        holder.dntProgress.setProgress((int) movie.getVoteAverage());
+        holder.dntProgress.setProgress((Math.round(movie.getVoteAverage()*100))/10);
         Glide.with(holder.itemView.getContext())
-                .load("https://image.tmdb.org/t/p/w185"+movie.getBackdropPath())
+                .load("https://image.tmdb.org/t/p/w185"+movie.getPosterPath())
                 .into(holder.imgPhoto);
-        holder.imgPhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mListener.onFragmentInteraction(mValues.get(holder.getAdapterPosition()));
-            }
-        });
+        holder.imgPhoto.setOnClickListener(onClickListener);
         holder.tvOverview.setText(movie.getOverview());
-        holder.tvMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mListener.onFragmentInteraction(mValues.get(holder.getAdapterPosition()));
-            }
-        });
+        holder.tvMore.setOnClickListener(onClickListener);
     }
 
     @Override
