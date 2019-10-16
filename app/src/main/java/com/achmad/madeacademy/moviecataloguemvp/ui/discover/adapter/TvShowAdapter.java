@@ -10,26 +10,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.achmad.madeacademy.moviecataloguemvp.R;
-import com.achmad.madeacademy.moviecataloguemvp.data.Movie;
-import com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.Result;
+import com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.tvshow.Result;
 import com.bumptech.glide.Glide;
 import com.github.lzyzsd.circleprogress.DonutProgress;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class ListDiscoverAdapter extends RecyclerView.Adapter<ListDiscoverAdapter.ViewHolder> {
-    RecyclerView rvMovies;
-    //    private ArrayList<Movie> movieList = new ArrayList<>();
-    private ListDiscoverAdapter mAdapter;
+public class TvShowAdapter extends RecyclerView.Adapter<TvShowAdapter.ViewHolder> {
     private final List<Result> mValues;
     private final OnFragmentInteractionListener mListener;
 
-    public ListDiscoverAdapter(List<Result> mValues, OnFragmentInteractionListener mListener) {
+    public TvShowAdapter(List<Result> mValues, OnFragmentInteractionListener mListener) {
         this.mValues = mValues;
         this.mListener = mListener;
     }
-
 
     @NonNull
     @Override
@@ -40,19 +34,19 @@ public class ListDiscoverAdapter extends RecyclerView.Adapter<ListDiscoverAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        final Result movie = mValues.get(position);
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        final Result tvShow = mValues.get(position);
 
-        holder.tvTitle.setText(movie.getTitle());
+        holder.tvTitle.setText(tvShow.getName());
         final View.OnClickListener onClickListener = view -> mListener.onFragmentInteraction(mValues.get(holder.getAdapterPosition()));
         holder.tvTitle.setOnClickListener(onClickListener);
-        holder.tvRelease.setText(movie.getReleaseDate());
-        holder.dntProgress.setProgress((Math.round(movie.getVoteAverage()*100))/10);
+        holder.tvRelease.setText(tvShow.getFirstAirDate());
+        holder.dntProgress.setProgress((Math.round(tvShow.getVoteAverage()*100))/10);
         Glide.with(holder.itemView.getContext())
-                .load("https://image.tmdb.org/t/p/w185"+movie.getPosterPath())
+                .load("https://image.tmdb.org/t/p/w185"+tvShow.getPosterPath())
                 .into(holder.imgPhoto);
         holder.imgPhoto.setOnClickListener(onClickListener);
-        holder.tvOverview.setText(movie.getOverview());
+        holder.tvOverview.setText(tvShow.getOverview());
         holder.tvMore.setOnClickListener(onClickListener);
     }
 
@@ -61,12 +55,11 @@ public class ListDiscoverAdapter extends RecyclerView.Adapter<ListDiscoverAdapte
         return (mValues == null) ? 0 : mValues.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvTitle, tvRelease, tvOverview, tvMore;
         ImageView imgPhoto;
         DonutProgress dntProgress;
-
-        ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tv_title);
             tvRelease = itemView.findViewById(R.id.tv_date_release);
@@ -75,19 +68,9 @@ public class ListDiscoverAdapter extends RecyclerView.Adapter<ListDiscoverAdapte
             dntProgress = itemView.findViewById(R.id.donute_progress);
             tvMore = itemView.findViewById(R.id.tv_more_info);
         }
-
-//        void bind(Result movie){
-//            tvTitle.setText(movie.getTitle());
-//            tvRelease.setText(movie.getReleaseDate());
-//            tvOverview.setText(movie.getOverview());
-//            Glide.with(itemView)
-//                    .load("https://image.tmdb.org/t/p/w185"+movie.getBackdropPath())
-//                    .into(imgPhoto);
-//            dntProgress.setProgress((int) movie.getVoteAverage());
-//        }
     }
 
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Result movie);
+    public interface OnFragmentInteractionListener{
+        void onFragmentInteraction(Result tvShow);
     }
 }

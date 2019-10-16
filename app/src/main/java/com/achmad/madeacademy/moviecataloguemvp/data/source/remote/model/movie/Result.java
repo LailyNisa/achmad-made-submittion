@@ -1,4 +1,4 @@
-package com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model;
+package com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.movie;
 
 import java.util.List;
 import com.google.gson.annotations.SerializedName;

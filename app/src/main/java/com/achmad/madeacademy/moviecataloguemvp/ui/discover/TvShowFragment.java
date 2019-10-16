@@ -6,27 +6,32 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.achmad.madeacademy.moviecataloguemvp.R;
-import com.achmad.madeacademy.moviecataloguemvp.data.source.local.DiscoverData;
-import com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.Movie;
-import com.achmad.madeacademy.moviecataloguemvp.ui.discover.adapter.ListDiscoverAdapter;
+import com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.tvshow.Result;
+import com.achmad.madeacademy.moviecataloguemvp.ui.discover.adapter.TvShowAdapter;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class TvShowFragment extends Fragment {
-
-    private List<Movie> tvShowList;
-    private ListDiscoverAdapter.OnFragmentInteractionListener onFragmentInteractionListener;
+    private RecyclerView rvMovies;
+    private ArrayList<Result> tvShowList = new ArrayList<>();
+    private TvShowAdapter.OnFragmentInteractionListener mListener;
+    private ProgressBar progressBar;
+    private TvShowAdapter mAdapter;
+    private TvShowViewModel discoverViewModel;
 
     public TvShowFragment() {
         // Required empty public constructor
@@ -40,25 +45,36 @@ public class TvShowFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_movie, container, false);
-//        tvShowList.addAll(new DiscoverData().getTvShow());
-//        ListDiscoverAdapter mAdapter = new ListDiscoverAdapter(tvShowList, onFragmentInteractionListener);
-//        if (view instanceof RecyclerView) {
-//            Context context = view.getContext();
-//            RecyclerView rvTvShow = (RecyclerView) view;
-//            rvTvShow.setHasFixedSize(true);
-//            rvTvShow.setLayoutManager(new LinearLayoutManager(context));
-//            rvTvShow.setAdapter(mAdapter);
-//        }
-        return view;
+        View v = inflater.inflate(R.layout.fragment_movie, container, false);
+        progressBar = v.findViewById(R.id.progressBar);
+        return v;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        rvMovies = Objects.requireNonNull(getActivity()).findViewById(R.id.rv_movies);
+        discoverViewModel = new ViewModelProvider(this).get(TvShowViewModel.class);
+        discoverViewModel.init();
+        discoverViewModel.getTvShowRepository().observe(this, movieResponse -> {
+            tvShowList.addAll(movieResponse.getResults());
+            if (movieResponse.getPage() != 0) {
+                rvMovies.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
+            } else {
+                rvMovies.setVisibility(View.GONE);
+                progressBar.setVisibility(View.VISIBLE);
+            }
+            mAdapter.notifyDataSetChanged();
+        });
+        setRvMovies();
     }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if (context instanceof ListDiscoverAdapter.OnFragmentInteractionListener) {
-            onFragmentInteractionListener = (ListDiscoverAdapter.OnFragmentInteractionListener) context;
+        if (context instanceof TvShowAdapter.OnFragmentInteractionListener) {
+            mListener = (TvShowAdapter.OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -68,6 +84,14 @@ public class TvShowFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        onFragmentInteractionListener = null;
+        mListener =null;
+    }
+
+    private void setRvMovies() {
+        if (mAdapter == null) {
+            mAdapter = new TvShowAdapter(tvShowList,mListener);
+            rvMovies.setLayoutManager(new LinearLayoutManager(getActivity()));
+            rvMovies.setAdapter(mAdapter);
+        }
     }
 }

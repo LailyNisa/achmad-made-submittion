@@ -1,11 +1,4 @@
 package com.achmad.madeacademy.moviecataloguemvp.data.source.remote;
-
-import com.achmad.madeacademy.moviecataloguemvp.utils.Constans;
-
-import java.util.concurrent.TimeUnit;
-
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 

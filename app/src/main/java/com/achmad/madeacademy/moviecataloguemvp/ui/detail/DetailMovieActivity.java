@@ -8,8 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.achmad.madeacademy.moviecataloguemvp.R;
-import com.achmad.madeacademy.moviecataloguemvp.data.Movie;
-import com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.Result;
+import com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.movie.Result;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.github.lzyzsd.circleprogress.DonutProgress;

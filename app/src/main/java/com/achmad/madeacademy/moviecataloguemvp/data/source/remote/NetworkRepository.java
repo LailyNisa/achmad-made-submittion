@@ -2,12 +2,12 @@ package com.achmad.madeacademy.moviecataloguemvp.data.source.remote;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.Movie;
+import com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.movie.Movie;
+import com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.tvshow.TvShow;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class NetworkRepository {
     private static NetworkRepository networkRepository;
@@ -41,5 +41,22 @@ public class NetworkRepository {
             }
         });
         return movieData;
+    }
+    public MutableLiveData<TvShow> getTvShow(String apiKey, String language){
+        final MutableLiveData<TvShow> tvShowMutableLiveData = new MutableLiveData<>();
+        movieApi.getTvShow(apiKey,language).enqueue(new Callback<TvShow>() {
+            @Override
+            public void onResponse(Call<TvShow> call, Response<TvShow> response) {
+                if (response.isSuccessful()){
+                    tvShowMutableLiveData.setValue(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TvShow> call, Throwable t) {
+                    tvShowMutableLiveData.setValue(null);
+            }
+        });
+        return tvShowMutableLiveData;
     }
 }

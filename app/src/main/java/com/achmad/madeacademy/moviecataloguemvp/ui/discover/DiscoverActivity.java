@@ -13,15 +13,13 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.achmad.madeacademy.moviecataloguemvp.R;
-import com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.Result;
+import com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.movie.Result;
 import com.achmad.madeacademy.moviecataloguemvp.ui.detail.DetailMovieActivity;
 import com.achmad.madeacademy.moviecataloguemvp.ui.discover.adapter.DiscoverTabLayoutAdapter;
-import com.achmad.madeacademy.moviecataloguemvp.ui.discover.adapter.ListDiscoverAdapter;
+import com.achmad.madeacademy.moviecataloguemvp.ui.discover.adapter.MovieAdapter;
+import com.achmad.madeacademy.moviecataloguemvp.ui.discover.adapter.TvShowAdapter;
 import com.google.android.material.tabs.TabLayout;
-
-import java.io.Serializable;
-
-public class DiscoverActivity extends AppCompatActivity implements ListDiscoverAdapter.OnFragmentInteractionListener {
+public class DiscoverActivity extends AppCompatActivity implements MovieAdapter.OnFragmentInteractionListener, TvShowAdapter.OnFragmentInteractionListener {
 
     DiscoverTabLayoutAdapter adapter;
     ViewPager viewPager;
@@ -62,33 +60,17 @@ public class DiscoverActivity extends AppCompatActivity implements ListDiscoverA
         }
     }
 
-//    @Override
-//    public void onFragmentInteraction(Movie movie) {
-//        movie.setTitle(movie.getTitle());
-//        movie.setRelease(movie.getRelease());
-//        movie.setUser_score(movie.getUser_score());
-//        movie.setImg_poster(movie.getImg_poster());
-//        movie.setOverview(movie.getOverview());
-//        movie.setImg_featured_crew(movie.getImg_featured_crew());
-//        movie.setFeatured_crew(movie.getFeatured_crew());
-//        movie.setImg_Backdrop(movie.getImg_Backdrop());
-//        Intent moveToDetail = new Intent(this, DetailMovieActivity.class);
-//        moveToDetail.putExtra(DetailMovieActivity.EXTRA_OBJECT, movie);
-//        startActivity(moveToDetail);
-//    }
-
     @Override
     public void onFragmentInteraction(Result movie) {
-        movie.setTitle(movie.getTitle());
-        movie.setReleaseDate(movie.getReleaseDate());
-        movie.setVoteAverage(movie.getVoteAverage());
-        movie.setPosterPath(movie.getPosterPath());
-        movie.setOverview(movie.getOverview());
-//        movie.setImg_featured_crew(movie.getImg_featured_crew());
-//        movie.setFeatured_crew(movie.getFeatured_crew());
-        movie.setBackdropPath(movie.getBackdropPath());
         Intent moveToDetail = new Intent(this, DetailMovieActivity.class);
-        moveToDetail.putExtra(DetailMovieActivity.EXTRA_OBJECT, (Serializable) movie);
+        moveToDetail.putExtra(DetailMovieActivity.EXTRA_OBJECT, movie.getId());
+        startActivity(moveToDetail);
+    }
+
+    @Override
+    public void onFragmentInteraction(com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.tvshow.Result tvShow) {
+        Intent moveToDetail = new Intent(this, DetailMovieActivity.class);
+        moveToDetail.putExtra(DetailMovieActivity.EXTRA_OBJECT, tvShow.getId());
         startActivity(moveToDetail);
     }
 }
