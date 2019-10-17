@@ -1,7 +1,5 @@
 package com.achmad.madeacademy.moviecataloguemvp.data.source.local;
 
-import com.achmad.madeacademy.moviecataloguemvp.data.Movie;
-
 import java.util.ArrayList;
 
 public class DiscoverData {

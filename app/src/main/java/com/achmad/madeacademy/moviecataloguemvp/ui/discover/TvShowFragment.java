@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.achmad.madeacademy.moviecataloguemvp.R;
-import com.achmad.madeacademy.moviecataloguemvp.data.Movie;
 import com.achmad.madeacademy.moviecataloguemvp.data.source.local.DiscoverData;
+import com.achmad.madeacademy.moviecataloguemvp.data.source.local.Movie;
 import com.achmad.madeacademy.moviecataloguemvp.ui.discover.adapter.ListDiscoverAdapter;
 
 import java.util.ArrayList;

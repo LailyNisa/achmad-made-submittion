@@ -1,4 +1,4 @@
-package com.achmad.madeacademy.moviecataloguemvp.data;
+package com.achmad.madeacademy.moviecataloguemvp.data.source.local;
 
 import android.os.Parcel;
 import android.os.Parcelable;

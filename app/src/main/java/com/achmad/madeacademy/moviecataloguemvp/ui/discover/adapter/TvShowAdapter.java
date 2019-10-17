@@ -11,24 +11,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.achmad.madeacademy.moviecataloguemvp.R;
-import com.achmad.madeacademy.moviecataloguemvp.data.source.local.Movie;
+import com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.tvshow.Result;
 import com.bumptech.glide.Glide;
 import com.github.lzyzsd.circleprogress.DonutProgress;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public class ListDiscoverAdapter extends RecyclerView.Adapter<ListDiscoverAdapter.ViewHolder> {
-    RecyclerView rvMovies;
-    //    private ArrayList<Movie> movieList = new ArrayList<>();
-    private ListDiscoverAdapter mAdapter;
-    private final ArrayList<Movie> mValues;
+public class TvShowAdapter extends RecyclerView.Adapter<TvShowAdapter.ViewHolder> {
+    private final List<Result> mValues;
     private final OnFragmentInteractionListener mListener;
 
-    public ListDiscoverAdapter(ArrayList<Movie> mValues, OnFragmentInteractionListener mListener) {
+    public TvShowAdapter(List<Result> mValues, OnFragmentInteractionListener mListener) {
         this.mValues = mValues;
         this.mListener = mListener;
     }
-
 
     @NonNull
     @Override
@@ -39,34 +35,21 @@ public class ListDiscoverAdapter extends RecyclerView.Adapter<ListDiscoverAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        final Movie movie = mValues.get(position);
-        holder.tvTitle.setText(movie.getTitle());
-        holder.tvTitle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mListener.onFragmentInteraction(mValues.get(holder.getAdapterPosition()));
-            }
-        });
-        holder.tvRelease.setText(movie.getRelease());
-        holder.dntProgress.setProgress(Integer.parseInt(movie.getUser_score()));
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        final Result tvShow = mValues.get(position);
+
+        holder.tvTitle.setText(tvShow.getName());
+        final View.OnClickListener onClickListener = view -> mListener.onFragmentInteraction(mValues.get(holder.getAdapterPosition()));
+        holder.tvTitle.setOnClickListener(onClickListener);
+        holder.tvRelease.setText(tvShow.getFirstAirDate());
+        holder.dntProgress.setProgress((Math.round(tvShow.getVoteAverage()*100))/10);
         Glide.with(holder.itemView.getContext())
-                .load(movie.getImg_poster())
+                .load("https://image.tmdb.org/t/p/w185"+tvShow.getPosterPath())
                 .into(holder.imgPhoto);
-        holder.imgPhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mListener.onFragmentInteraction(mValues.get(holder.getAdapterPosition()));
-            }
-        });
-        holder.tvOverview.setText(movie.getOverview());
-        holder.tvMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mListener.onFragmentInteraction(mValues.get(holder.getAdapterPosition()));
-            }
-        });
-        if (movie.getTitle() != null){
+        holder.imgPhoto.setOnClickListener(onClickListener);
+        holder.tvOverview.setText(tvShow.getOverview());
+        holder.tvMore.setOnClickListener(onClickListener);
+        if (tvShow.getOriginalName()!=null){
             holder.progressBar.setVisibility(View.GONE);
         }else {
             holder.progressBar.setVisibility(View.VISIBLE);
@@ -95,7 +78,7 @@ public class ListDiscoverAdapter extends RecyclerView.Adapter<ListDiscoverAdapte
         }
     }
 
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Movie movie);
+    public interface OnFragmentInteractionListener{
+        void onFragmentInteraction(Result tvShow);
     }
 }
