@@ -37,7 +37,7 @@ public class Result {
     private int id;
     @SerializedName("vote_average")
     @Expose
-    private int voteAverage;
+    private float voteAverage;
     @SerializedName("overview")
     @Expose
     private String overview;
@@ -125,7 +125,7 @@ public class Result {
         this.id = id;
     }
 
-    public int getVoteAverage() {
+    public float getVoteAverage() {
         return voteAverage;
     }
 

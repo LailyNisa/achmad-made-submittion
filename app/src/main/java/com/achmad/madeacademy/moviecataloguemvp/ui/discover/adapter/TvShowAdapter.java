@@ -15,13 +15,14 @@ import com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.tvshow.
 import com.bumptech.glide.Glide;
 import com.github.lzyzsd.circleprogress.DonutProgress;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TvShowAdapter extends RecyclerView.Adapter<TvShowAdapter.ViewHolder> {
-    private final List<Result> mValues;
+    private final ArrayList<Result> mValues;
     private final OnFragmentInteractionListener mListener;
 
-    public TvShowAdapter(List<Result> mValues, OnFragmentInteractionListener mListener) {
+    public TvShowAdapter(ArrayList<Result> mValues, OnFragmentInteractionListener mListener) {
         this.mValues = mValues;
         this.mListener = mListener;
     }
@@ -61,7 +62,7 @@ public class TvShowAdapter extends RecyclerView.Adapter<TvShowAdapter.ViewHolder
         return (mValues == null) ? 0 : mValues.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvTitle, tvRelease, tvOverview, tvMore;
         ImageView imgPhoto;
         DonutProgress dntProgress;
