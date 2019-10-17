@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -65,6 +66,11 @@ public class ListDiscoverAdapter extends RecyclerView.Adapter<ListDiscoverAdapte
                 mListener.onFragmentInteraction(mValues.get(holder.getAdapterPosition()));
             }
         });
+        if (movie.getTitle() != null){
+            holder.progressBar.setVisibility(View.GONE);
+        }else {
+            holder.progressBar.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -76,7 +82,7 @@ public class ListDiscoverAdapter extends RecyclerView.Adapter<ListDiscoverAdapte
         TextView tvTitle, tvRelease, tvOverview, tvMore;
         ImageView imgPhoto;
         DonutProgress dntProgress;
-
+        ProgressBar progressBar;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tv_title);
@@ -85,6 +91,7 @@ public class ListDiscoverAdapter extends RecyclerView.Adapter<ListDiscoverAdapte
             imgPhoto = itemView.findViewById(R.id.img_person);
             dntProgress = itemView.findViewById(R.id.donute_progress);
             tvMore = itemView.findViewById(R.id.tv_more_info);
+            progressBar = itemView.findViewById(R.id.progressbar);
         }
     }
 
