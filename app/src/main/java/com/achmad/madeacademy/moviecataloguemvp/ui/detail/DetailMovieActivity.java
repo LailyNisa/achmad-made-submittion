@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.achmad.madeacademy.moviecataloguemvp.R;
-import com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.movie.Movie;
 import com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.movie.Result;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -44,17 +43,18 @@ public class DetailMovieActivity extends AppCompatActivity {
         tvshow = new com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.tvshow.Result();
         movie = getIntent().getParcelableExtra(EXTRA_OBJECT);
         tvshow = getIntent().getParcelableExtra(EXTRA_OBJECT_TVSHOW);
-
+        initObject();
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            handleCollapsedToolbarTitle();
         }
-        initObject();
-        if (movie != null){
+
+        if (movie != null) {
             bindMovie(movie);
-        }else {
+            handleCollapsedToolbarTitle();
+        } else {
             bindTvShow(tvshow);
+            handleCollapsedToolbarTitle();
         }
 
 
@@ -102,7 +102,7 @@ public class DetailMovieActivity extends AppCompatActivity {
         tvOverView.setText(tvShow.getOverview());
 //        tvCast.setText(movie.get);
         Glide.with(this)
-                .load(POSTER_PATH+tvShow.getPosterPath())
+                .load(POSTER_PATH + tvShow.getPosterPath())
                 .apply(new RequestOptions().override(350, 550))
                 .into(imgPoster);
 //        Glide.with(this)
@@ -124,9 +124,9 @@ public class DetailMovieActivity extends AppCompatActivity {
                     scrollRange = appBarLayout.getTotalScrollRange();
                 }
                 if (scrollRange + verticalOffset == 0) {
-                    if (movie.getTitle() != null){
+                    if (movie != null) {
                         tvTitleBar.setText(movie.getTitle());
-                    }else {
+                    } else {
                         tvTitleBar.setText(tvshow.getName());
                     }
 

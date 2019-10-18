@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -16,10 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.achmad.madeacademy.moviecataloguemvp.R;
-import com.achmad.madeacademy.moviecataloguemvp.data.source.local.Movie;
-import com.achmad.madeacademy.moviecataloguemvp.data.source.local.DiscoverData;
 import com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.movie.Result;
-import com.achmad.madeacademy.moviecataloguemvp.ui.discover.adapter.ListDiscoverAdapter;
 import com.achmad.madeacademy.moviecataloguemvp.ui.discover.adapter.MovieAdapter;
 import com.achmad.madeacademy.moviecataloguemvp.utils.CommonUtils;
 
@@ -35,6 +31,7 @@ public class MovieFragment extends Fragment {
     private MovieAdapter.OnFragmentInteractionListener mListener;
     private MovieAdapter mAdapter;
     private MovieViewModel movieViewModel;
+
     public MovieFragment() {
     }
 
@@ -63,8 +60,8 @@ public class MovieFragment extends Fragment {
             CommonUtils.hideLoading();
             try {
                 movieResult.addAll(movieResponse.getResults());
-            }catch (Exception e){
-                Log.d("Exception",e.getMessage().toString());
+            } catch (Exception e) {
+                Log.d("Exception", e.getMessage());
             }
 
             setRvMovies();

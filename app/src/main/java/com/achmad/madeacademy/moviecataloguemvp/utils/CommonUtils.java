@@ -13,10 +13,11 @@ public class CommonUtils {
 
     public CommonUtils() {
     }
-    public static ProgressDialog showLoading(Context context){
+
+    public static ProgressDialog showLoading(Context context) {
         progressDialog = new ProgressDialog(context);
         progressDialog.show();
-        if (progressDialog.getWindow() != null){
+        if (progressDialog.getWindow() != null) {
             progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
         progressDialog.setContentView(R.layout.progress_dialog);
@@ -26,8 +27,8 @@ public class CommonUtils {
         return progressDialog;
     }
 
-    public static void hideLoading(){
-        if (progressDialog == null){
+    public static void hideLoading() {
+        if (progressDialog == null) {
             return;
         }
         progressDialog.dismiss();

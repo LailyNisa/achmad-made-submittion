@@ -16,6 +16,7 @@ public class DiscoverTabLayoutAdapter extends FragmentStatePagerAdapter {
     public DiscoverTabLayoutAdapter(@NonNull FragmentManager fm, int behavior) {
         super(fm, behavior);
     }
+
     public void addFragment(Fragment fragment, String title) {
         mFragmentList.add(fragment);
         mFragmentTitleList.add(title);

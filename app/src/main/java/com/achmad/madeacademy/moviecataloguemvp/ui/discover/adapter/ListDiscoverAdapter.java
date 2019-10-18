@@ -66,9 +66,9 @@ public class ListDiscoverAdapter extends RecyclerView.Adapter<ListDiscoverAdapte
                 mListener.onFragmentInteraction(mValues.get(holder.getAdapterPosition()));
             }
         });
-        if (movie.getTitle() != null){
+        if (movie.getTitle() != null) {
             holder.progressBar.setVisibility(View.GONE);
-        }else {
+        } else {
             holder.progressBar.setVisibility(View.VISIBLE);
         }
     }
@@ -83,6 +83,7 @@ public class ListDiscoverAdapter extends RecyclerView.Adapter<ListDiscoverAdapte
         ImageView imgPhoto;
         DonutProgress dntProgress;
         ProgressBar progressBar;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tv_title);
