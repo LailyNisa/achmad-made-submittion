@@ -1,9 +1,15 @@
 package com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.tvshow;
-import java.util.List;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Result {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Result implements Parcelable {
 
     @SerializedName("original_name")
     @Expose
@@ -129,7 +135,7 @@ public class Result {
         return voteAverage;
     }
 
-    public void setVoteAverage(int voteAverage) {
+    public void setVoteAverage(float voteAverage) {
         this.voteAverage = voteAverage;
     }
 
@@ -149,4 +155,57 @@ public class Result {
         this.posterPath = posterPath;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.originalName);
+        dest.writeList(this.genreIds);
+        dest.writeString(this.name);
+        dest.writeFloat(this.popularity);
+        dest.writeStringList(this.originCountry);
+        dest.writeInt(this.voteCount);
+        dest.writeString(this.firstAirDate);
+        dest.writeString(this.backdropPath);
+        dest.writeString(this.originalLanguage);
+        dest.writeInt(this.id);
+        dest.writeFloat(this.voteAverage);
+        dest.writeString(this.overview);
+        dest.writeString(this.posterPath);
+    }
+
+    public Result() {
+    }
+
+    protected Result(Parcel in) {
+        this.originalName = in.readString();
+        this.genreIds = new ArrayList<Integer>();
+        in.readList(this.genreIds, Integer.class.getClassLoader());
+        this.name = in.readString();
+        this.popularity = in.readFloat();
+        this.originCountry = in.createStringArrayList();
+        this.voteCount = in.readInt();
+        this.firstAirDate = in.readString();
+        this.backdropPath = in.readString();
+        this.originalLanguage = in.readString();
+        this.id = in.readInt();
+        this.voteAverage = in.readFloat();
+        this.overview = in.readString();
+        this.posterPath = in.readString();
+    }
+
+    public static final Parcelable.Creator<Result> CREATOR = new Parcelable.Creator<Result>() {
+        @Override
+        public Result createFromParcel(Parcel source) {
+            return new Result(source);
+        }
+
+        @Override
+        public Result[] newArray(int size) {
+            return new Result[size];
+        }
+    };
 }

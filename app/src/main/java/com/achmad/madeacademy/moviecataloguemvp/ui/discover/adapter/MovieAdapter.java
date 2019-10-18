@@ -19,6 +19,7 @@ import com.github.lzyzsd.circleprogress.DonutProgress;
 
 import java.util.List;
 
+import static com.achmad.madeacademy.moviecataloguemvp.utils.Cons.POSTER_PATH;
 import static com.achmad.madeacademy.moviecataloguemvp.utils.Cons.VIEW_TYPE_EMPTY;
 import static com.achmad.madeacademy.moviecataloguemvp.utils.Cons.VIEW_TYPE_NORMAL;
 
@@ -99,7 +100,7 @@ public class MovieAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             tvRelease.setText(movie.getReleaseDate());
             dntProgress.setProgress((Math.round(movie.getVoteAverage() * 100)) / 10);
             Glide.with(itemView.getContext())
-                    .load("https://image.tmdb.org/t/p/w185" + movie.getPosterPath())
+                    .load(POSTER_PATH + movie.getPosterPath())
                     .into(imgPhoto);
             imgPhoto.setOnClickListener(onClickListener);
             tvOverview.setText(movie.getOverview());

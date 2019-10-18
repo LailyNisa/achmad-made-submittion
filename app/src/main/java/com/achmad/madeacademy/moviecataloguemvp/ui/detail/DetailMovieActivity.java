@@ -8,7 +8,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.achmad.madeacademy.moviecataloguemvp.R;
-import com.achmad.madeacademy.moviecataloguemvp.data.source.local.Movie;
+import com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.movie.Movie;
+import com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.movie.Result;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.github.lzyzsd.circleprogress.DonutProgress;
@@ -17,8 +18,12 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.achmad.madeacademy.moviecataloguemvp.utils.Cons.BACKDROP_PATH;
+import static com.achmad.madeacademy.moviecataloguemvp.utils.Cons.POSTER_PATH;
+
 public class DetailMovieActivity extends AppCompatActivity {
-    public static final String EXTRA_OBJECT = "object_extra";
+    public static final String EXTRA_OBJECT = "object_extra_movie";
+    public static final String EXTRA_OBJECT_TVSHOW = "object_extra_tvshow";
     public static final String EXTRA_TITLE = "object_title";
     TextView tvTitle, tvRelease, tvOverView, tvCast, tvTitleBar;
     DonutProgress dntProgressDetail;
@@ -27,14 +32,37 @@ public class DetailMovieActivity extends AppCompatActivity {
     Toolbar toolbar;
     AppBarLayout appbar;
     CollapsingToolbarLayout collapsingToolbarLayout;
-    Movie movie;
+    Result movie;
+    com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.tvshow.Result tvshow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(R.style.BaseTheme);
         setContentView(R.layout.activity_detail_constraint);
+        movie = new Result();
+        tvshow = new com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.tvshow.Result();
         movie = getIntent().getParcelableExtra(EXTRA_OBJECT);
+        tvshow = getIntent().getParcelableExtra(EXTRA_OBJECT_TVSHOW);
+
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            handleCollapsedToolbarTitle();
+        }
+        initObject();
+        if (movie != null){
+            bindMovie(movie);
+        }else {
+            bindTvShow(tvshow);
+        }
+
+
+        /* TODO
+         *   Make tooltips on button */
+    }
+
+    private void initObject() {
         imgBackdrop = findViewById(R.id.image_movie_backdrop);
         tvTitle = findViewById(R.id.tv_title_detail_constraint);
         tvRelease = findViewById(R.id.tv_release_detail_constraint);
@@ -47,29 +75,42 @@ public class DetailMovieActivity extends AppCompatActivity {
         appbar = findViewById(R.id.appbar_constraint_detail);
         collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
         tvTitleBar = findViewById(R.id.toolbar_title);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            handleCollapsedToolbarTitle();
-        }
+    }
 
+    private void bindMovie(Result movie) {
         tvTitle.setText(movie.getTitle());
-        tvRelease.setText(movie.getRelease());
-        dntProgressDetail.setProgress(Integer.parseInt(movie.getUser_score()));
+        tvRelease.setText(movie.getReleaseDate());
+        dntProgressDetail.setProgress((Math.round(movie.getVoteAverage() * 100)) / 10);
         tvOverView.setText(movie.getOverview());
-        tvCast.setText(movie.getFeatured_crew());
+//        tvCast.setText(movie.getFeatured_crew());
         Glide.with(this)
-                .load(movie.getImg_poster())
+                .load(POSTER_PATH + movie.getPosterPath())
                 .apply(new RequestOptions().override(350, 550))
                 .into(imgPoster);
+//        Glide.with(this)
+//                .load(movie.getImg_featured_crew())
+//                .into(imgCast);
         Glide.with(this)
-                .load(movie.getImg_featured_crew())
-                .into(imgCast);
-        Glide.with(this)
-                .load(movie.getImg_Backdrop())
+                .load(BACKDROP_PATH + movie.getBackdropPath())
                 .into(imgBackdrop);
-        /* TODO
-         *   Make tooltips on button */
+    }
+
+    private void bindTvShow(com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.tvshow.Result tvShow) {
+        tvTitle.setText(tvShow.getName());
+        tvRelease.setText(tvShow.getFirstAirDate());
+        dntProgressDetail.setProgress((Math.round(tvShow.getVoteAverage() * 100)) / 10);
+        tvOverView.setText(tvShow.getOverview());
+//        tvCast.setText(movie.get);
+        Glide.with(this)
+                .load(POSTER_PATH+tvShow.getPosterPath())
+                .apply(new RequestOptions().override(350, 550))
+                .into(imgPoster);
+//        Glide.with(this)
+//                .load(movie.cr)
+//                .into(imgCast);
+        Glide.with(this)
+                .load(BACKDROP_PATH + tvShow.getBackdropPath())
+                .into(imgBackdrop);
     }
 
     private void handleCollapsedToolbarTitle() {
@@ -83,7 +124,12 @@ public class DetailMovieActivity extends AppCompatActivity {
                     scrollRange = appBarLayout.getTotalScrollRange();
                 }
                 if (scrollRange + verticalOffset == 0) {
-                    tvTitleBar.setText(movie.getTitle());
+                    if (movie.getTitle() != null){
+                        tvTitleBar.setText(movie.getTitle());
+                    }else {
+                        tvTitleBar.setText(tvshow.getName());
+                    }
+
                     isShow = true;
                 } else if (isShow) {
                     collapsingToolbarLayout.setTitle(" ");

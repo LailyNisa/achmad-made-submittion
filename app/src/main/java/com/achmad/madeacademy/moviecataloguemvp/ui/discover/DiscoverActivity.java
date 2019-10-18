@@ -14,16 +14,14 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.achmad.madeacademy.moviecataloguemvp.R;
-import com.achmad.madeacademy.moviecataloguemvp.data.source.local.Movie;
 import com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.movie.Result;
 import com.achmad.madeacademy.moviecataloguemvp.ui.detail.DetailMovieActivity;
 import com.achmad.madeacademy.moviecataloguemvp.ui.discover.adapter.DiscoverTabLayoutAdapter;
-import com.achmad.madeacademy.moviecataloguemvp.ui.discover.adapter.ListDiscoverAdapter;
 import com.achmad.madeacademy.moviecataloguemvp.ui.discover.adapter.MovieAdapter;
 import com.achmad.madeacademy.moviecataloguemvp.ui.discover.adapter.TvShowAdapter;
 import com.google.android.material.tabs.TabLayout;
 
-public class DiscoverActivity extends AppCompatActivity implements MovieAdapter.OnFragmentInteractionListener,TvShowAdapter.OnFragmentInteractionListener {
+public class DiscoverActivity extends AppCompatActivity implements MovieAdapter.OnFragmentInteractionListener, TvShowAdapter.OnFragmentInteractionListener {
 
     DiscoverTabLayoutAdapter adapter;
     ViewPager viewPager;
@@ -66,12 +64,34 @@ public class DiscoverActivity extends AppCompatActivity implements MovieAdapter.
 
     @Override
     public void onFragmentInteraction(Result movie) {
-        Toast.makeText(this,"Ini budi +_"+movie.getTitle(),Toast.LENGTH_SHORT).show();
+        movie.setTitle(movie.getTitle());
+        movie.setReleaseDate(movie.getReleaseDate());
+        movie.setVoteAverage(movie.getVoteAverage());
+        movie.setPosterPath(movie.getPosterPath());
+        movie.setOverview(movie.getOverview());
+//        movie.setImg_featured_crew(movie.getImg_featured_crew());
+//        movie.setFeatured_crew(movie.getFeatured_crew());
+        movie.setBackdropPath(movie.getBackdropPath());
+        Intent moveToDetail = new Intent(this, DetailMovieActivity.class);
+        moveToDetail.putExtra(DetailMovieActivity.EXTRA_OBJECT, movie);
+        Toast.makeText(this, movie.getTitle(), Toast.LENGTH_SHORT).show();
+        startActivity(moveToDetail);
     }
 
 
     @Override
     public void onFragmentInteraction(com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.tvshow.Result tvShow) {
-        Toast.makeText(this,"Ini budi +_"+tvShow.getOriginalName(),Toast.LENGTH_SHORT).show();
+        tvShow.setName(tvShow.getName());
+        tvShow.setFirstAirDate(tvShow.getFirstAirDate());
+        tvShow.setVoteAverage(tvShow.getVoteAverage());
+        tvShow.setPosterPath(tvShow.getPosterPath());
+        tvShow.setOverview(tvShow.getOverview());
+//        movie.setImg_featured_crew(movie.getImg_featured_crew());
+//        movie.setFeatured_crew(movie.getFeatured_crew());
+        tvShow.setBackdropPath(tvShow.getBackdropPath());
+        Intent moveToDetail = new Intent(this, DetailMovieActivity.class);
+        moveToDetail.putExtra(DetailMovieActivity.EXTRA_OBJECT_TVSHOW, tvShow);
+        Toast.makeText(this, tvShow.getName(), Toast.LENGTH_SHORT).show();
+        startActivity(moveToDetail);
     }
 }
