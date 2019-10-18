@@ -3,6 +3,7 @@ package com.achmad.madeacademy.moviecataloguemvp.ui.discover.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -12,13 +13,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.achmad.madeacademy.moviecataloguemvp.R;
 import com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.movie.Result;
+import com.achmad.madeacademy.moviecataloguemvp.utils.BaseViewHolder;
 import com.bumptech.glide.Glide;
 import com.github.lzyzsd.circleprogress.DonutProgress;
 
 import java.util.List;
 
-public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
+import static com.achmad.madeacademy.moviecataloguemvp.utils.Cons.VIEW_TYPE_EMPTY;
+import static com.achmad.madeacademy.moviecataloguemvp.utils.Cons.VIEW_TYPE_NORMAL;
+
+public class MovieAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private final List<Result> mValues;
+
     private final OnFragmentInteractionListener mListener;
 
     public MovieAdapter(List<Result> mValues, OnFragmentInteractionListener mListener) {
@@ -26,48 +32,51 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         this.mListener = mListener;
     }
 
+    @Override
+    public void onBindViewHolder(@NonNull BaseViewHolder holder, int position) {
+            holder.onBind(position);
+    }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_movie_constraint, parent, false);
-        return new ViewHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        final Result movie = mValues.get(position);
-
-        holder.tvTitle.setText(movie.getTitle());
-        final View.OnClickListener onClickListener = view -> mListener.onFragmentInteraction(mValues.get(holder.getAdapterPosition()));
-        holder.tvTitle.setOnClickListener(onClickListener);
-        holder.tvRelease.setText(movie.getReleaseDate());
-        holder.dntProgress.setProgress((Math.round(movie.getVoteAverage()*100))/10);
-        Glide.with(holder.itemView.getContext())
-                .load("https://image.tmdb.org/t/p/w185"+movie.getPosterPath())
-                .into(holder.imgPhoto);
-        holder.imgPhoto.setOnClickListener(onClickListener);
-        holder.tvOverview.setText(movie.getOverview());
-        holder.tvMore.setOnClickListener(onClickListener);
-        if (movie.getTitle() != null){
-            holder.progressBar.setVisibility(View.GONE);
-        }else {
-            holder.progressBar.setVisibility(View.VISIBLE);
+    public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        switch (viewType){
+            case VIEW_TYPE_NORMAL:
+                return new ViewHolder(
+                        LayoutInflater.from(parent.getContext())
+                                .inflate(R.layout.fragment_movie_constraint, parent, false));
+            case VIEW_TYPE_EMPTY:
+            default:
+                return new EmptyViewHolder(LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_empty,parent,false));
         }
     }
 
     @Override
-    public int getItemCount() {
-        return (mValues == null) ? 0 : mValues.size();
+    public int getItemViewType(int position) {
+        if(mValues != null && mValues.size() > 0){
+            return VIEW_TYPE_NORMAL;
+        }else {
+            return VIEW_TYPE_EMPTY;
+        }
+//        return super.getItemViewType(position);
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    @Override
+    public int getItemCount() {
+        if (mValues != null && mValues.size() > 0){
+            return mValues.size();
+        }else {
+            return 1;
+        }
+    }
+
+    public class ViewHolder extends BaseViewHolder{
         TextView tvTitle, tvRelease, tvOverview, tvMore;
         ImageView imgPhoto;
         DonutProgress dntProgress;
         ProgressBar progressBar;
-        ViewHolder(@NonNull View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tv_title);
             tvRelease = itemView.findViewById(R.id.tv_date_release);
@@ -77,9 +86,56 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             tvMore = itemView.findViewById(R.id.tv_more_info);
             progressBar = itemView.findViewById(R.id.progressbar);
         }
+
+        @Override
+        public void onBind(int position) {
+            super.onBind(position);
+            final Result movie = mValues.get(position);
+
+        tvTitle.setText(movie.getTitle());
+        final View.OnClickListener onClickListener = view -> mListener.onFragmentInteraction(mValues.get(getAdapterPosition()));
+        tvTitle.setOnClickListener(onClickListener);
+        tvRelease.setText(movie.getReleaseDate());
+        dntProgress.setProgress((Math.round(movie.getVoteAverage()*100))/10);
+        Glide.with(itemView.getContext())
+                .load("https://image.tmdb.org/t/p/w185"+movie.getPosterPath())
+                .into(imgPhoto);
+        imgPhoto.setOnClickListener(onClickListener);
+        tvOverview.setText(movie.getOverview());
+        tvMore.setOnClickListener(onClickListener);
+        if (movie.getTitle() != null){
+            progressBar.setVisibility(View.GONE);
+        }else {
+            progressBar.setVisibility(View.VISIBLE);
+        }
+        }
+
+        @Override
+        protected void clear() {
+
+        }
+    }
+
+    public class EmptyViewHolder extends BaseViewHolder{
+        TextView messageTextView;
+        Button buttonRetry;
+
+        public EmptyViewHolder(View itemView) {
+            super(itemView);
+            messageTextView = itemView.findViewById(R.id.tv_message);
+            buttonRetry = itemView.findViewById(R.id.buttonRetry);
+        }
+
+        @Override
+        protected void clear() {
+
+        }
     }
 
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Result movie);
+
     }
+
+
 }

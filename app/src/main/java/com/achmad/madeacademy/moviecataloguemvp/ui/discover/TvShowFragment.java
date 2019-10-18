@@ -61,13 +61,13 @@ public class TvShowFragment extends Fragment {
         tvShowViewModel.init();
         tvShowViewModel.getTvShowRepository().observe(this, movieResponse -> {
             tvShowList.addAll(movieResponse.getResults());
-            if (movieResponse.getPage() != 0) {
-                rvTvShow.setVisibility(View.VISIBLE);
-//                progressBar.setVisibility(View.GONE);
-            } else {
-                rvTvShow.setVisibility(View.GONE);
-//                progressBar.setVisibility(View.VISIBLE);
-            }
+//            if (movieResponse.getPage() != 0) {
+//                rvTvShow.setVisibility(View.VISIBLE);
+////                progressBar.setVisibility(View.GONE);
+//            } else {
+//                rvTvShow.setVisibility(View.GONE);
+////                progressBar.setVisibility(View.VISIBLE);
+//            }
             mAdapter.notifyDataSetChanged();
         });
         setRvMovies();

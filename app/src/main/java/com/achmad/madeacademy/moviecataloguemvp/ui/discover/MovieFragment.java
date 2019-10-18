@@ -20,6 +20,7 @@ import com.achmad.madeacademy.moviecataloguemvp.data.source.local.DiscoverData;
 import com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.movie.Result;
 import com.achmad.madeacademy.moviecataloguemvp.ui.discover.adapter.ListDiscoverAdapter;
 import com.achmad.madeacademy.moviecataloguemvp.ui.discover.adapter.MovieAdapter;
+import com.achmad.madeacademy.moviecataloguemvp.utils.CommonUtils;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -54,20 +55,22 @@ public class MovieFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         rvMovies = Objects.requireNonNull(getActivity()).findViewById(R.id.rv_movies);
+        CommonUtils.showLoading(getActivity());
         movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
         movieViewModel.init();
         movieViewModel.getMovieRepository().observe(this, movieResponse -> {
+            CommonUtils.hideLoading();
             movieResult.addAll(movieResponse.getResults());
-            if (movieResponse.getPage() != 0) {
-                rvMovies.setVisibility(View.VISIBLE);
-//                progressBar.setVisibility(View.GONE);
-            } else {
-                rvMovies.setVisibility(View.GONE);
-//                progressBar.setVisibility(View.VISIBLE);
-            }
+//            if (movieResponse.getPage() != 0) {
+//                rvMovies.setVisibility(View.VISIBLE);
+////                progressBar.setVisibility(View.GONE);
+//            } else {
+//                rvMovies.setVisibility(View.GONE);
+////                progressBar.setVisibility(View.VISIBLE);
+//            }
+            setRvMovies();
             mAdapter.notifyDataSetChanged();
         });
-        setRvMovies();
     }
 
     public static MovieFragment newInstance() {
