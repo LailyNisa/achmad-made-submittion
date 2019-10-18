@@ -34,13 +34,13 @@ public class MovieAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull BaseViewHolder holder, int position) {
-            holder.onBind(position);
+        holder.onBind(position);
     }
 
     @NonNull
     @Override
     public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        switch (viewType){
+        switch (viewType) {
             case VIEW_TYPE_NORMAL:
                 return new ViewHolder(
                         LayoutInflater.from(parent.getContext())
@@ -48,15 +48,15 @@ public class MovieAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             case VIEW_TYPE_EMPTY:
             default:
                 return new EmptyViewHolder(LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.item_empty,parent,false));
+                        .inflate(R.layout.item_empty, parent, false));
         }
     }
 
     @Override
     public int getItemViewType(int position) {
-        if(mValues != null && mValues.size() > 0){
+        if (mValues != null && mValues.size() > 0) {
             return VIEW_TYPE_NORMAL;
-        }else {
+        } else {
             return VIEW_TYPE_EMPTY;
         }
 //        return super.getItemViewType(position);
@@ -64,18 +64,19 @@ public class MovieAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     @Override
     public int getItemCount() {
-        if (mValues != null && mValues.size() > 0){
+        if (mValues != null && mValues.size() > 0) {
             return mValues.size();
-        }else {
+        } else {
             return 1;
         }
     }
 
-    public class ViewHolder extends BaseViewHolder{
+    public class ViewHolder extends BaseViewHolder {
         TextView tvTitle, tvRelease, tvOverview, tvMore;
         ImageView imgPhoto;
         DonutProgress dntProgress;
         ProgressBar progressBar;
+
         public ViewHolder(View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tv_title);
@@ -92,22 +93,22 @@ public class MovieAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             super.onBind(position);
             final Result movie = mValues.get(position);
 
-        tvTitle.setText(movie.getTitle());
-        final View.OnClickListener onClickListener = view -> mListener.onFragmentInteraction(mValues.get(getAdapterPosition()));
-        tvTitle.setOnClickListener(onClickListener);
-        tvRelease.setText(movie.getReleaseDate());
-        dntProgress.setProgress((Math.round(movie.getVoteAverage()*100))/10);
-        Glide.with(itemView.getContext())
-                .load("https://image.tmdb.org/t/p/w185"+movie.getPosterPath())
-                .into(imgPhoto);
-        imgPhoto.setOnClickListener(onClickListener);
-        tvOverview.setText(movie.getOverview());
-        tvMore.setOnClickListener(onClickListener);
-        if (movie.getTitle() != null){
-            progressBar.setVisibility(View.GONE);
-        }else {
-            progressBar.setVisibility(View.VISIBLE);
-        }
+            tvTitle.setText(movie.getTitle());
+            final View.OnClickListener onClickListener = view -> mListener.onFragmentInteraction(mValues.get(getAdapterPosition()));
+            tvTitle.setOnClickListener(onClickListener);
+            tvRelease.setText(movie.getReleaseDate());
+            dntProgress.setProgress((Math.round(movie.getVoteAverage() * 100)) / 10);
+            Glide.with(itemView.getContext())
+                    .load("https://image.tmdb.org/t/p/w185" + movie.getPosterPath())
+                    .into(imgPhoto);
+            imgPhoto.setOnClickListener(onClickListener);
+            tvOverview.setText(movie.getOverview());
+            tvMore.setOnClickListener(onClickListener);
+            if (movie.getTitle() != null) {
+                progressBar.setVisibility(View.GONE);
+            } else {
+                progressBar.setVisibility(View.VISIBLE);
+            }
         }
 
         @Override
@@ -116,13 +117,11 @@ public class MovieAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         }
     }
 
-    public class EmptyViewHolder extends BaseViewHolder{
-        TextView messageTextView;
+    public class EmptyViewHolder extends BaseViewHolder {
         Button buttonRetry;
 
         public EmptyViewHolder(View itemView) {
             super(itemView);
-            messageTextView = itemView.findViewById(R.id.tv_message);
             buttonRetry = itemView.findViewById(R.id.buttonRetry);
         }
 

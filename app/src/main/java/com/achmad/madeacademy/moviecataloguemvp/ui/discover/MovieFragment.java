@@ -3,6 +3,7 @@ package com.achmad.madeacademy.moviecataloguemvp.ui.discover;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,14 +61,12 @@ public class MovieFragment extends Fragment {
         movieViewModel.init();
         movieViewModel.getMovieRepository().observe(this, movieResponse -> {
             CommonUtils.hideLoading();
-            movieResult.addAll(movieResponse.getResults());
-//            if (movieResponse.getPage() != 0) {
-//                rvMovies.setVisibility(View.VISIBLE);
-////                progressBar.setVisibility(View.GONE);
-//            } else {
-//                rvMovies.setVisibility(View.GONE);
-////                progressBar.setVisibility(View.VISIBLE);
-//            }
+            try {
+                movieResult.addAll(movieResponse.getResults());
+            }catch (Exception e){
+                Log.d("Exception",e.getMessage().toString());
+            }
+
             setRvMovies();
             mAdapter.notifyDataSetChanged();
         });

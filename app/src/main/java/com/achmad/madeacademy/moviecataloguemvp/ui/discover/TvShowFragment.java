@@ -3,6 +3,7 @@ package com.achmad.madeacademy.moviecataloguemvp.ui.discover;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.achmad.madeacademy.moviecataloguemvp.R;
 import com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.tvshow.Result;
 import com.achmad.madeacademy.moviecataloguemvp.ui.discover.adapter.TvShowAdapter;
+import com.achmad.madeacademy.moviecataloguemvp.utils.CommonUtils;
 
 import java.util.ArrayList;
 
@@ -57,20 +59,18 @@ public class TvShowFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+//        CommonUtils.showLoading(getActivity());
         tvShowViewModel = new ViewModelProvider(this).get(TvShowViewModel.class);
         tvShowViewModel.init();
         tvShowViewModel.getTvShowRepository().observe(this, movieResponse -> {
-            tvShowList.addAll(movieResponse.getResults());
-//            if (movieResponse.getPage() != 0) {
-//                rvTvShow.setVisibility(View.VISIBLE);
-////                progressBar.setVisibility(View.GONE);
-//            } else {
-//                rvTvShow.setVisibility(View.GONE);
-////                progressBar.setVisibility(View.VISIBLE);
-//            }
+            try {
+                tvShowList.addAll(movieResponse.getResults());
+            }catch (Exception e){
+                Log.d("Exception",e.getMessage().toString());
+            }
+            setRvMovies();
             mAdapter.notifyDataSetChanged();
         });
-        setRvMovies();
     }
 
     @Override

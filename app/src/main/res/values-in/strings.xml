@@ -26,4 +26,5 @@
     <string name="lbl_overview">Gambaran</string>
     <string name="tablayout_movie">Film</string>
     <string name="tablayout_tvshow">Acara Tv</string>
+    <string name="label_btn_empty_connection">Tidak ada koneksi internet</string>
 </resources>
