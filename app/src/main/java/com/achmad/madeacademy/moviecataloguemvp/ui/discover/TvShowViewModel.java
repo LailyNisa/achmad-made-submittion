@@ -4,10 +4,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.NetworkRepository;
-import com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.tvshow.TvShow;
-
-import static com.achmad.madeacademy.moviecataloguemvp.utils.Cons.API_KEY;
+import com.achmad.madeacademy.moviecataloguemvp.data.remote.NetworkRepository;
+import com.achmad.madeacademy.moviecataloguemvp.data.remote.model.tvshow.TvShow;
 
 public class TvShowViewModel extends ViewModel {
     private MutableLiveData<TvShow> mutableTvShowData;
@@ -18,7 +16,7 @@ public class TvShowViewModel extends ViewModel {
             return;
         }
         NetworkRepository networkRepository = NetworkRepository.getInstance();
-        mutableTvShowData = networkRepository.getTvShow(API_KEY, "en-US");
+        mutableTvShowData = networkRepository.getTvShow();
     }
 
     LiveData<TvShow> getTvShowRepository() {

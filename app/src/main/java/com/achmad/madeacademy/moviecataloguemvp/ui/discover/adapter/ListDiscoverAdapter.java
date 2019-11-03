@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.achmad.madeacademy.moviecataloguemvp.R;
-import com.achmad.madeacademy.moviecataloguemvp.data.source.local.Movie;
+import com.achmad.madeacademy.moviecataloguemvp.data.local.Movie;
 import com.bumptech.glide.Glide;
 import com.github.lzyzsd.circleprogress.DonutProgress;
 
@@ -42,30 +42,16 @@ public class ListDiscoverAdapter extends RecyclerView.Adapter<ListDiscoverAdapte
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         final Movie movie = mValues.get(position);
         holder.tvTitle.setText(movie.getTitle());
-        holder.tvTitle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mListener.onFragmentInteraction(mValues.get(holder.getAdapterPosition()));
-            }
-        });
+        final View.OnClickListener onClickListener = view -> mListener.onFragmentInteraction(mValues.get(holder.getAdapterPosition()));
+        holder.tvTitle.setOnClickListener(onClickListener);
         holder.tvRelease.setText(movie.getRelease());
         holder.dntProgress.setProgress(Integer.parseInt(movie.getUser_score()));
         Glide.with(holder.itemView.getContext())
                 .load(movie.getImg_poster())
                 .into(holder.imgPhoto);
-        holder.imgPhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mListener.onFragmentInteraction(mValues.get(holder.getAdapterPosition()));
-            }
-        });
+        holder.imgPhoto.setOnClickListener(onClickListener);
         holder.tvOverview.setText(movie.getOverview());
-        holder.tvMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mListener.onFragmentInteraction(mValues.get(holder.getAdapterPosition()));
-            }
-        });
+        holder.tvMore.setOnClickListener(onClickListener);
         if (movie.getTitle() != null) {
             holder.progressBar.setVisibility(View.GONE);
         } else {
@@ -78,13 +64,13 @@ public class ListDiscoverAdapter extends RecyclerView.Adapter<ListDiscoverAdapte
         return (mValues == null) ? 0 : mValues.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvTitle, tvRelease, tvOverview, tvMore;
         ImageView imgPhoto;
         DonutProgress dntProgress;
         ProgressBar progressBar;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tv_title);
             tvRelease = itemView.findViewById(R.id.tv_date_release);

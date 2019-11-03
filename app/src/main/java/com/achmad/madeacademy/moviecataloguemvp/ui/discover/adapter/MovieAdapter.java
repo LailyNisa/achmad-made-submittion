@@ -12,16 +12,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.achmad.madeacademy.moviecataloguemvp.R;
-import com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.movie.Result;
+import com.achmad.madeacademy.moviecataloguemvp.data.remote.model.movie.Result;
 import com.achmad.madeacademy.moviecataloguemvp.utils.BaseViewHolder;
 import com.bumptech.glide.Glide;
 import com.github.lzyzsd.circleprogress.DonutProgress;
 
 import java.util.List;
 
-import static com.achmad.madeacademy.moviecataloguemvp.utils.Cons.POSTER_PATH;
-import static com.achmad.madeacademy.moviecataloguemvp.utils.Cons.VIEW_TYPE_EMPTY;
-import static com.achmad.madeacademy.moviecataloguemvp.utils.Cons.VIEW_TYPE_NORMAL;
+import static com.achmad.madeacademy.moviecataloguemvp.utils.Const.POSTER_PATH;
+import static com.achmad.madeacademy.moviecataloguemvp.utils.Const.VIEW_TYPE_EMPTY;
+import static com.achmad.madeacademy.moviecataloguemvp.utils.Const.VIEW_TYPE_NORMAL;
 
 public class MovieAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private final List<Result> mValues;
@@ -78,7 +78,7 @@ public class MovieAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         DonutProgress dntProgress;
         ProgressBar progressBar;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tv_title);
             tvRelease = itemView.findViewById(R.id.tv_date_release);
@@ -121,7 +121,7 @@ public class MovieAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     public class EmptyViewHolder extends BaseViewHolder {
         Button buttonRetry;
 
-        public EmptyViewHolder(View itemView) {
+        EmptyViewHolder(View itemView) {
             super(itemView);
             buttonRetry = itemView.findViewById(R.id.buttonRetry);
         }

@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.achmad.madeacademy.moviecataloguemvp.R;
-import com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.movie.Result;
+import com.achmad.madeacademy.moviecataloguemvp.data.remote.model.movie.Result;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.github.lzyzsd.circleprogress.DonutProgress;
@@ -17,8 +17,8 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static com.achmad.madeacademy.moviecataloguemvp.utils.Cons.BACKDROP_PATH;
-import static com.achmad.madeacademy.moviecataloguemvp.utils.Cons.POSTER_PATH;
+import static com.achmad.madeacademy.moviecataloguemvp.utils.Const.BACKDROP_PATH;
+import static com.achmad.madeacademy.moviecataloguemvp.utils.Const.POSTER_PATH;
 
 public class DetailMovieActivity extends AppCompatActivity {
     public static final String EXTRA_OBJECT = "object_extra_movie";
@@ -32,7 +32,7 @@ public class DetailMovieActivity extends AppCompatActivity {
     AppBarLayout appbar;
     CollapsingToolbarLayout collapsingToolbarLayout;
     Result movie;
-    com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.tvshow.Result tvshow;
+    com.achmad.madeacademy.moviecataloguemvp.data.remote.model.tvshow.Result tvshow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +40,7 @@ public class DetailMovieActivity extends AppCompatActivity {
         setTheme(R.style.BaseTheme);
         setContentView(R.layout.activity_detail_constraint);
         movie = new Result();
-        tvshow = new com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.tvshow.Result();
+        tvshow = new com.achmad.madeacademy.moviecataloguemvp.data.remote.model.tvshow.Result();
         movie = getIntent().getParcelableExtra(EXTRA_OBJECT);
         tvshow = getIntent().getParcelableExtra(EXTRA_OBJECT_TVSHOW);
         initObject();
@@ -56,10 +56,6 @@ public class DetailMovieActivity extends AppCompatActivity {
             bindTvShow(tvshow);
             handleCollapsedToolbarTitle();
         }
-
-
-        /* TODO
-         *   Make tooltips on button */
     }
 
     private void initObject() {
@@ -82,32 +78,24 @@ public class DetailMovieActivity extends AppCompatActivity {
         tvRelease.setText(movie.getReleaseDate());
         dntProgressDetail.setProgress((Math.round(movie.getVoteAverage() * 100)) / 10);
         tvOverView.setText(movie.getOverview());
-//        tvCast.setText(movie.getFeatured_crew());
         Glide.with(this)
                 .load(POSTER_PATH + movie.getPosterPath())
                 .apply(new RequestOptions().override(350, 550))
                 .into(imgPoster);
-//        Glide.with(this)
-//                .load(movie.getImg_featured_crew())
-//                .into(imgCast);
         Glide.with(this)
                 .load(BACKDROP_PATH + movie.getBackdropPath())
                 .into(imgBackdrop);
     }
 
-    private void bindTvShow(com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.tvshow.Result tvShow) {
+    private void bindTvShow(com.achmad.madeacademy.moviecataloguemvp.data.remote.model.tvshow.Result tvShow) {
         tvTitle.setText(tvShow.getName());
         tvRelease.setText(tvShow.getFirstAirDate());
         dntProgressDetail.setProgress((Math.round(tvShow.getVoteAverage() * 100)) / 10);
         tvOverView.setText(tvShow.getOverview());
-//        tvCast.setText(movie.get);
         Glide.with(this)
                 .load(POSTER_PATH + tvShow.getPosterPath())
                 .apply(new RequestOptions().override(350, 550))
                 .into(imgPoster);
-//        Glide.with(this)
-//                .load(movie.cr)
-//                .into(imgCast);
         Glide.with(this)
                 .load(BACKDROP_PATH + tvShow.getBackdropPath())
                 .into(imgBackdrop);
@@ -117,7 +105,6 @@ public class DetailMovieActivity extends AppCompatActivity {
         appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             boolean isShow = true;
             int scrollRange = -1;
-
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                 if (scrollRange == -1) {

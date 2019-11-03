@@ -21,32 +21,46 @@ android {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
     }
+
+    buildTypes.each {
+        it.buildConfigField 'String', 'API_KEY', '"3cb2fe68a8656785a033a36a33812000"'
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'com.google.android.material:material:1.1.0-beta01'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
-    implementation 'androidx.cardview:cardview:1.0.0';
-    implementation 'com.squareup.retrofit2:retrofit:2.6.2'
-    implementation 'com.squareup.retrofit2:converter-gson:2.6.2'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.2.2'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0-beta01'
-    implementation 'com.github.tajchert:WaitingDots:0.6.1'
-    annotationProcessor 'androidx.lifecycle:lifecycle-compiler:2.2.0-beta01'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.2.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-//    implementation 'com.google.dagger:dagger-android:2.20'
-//    implementation 'com.google.dagger:dagger-android-support:2.20'
-//    // if you use the support libraries
-//    annotationProcessor 'com.google.dagger:dagger-android-processor:2.20'
-//    annotationProcessor 'com.google.dagger:dagger-compiler:2.20'
-    implementation 'com.github.bumptech.glide:glide:4.9.0'
-    implementation 'com.github.lzyzsd:circleprogress:1.1.0'
-    implementation 'de.hdodenhof:circleimageview:3.0.1'
+    implementation "androidx.appcompat:appcompat:$rootProject.appCompat"
+    implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraintLayout"
+    implementation "androidx.legacy:legacy-support-v4:$rootProject.legacySupport"
+    implementation "androidx.recyclerview:recyclerview:$rootProject.recyclerview"
+    implementation "androidx.cardview:cardview:$rootProject.cardview"
+    implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit"
+    implementation "com.squareup.retrofit2:converter-gson:$rootProject.converterGson"
+    implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.loggingInterceptor"
+    implementation "com.github.tajchert:WaitingDots:$rootProject.waitingDots"
+    implementation "com.github.bumptech.glide:glide:$rootProject.glide"
+    implementation "com.github.lzyzsd:circleprogress:$rootProject.circleprogress"
+    implementation "de.hdodenhof:circleimageview:$rootProject.circleimageview"
+
+    testImplementation "junit:junit:$rootProject.junit"
+
+    androidTestImplementation "androidx.test:runner:$rootProject.runner"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoCore"
+
+
+    // Room components
+    implementation "androidx.room:room-runtime:$rootProject.roomVersion"
+    annotationProcessor "androidx.room:room-compiler:$rootProject.roomVersion"
+    androidTestImplementation "androidx.room:room-testing:$rootProject.roomVersion"
+
+// Lifecycle components
+    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.archLifecycleVersion"
+    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$rootProject.archLifecycleVersion"
+
+// UI
+    implementation "com.google.android.material:material:$rootProject.materialVersion"
+
+// Testing
+    androidTestImplementation "androidx.arch.core:core-testing:$rootProject.coreTestingVersion"
 
 }

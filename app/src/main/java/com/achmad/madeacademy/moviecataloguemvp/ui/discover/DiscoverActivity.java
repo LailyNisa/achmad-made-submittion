@@ -14,7 +14,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.achmad.madeacademy.moviecataloguemvp.R;
-import com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.movie.Result;
+import com.achmad.madeacademy.moviecataloguemvp.data.remote.model.movie.Result;
 import com.achmad.madeacademy.moviecataloguemvp.ui.detail.DetailMovieActivity;
 import com.achmad.madeacademy.moviecataloguemvp.ui.discover.adapter.DiscoverTabLayoutAdapter;
 import com.achmad.madeacademy.moviecataloguemvp.ui.discover.adapter.MovieAdapter;
@@ -80,7 +80,7 @@ public class DiscoverActivity extends AppCompatActivity implements MovieAdapter.
 
 
     @Override
-    public void onFragmentInteraction(com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.tvshow.Result tvShow) {
+    public void onFragmentInteraction(com.achmad.madeacademy.moviecataloguemvp.data.remote.model.tvshow.Result tvShow) {
         tvShow.setName(tvShow.getName());
         tvShow.setFirstAirDate(tvShow.getFirstAirDate());
         tvShow.setVoteAverage(tvShow.getVoteAverage());

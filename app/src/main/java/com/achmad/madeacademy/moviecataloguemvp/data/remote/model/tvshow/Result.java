@@ -1,4 +1,4 @@
-package com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.tvshow;
+package com.achmad.madeacademy.moviecataloguemvp.data.remote.model.tvshow;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -182,7 +182,7 @@ public class Result implements Parcelable {
 
     protected Result(Parcel in) {
         this.originalName = in.readString();
-        this.genreIds = new ArrayList<Integer>();
+        this.genreIds = new ArrayList<>();
         in.readList(this.genreIds, Integer.class.getClassLoader());
         this.name = in.readString();
         this.popularity = in.readFloat();

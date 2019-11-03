@@ -1,10 +1,11 @@
-package com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.tvshow;
-import java.util.ArrayList;
-import java.util.List;
+package com.achmad.madeacademy.moviecataloguemvp.data.remote.model.movie;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class TvShow {
+import java.util.List;
+
+public class Movie {
 
     @SerializedName("page")
     @Expose
@@ -17,7 +18,7 @@ public class TvShow {
     private int totalPages;
     @SerializedName("results")
     @Expose
-    private ArrayList<Result> results = null;
+    private List<Result> results = null;
 
     public int getPage() {
         return page;
@@ -43,11 +44,11 @@ public class TvShow {
         this.totalPages = totalPages;
     }
 
-    public ArrayList<Result> getResults() {
+    public List<Result> getResults() {
         return results;
     }
 
-    public void setResults(ArrayList<Result> results) {
+    public void setResults(List<Result> results) {
         this.results = results;
     }
 

@@ -1,4 +1,4 @@
-package com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.movie;
+package com.achmad.madeacademy.moviecataloguemvp.data.remote.model.movie;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -202,7 +202,7 @@ public class Result implements Parcelable {
         this.backdropPath = in.readString();
         this.originalLanguage = in.readString();
         this.originalTitle = in.readString();
-        this.genreIds = new ArrayList<Integer>();
+        this.genreIds = new ArrayList<>();
         in.readList(this.genreIds, Integer.class.getClassLoader());
         this.title = in.readString();
         this.voteAverage = in.readFloat();

@@ -4,10 +4,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.NetworkRepository;
-import com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.movie.Movie;
-
-import static com.achmad.madeacademy.moviecataloguemvp.utils.Cons.API_KEY;
+import com.achmad.madeacademy.moviecataloguemvp.data.remote.NetworkRepository;
+import com.achmad.madeacademy.moviecataloguemvp.data.remote.model.movie.Movie;
 
 public class MovieViewModel extends ViewModel {
     private MutableLiveData<Movie> mutableLiveData;
@@ -18,7 +16,7 @@ public class MovieViewModel extends ViewModel {
             return;
         }
         networkRepository = NetworkRepository.getInstance();
-        mutableLiveData = networkRepository.getMovie(API_KEY, "en-US");
+        mutableLiveData = networkRepository.getMovie();
     }
 
     LiveData<Movie> getMovieRepository() {

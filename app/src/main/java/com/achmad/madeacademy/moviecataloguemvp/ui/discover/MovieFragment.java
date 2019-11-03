@@ -15,9 +15,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.achmad.madeacademy.moviecataloguemvp.R;
-import com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.movie.Result;
+import com.achmad.madeacademy.moviecataloguemvp.data.remote.model.movie.Result;
 import com.achmad.madeacademy.moviecataloguemvp.ui.discover.adapter.MovieAdapter;
 import com.achmad.madeacademy.moviecataloguemvp.utils.CommonUtils;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -56,7 +58,7 @@ public class MovieFragment extends Fragment {
         CommonUtils.showLoading(getActivity());
         movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
         movieViewModel.init();
-        movieViewModel.getMovieRepository().observe(this, movieResponse -> {
+        movieViewModel.getMovieRepository().observe(getViewLifecycleOwner(), movieResponse -> {
             CommonUtils.hideLoading();
             try {
                 movieResult.addAll(movieResponse.getResults());
@@ -70,12 +72,11 @@ public class MovieFragment extends Fragment {
     }
 
     public static MovieFragment newInstance() {
-        MovieFragment fragment = new MovieFragment();
-        return fragment;
+        return new MovieFragment();
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NotNull Context context) {
         super.onAttach(context);
         if (context instanceof MovieAdapter.OnFragmentInteractionListener) {
             mListener = (MovieAdapter.OnFragmentInteractionListener) context;

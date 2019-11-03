@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.achmad.madeacademy.moviecataloguemvp.R;
-import com.achmad.madeacademy.moviecataloguemvp.data.source.remote.model.tvshow.Result;
+import com.achmad.madeacademy.moviecataloguemvp.data.remote.model.tvshow.Result;
 import com.achmad.madeacademy.moviecataloguemvp.ui.discover.adapter.TvShowAdapter;
 
 import java.util.ArrayList;
@@ -58,10 +58,9 @@ public class TvShowFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-//        CommonUtils.showLoading(getActivity());
         tvShowViewModel = new ViewModelProvider(this).get(TvShowViewModel.class);
         tvShowViewModel.init();
-        tvShowViewModel.getTvShowRepository().observe(this, movieResponse -> {
+        tvShowViewModel.getTvShowRepository().observe(getViewLifecycleOwner(), movieResponse -> {
             try {
                 tvShowList.addAll(movieResponse.getResults());
             } catch (Exception e) {
