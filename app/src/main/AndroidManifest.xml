@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.achmad.madeacademy.moviecataloguemvp">
+
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,11 +12,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.detail.DetailMovieActivity"
-            android:parentActivityName=".ui.discover.DiscoverActivity"></activity>
         <activity
-            android:name=".ui.discover.DiscoverActivity"
-            android:launchMode="singleTop">
+            android:name=".pref.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".ui.discover.DiscoverActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.achmad.madeacademy.moviecataloguemvp.ui.discover.DiscoverActivity" />
+        </activity>
+        <activity
+            android:name=".ui.detail.DetailMovieActivity"
+            android:parentActivityName=".ui.discover.DiscoverActivity" />
+        <activity
+            android:name=".ui.discover.DiscoverActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,7 +32,5 @@
             </intent-filter>
         </activity>
     </application>
-
-
 
 </manifest>

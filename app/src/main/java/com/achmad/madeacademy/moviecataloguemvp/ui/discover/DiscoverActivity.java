@@ -16,6 +16,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.achmad.madeacademy.moviecataloguemvp.R;
 import com.achmad.madeacademy.moviecataloguemvp.data.remote.model.movie.Result;
 import com.achmad.madeacademy.moviecataloguemvp.pref.AppPreference;
+import com.achmad.madeacademy.moviecataloguemvp.pref.SettingsActivity;
 import com.achmad.madeacademy.moviecataloguemvp.ui.detail.DetailMovieActivity;
 import com.achmad.madeacademy.moviecataloguemvp.ui.discover.adapter.DiscoverTabLayoutAdapter;
 import com.achmad.madeacademy.moviecataloguemvp.ui.discover.adapter.MovieAdapter;
@@ -75,22 +76,27 @@ public class DiscoverActivity extends AppCompatActivity implements MovieAdapter.
             Intent intent = new Intent(Settings.ACTION_LOCALE_SETTINGS);
             startActivity(intent);
             return true;
-        }else if (item.getGroupId() == R.id.menu_sort_group){
-            if(item.getItemId() == R.id.action_popular_movies){
-                orderPreference.setOrder("popular_movies");
-                item.setChecked(true);
-            }else if(item.getItemId() == R.id.action_top_rated){
-                orderPreference.setOrder("top_rated");
-                item.setChecked(true);
-            }else {
-                orderPreference.setOrder("from_db");
-                item.setChecked(true);
-            }
         }
+        else {
+            Intent intentSetting = new Intent(DiscoverActivity.this, SettingsActivity.class);
+            intentSetting.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intentSetting);
+            return true;
+        }
+//        else if (item.getGroupId() == R.id.menu_sort_group){
+//            if(item.getItemId() == R.id.action_popular_movies){
+//                orderPreference.setOrder("popular_movies");
+//                item.setChecked(true);
+//            }else if(item.getItemId() == R.id.action_top_rated){
+//                orderPreference.setOrder("top_rated");
+//                item.setChecked(true);
+//            }else {
+//                orderPreference.setOrder("from_db");
+//                item.setChecked(true);
+//            }
+//        }
 
-        return super.onOptionsItemSelected(item);
-
-
+//    return super.onOptionsItemSelected(item);
     }
 
     @Override

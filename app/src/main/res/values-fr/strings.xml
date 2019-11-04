@@ -28,4 +28,8 @@
     <string name="tablayout_movie">Films</string>
     <string name="tablayout_tvshow">Emission de télévision</string>
     <string name="label_btn_empty_connection">Pas de connexion Internet</string>
+    <string name="menu_sort_order">Type de tri</string>
+    <string name="title_activity_settings">Paramètres</string>
+    <string name="reply_title">Trier par</string>
+    <string name="messages_header">Court métrage / émission de télévision</string>
 </resources>

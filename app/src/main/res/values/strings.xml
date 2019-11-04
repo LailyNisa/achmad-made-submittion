@@ -27,4 +27,14 @@
     <string name="tablayout_movie">Movies</string>
     <string name="tablayout_tvshow">Tv Show</string>
     <string name="label_btn_empty_connection">No Internet Connection</string>
+    <string name="menu_sort_order">Sort type</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Sort movie/tvShow</string>
+
+    <!-- Messages Preferences -->
+    <string name="reply_title">Sort by</string>
+
+
 </resources>

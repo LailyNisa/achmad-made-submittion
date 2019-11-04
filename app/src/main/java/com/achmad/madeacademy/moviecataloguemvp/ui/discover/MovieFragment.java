@@ -2,6 +2,7 @@ package com.achmad.madeacademy.moviecataloguemvp.ui.discover;
 
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -59,8 +61,9 @@ public class MovieFragment extends Fragment {
         rvMovies = Objects.requireNonNull(getActivity()).findViewById(R.id.rv_movies);
         CommonUtils.showLoading(getActivity());
         orderPreference = new AppPreference(getActivity());
-        String movieOrder = orderPreference.getOrder();
-        if (movieOrder.equals("popular_movies")){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String sortOrder = preferences.getString("reply","popular_movies");
+        if (sortOrder.equals("popular_movies")){
             initMovie();
         }else {
             CommonUtils.hideLoading();
