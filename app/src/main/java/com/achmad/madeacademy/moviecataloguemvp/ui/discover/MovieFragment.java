@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.achmad.madeacademy.moviecataloguemvp.R;
 import com.achmad.madeacademy.moviecataloguemvp.data.remote.model.movie.Result;
+import com.achmad.madeacademy.moviecataloguemvp.pref.AppPreference;
 import com.achmad.madeacademy.moviecataloguemvp.ui.discover.adapter.MovieAdapter;
 import com.achmad.madeacademy.moviecataloguemvp.utils.CommonUtils;
 
@@ -33,7 +35,7 @@ public class MovieFragment extends Fragment {
     private MovieAdapter.OnFragmentInteractionListener mListener;
     private MovieAdapter mAdapter;
     private MovieViewModel movieViewModel;
-
+    private AppPreference orderPreference;
     public MovieFragment() {
     }
 
@@ -56,6 +58,33 @@ public class MovieFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         rvMovies = Objects.requireNonNull(getActivity()).findViewById(R.id.rv_movies);
         CommonUtils.showLoading(getActivity());
+        orderPreference = new AppPreference(getActivity());
+        String movieOrder = orderPreference.getOrder();
+        if (movieOrder.equals("popular_movies")){
+            initMovie();
+        }else {
+            CommonUtils.hideLoading();
+            setRvMovies();
+            mAdapter.notifyDataSetChanged();
+            Toast.makeText(getActivity(),"Gak jelas",Toast.LENGTH_SHORT).show();
+        }
+//        movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
+//        movieViewModel.init();
+//        movieViewModel.getMovieRepository().observe(getViewLifecycleOwner(), movieResponse -> {
+//            CommonUtils.hideLoading();
+//            try {
+//                movieResult.addAll(movieResponse.getResults());
+//            } catch (Exception e) {
+//                Log.d("Exception", e.getMessage());
+//            }
+//
+//            setRvMovies();
+//            mAdapter.notifyDataSetChanged();
+//        });
+
+    }
+
+    private void initMovie(){
         movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
         movieViewModel.init();
         movieViewModel.getMovieRepository().observe(getViewLifecycleOwner(), movieResponse -> {
@@ -63,7 +92,7 @@ public class MovieFragment extends Fragment {
             try {
                 movieResult.addAll(movieResponse.getResults());
             } catch (Exception e) {
-                Log.d("Exception", e.getMessage());
+                Log.d("Exception", Objects.requireNonNull(e.getMessage()));
             }
 
             setRvMovies();
