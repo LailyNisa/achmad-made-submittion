@@ -15,6 +15,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.achmad.madeacademy.moviecataloguemvp.R;
 import com.achmad.madeacademy.moviecataloguemvp.data.remote.model.movie.Result;
+import com.achmad.madeacademy.moviecataloguemvp.pref.AppPreference;
 import com.achmad.madeacademy.moviecataloguemvp.ui.detail.DetailMovieActivity;
 import com.achmad.madeacademy.moviecataloguemvp.ui.discover.adapter.DiscoverTabLayoutAdapter;
 import com.achmad.madeacademy.moviecataloguemvp.ui.discover.adapter.MovieAdapter;
@@ -27,11 +28,13 @@ public class DiscoverActivity extends AppCompatActivity implements MovieAdapter.
     ViewPager viewPager;
     TabLayout tabLayout;
     Toolbar toolbar;
-
+    AppPreference orderPreference;
+    String movieOrder;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_discover);
+        orderPreference = new AppPreference(this);
         toolbar = findViewById(R.id.toolbar);
         tabLayout = findViewById(R.id.tab_layout);
         viewPager = findViewById(R.id.view_pager);
@@ -41,15 +44,30 @@ public class DiscoverActivity extends AppCompatActivity implements MovieAdapter.
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Popular Movies");
+            getSupportActionBar().setTitle("Movie Catalogue");
         }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        movieOrder = orderPreference.getOrder();
         getMenuInflater().inflate(R.menu.main_menu, menu);
+        switch (movieOrder) {
+            case "popular_movies":
+                menu.findItem(R.id.action_popular_movies).setChecked(true);
+                break;
+            case "top_rated":
+                menu.findItem(R.id.action_top_rated).setChecked(true);
+                break;
+            case "from_db":
+                menu.findItem(R.id.action_now_playing).setChecked(true);
+                break;
+        }
+
         return super.onCreateOptionsMenu(menu);
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -57,9 +75,22 @@ public class DiscoverActivity extends AppCompatActivity implements MovieAdapter.
             Intent intent = new Intent(Settings.ACTION_LOCALE_SETTINGS);
             startActivity(intent);
             return true;
-        } else {
-            return super.onOptionsItemSelected(item);
+        }else if (item.getGroupId() == R.id.menu_sort_group){
+            if(item.getItemId() == R.id.action_popular_movies){
+                orderPreference.setOrder("popular_movies");
+                item.setChecked(true);
+            }else if(item.getItemId() == R.id.action_top_rated){
+                orderPreference.setOrder("top_rated");
+                item.setChecked(true);
+            }else {
+                orderPreference.setOrder("from_db");
+                item.setChecked(true);
+            }
         }
+
+        return super.onOptionsItemSelected(item);
+
+
     }
 
     @Override
