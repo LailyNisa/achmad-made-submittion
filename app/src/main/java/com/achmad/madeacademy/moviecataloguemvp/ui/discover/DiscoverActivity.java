@@ -14,7 +14,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.achmad.madeacademy.moviecataloguemvp.R;
 import com.achmad.madeacademy.moviecataloguemvp.data.remote.model.movie.Result;
-import com.achmad.madeacademy.moviecataloguemvp.pref.AppPreference;
 import com.achmad.madeacademy.moviecataloguemvp.pref.SettingsActivity;
 import com.achmad.madeacademy.moviecataloguemvp.ui.detail.DetailMovieActivity;
 import com.achmad.madeacademy.moviecataloguemvp.ui.discover.adapter.DiscoverTabLayoutAdapter;
@@ -28,12 +27,10 @@ public class DiscoverActivity extends AppCompatActivity implements MovieAdapter.
     ViewPager viewPager;
     TabLayout tabLayout;
     Toolbar toolbar;
-    AppPreference orderPreference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_discover);
-        orderPreference = new AppPreference(this);
         toolbar = findViewById(R.id.toolbar);
         tabLayout = findViewById(R.id.tab_layout);
         viewPager = findViewById(R.id.view_pager);
