@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,6 +42,7 @@ public class DiscoverActivity extends AppCompatActivity implements MovieAdapter.
         adapter.addFragment(new TvShowFragment(), getString(R.string.tablayout_tvshow));
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Movie Catalogue");
         }
@@ -73,6 +73,7 @@ public class DiscoverActivity extends AppCompatActivity implements MovieAdapter.
 
     @Override
     public void onFragmentInteraction(Result movie) {
+        movie.setId(movie.getId());
         movie.setTitle(movie.getTitle());
         movie.setReleaseDate(movie.getReleaseDate());
         movie.setVoteAverage(movie.getVoteAverage());
@@ -81,7 +82,6 @@ public class DiscoverActivity extends AppCompatActivity implements MovieAdapter.
         movie.setBackdropPath(movie.getBackdropPath());
         Intent moveToDetail = new Intent(this, DetailMovieActivity.class);
         moveToDetail.putExtra(DetailMovieActivity.EXTRA_OBJECT, movie);
-        Toast.makeText(this, movie.getTitle(), Toast.LENGTH_SHORT).show();
         startActivity(moveToDetail);
     }
 
@@ -93,12 +93,9 @@ public class DiscoverActivity extends AppCompatActivity implements MovieAdapter.
         tvShow.setVoteAverage(tvShow.getVoteAverage());
         tvShow.setPosterPath(tvShow.getPosterPath());
         tvShow.setOverview(tvShow.getOverview());
-//        movie.setImg_featured_crew(movie.getImg_featured_crew());
-//        movie.setFeatured_crew(movie.getFeatured_crew());
         tvShow.setBackdropPath(tvShow.getBackdropPath());
         Intent moveToDetail = new Intent(this, DetailMovieActivity.class);
         moveToDetail.putExtra(DetailMovieActivity.EXTRA_OBJECT_TVSHOW, tvShow);
-        Toast.makeText(this, tvShow.getName(), Toast.LENGTH_SHORT).show();
         startActivity(moveToDetail);
     }
 }

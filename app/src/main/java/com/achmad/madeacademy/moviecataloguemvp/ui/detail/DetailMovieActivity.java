@@ -1,11 +1,14 @@
 package com.achmad.madeacademy.moviecataloguemvp.ui.detail;
 
 import android.os.Bundle;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.achmad.madeacademy.moviecataloguemvp.R;
 import com.achmad.madeacademy.moviecataloguemvp.data.remote.model.movie.Result;
@@ -23,16 +26,17 @@ import static com.achmad.madeacademy.moviecataloguemvp.utils.Const.POSTER_PATH;
 public class DetailMovieActivity extends AppCompatActivity {
     public static final String EXTRA_OBJECT = "object_extra_movie";
     public static final String EXTRA_OBJECT_TVSHOW = "object_extra_tvshow";
-    public static final String EXTRA_TITLE = "object_title";
     TextView tvTitle, tvRelease, tvOverView, tvCast, tvTitleBar;
     DonutProgress dntProgressDetail;
     ImageView imgPoster, imgBackdrop;
     CircleImageView imgCast;
     Toolbar toolbar;
     AppBarLayout appbar;
+    ImageButton imgButton;
     CollapsingToolbarLayout collapsingToolbarLayout;
     Result movie;
     com.achmad.madeacademy.moviecataloguemvp.data.remote.model.tvshow.Result tvshow;
+    private DiscoverDetailViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +47,13 @@ public class DetailMovieActivity extends AppCompatActivity {
         tvshow = new com.achmad.madeacademy.moviecataloguemvp.data.remote.model.tvshow.Result();
         movie = getIntent().getParcelableExtra(EXTRA_OBJECT);
         tvshow = getIntent().getParcelableExtra(EXTRA_OBJECT_TVSHOW);
+        mViewModel = new ViewModelProvider(this).get(DiscoverDetailViewModel.class);
         initObject();
         setSupportActionBar(toolbar);
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-
         if (movie != null) {
             bindMovie(movie);
             handleCollapsedToolbarTitle();
@@ -71,6 +76,7 @@ public class DetailMovieActivity extends AppCompatActivity {
         appbar = findViewById(R.id.appbar_constraint_detail);
         collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
         tvTitleBar = findViewById(R.id.toolbar_title);
+        imgButton = findViewById(R.id.favorite_button_detail);
     }
 
     private void bindMovie(Result movie) {
@@ -85,6 +91,31 @@ public class DetailMovieActivity extends AppCompatActivity {
         Glide.with(this)
                 .load(BACKDROP_PATH + movie.getBackdropPath())
                 .into(imgBackdrop);
+        imgButton.setOnClickListener(view -> {
+            mViewModel.onFavoriteClicked();
+            if (!mViewModel.isFavorite()) {
+                imgButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_border_white_24dp));
+                mViewModel.deleteMovie(movie);
+            } else {
+                imgButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_white_24dp));
+                mViewModel.insertMovie(movie);
+            }
+
+        });
+        mViewModel.initDbMovieId(movie.getId());
+        mViewModel.getMovieRepository().observe(this, results -> {
+                    if (results.isEmpty()) {
+                        Toast.makeText(this, "Lagi kosong", Toast.LENGTH_SHORT).show();
+                        imgButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_border_white_24dp));
+                        mViewModel.setFavorite(false);
+                    } else {
+                        Toast.makeText(this, "Ada isinya", Toast.LENGTH_SHORT).show();
+                        imgButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_white_24dp));
+                        mViewModel.setFavorite(true);
+                    }
+                }
+        );
+
     }
 
     private void bindTvShow(com.achmad.madeacademy.moviecataloguemvp.data.remote.model.tvshow.Result tvShow) {
@@ -99,12 +130,35 @@ public class DetailMovieActivity extends AppCompatActivity {
         Glide.with(this)
                 .load(BACKDROP_PATH + tvShow.getBackdropPath())
                 .into(imgBackdrop);
+        imgButton.setOnClickListener(view -> {
+            mViewModel.onFavoriteClicked();
+            if (!mViewModel.isFavorite()) {
+                imgButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_border_white_24dp));
+                mViewModel.deleteTvshow(tvShow);
+            } else {
+                imgButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_white_24dp));
+                mViewModel.insertTvShow(tvShow);
+            }
+
+        });
+        mViewModel.initTvShow(tvShow.getId());
+        mViewModel.getTvShowRepository().observe(this, results -> {
+                    if (results.isEmpty()) {
+                        imgButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_border_white_24dp));
+                        mViewModel.setFavorite(false);
+                    } else {
+                        imgButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_white_24dp));
+                        mViewModel.setFavorite(true);
+                    }
+                }
+        );
     }
 
     private void handleCollapsedToolbarTitle() {
         appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             boolean isShow = true;
             int scrollRange = -1;
+
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                 if (scrollRange == -1) {

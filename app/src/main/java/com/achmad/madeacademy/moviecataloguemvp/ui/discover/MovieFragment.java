@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -100,10 +99,17 @@ public class MovieFragment extends Fragment {
     }
 
     private void initDb() {
-        CommonUtils.hideLoading();
-        setRvMovies();
-        mAdapter.notifyDataSetChanged();
-        Toast.makeText(getActivity(), "Gak jelas", Toast.LENGTH_SHORT).show();
+        movieViewModel.initDb();
+        movieViewModel.getMovieDb().observe(getViewLifecycleOwner(), movieResponse -> {
+            CommonUtils.hideLoading();
+            try {
+                movieResult.addAll(movieResponse);
+            } catch (Exception e) {
+                Log.d("Exception", Objects.requireNonNull(e.getMessage()));
+            }
+            setRvMovies();
+            mAdapter.notifyDataSetChanged();
+        });
     }
 
 

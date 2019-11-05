@@ -3,12 +3,18 @@ package com.achmad.madeacademy.moviecataloguemvp.data.remote.model.movie;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity(tableName = "movie")
 public class Result implements Parcelable {
 
     @SerializedName("popularity")
@@ -20,15 +26,23 @@ public class Result implements Parcelable {
     @SerializedName("video")
     @Expose
     private boolean video;
+
+    @ColumnInfo(name = "poster_path")
     @SerializedName("poster_path")
     @Expose
     private String posterPath;
+
+    @PrimaryKey
+    @ColumnInfo(name = "id")
     @SerializedName("id")
     @Expose
     private int id;
+
     @SerializedName("adult")
     @Expose
     private boolean adult;
+
+    @ColumnInfo(name = "backdrop_path")
     @SerializedName("backdrop_path")
     @Expose
     private String backdropPath;
@@ -38,18 +52,27 @@ public class Result implements Parcelable {
     @SerializedName("original_title")
     @Expose
     private String originalTitle;
+    @Ignore
     @SerializedName("genre_ids")
     @Expose
     private List<Integer> genreIds = null;
+
+    @ColumnInfo(name = "title")
     @SerializedName("title")
     @Expose
     private String title;
+
+    @ColumnInfo(name = "vote_average")
     @SerializedName("vote_average")
     @Expose
     private float voteAverage;
+
+    @ColumnInfo(name = "overview")
     @SerializedName("overview")
     @Expose
     private String overview;
+
+    @ColumnInfo(name = "release_date")
     @SerializedName("release_date")
     @Expose
     private String releaseDate;

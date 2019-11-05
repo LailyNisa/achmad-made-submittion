@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.achmad.madeacademy.moviecataloguemvp.R;
 import com.achmad.madeacademy.moviecataloguemvp.data.remote.model.tvshow.Result;
 import com.achmad.madeacademy.moviecataloguemvp.ui.discover.adapter.TvShowAdapter;
+import com.achmad.madeacademy.moviecataloguemvp.utils.CommonUtils;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -99,14 +100,19 @@ public class TvShowFragment extends Fragment {
             mAdapter.notifyDataSetChanged();
         });
     }
-
     private void initDb() {
-        setRvMovies();
-        mAdapter.notifyDataSetChanged();
+        tvShowViewModel.initDb();
+        tvShowViewModel.getTvShowDb().observe(getViewLifecycleOwner(), movieResponse -> {
+            CommonUtils.hideLoading();
+            try {
+                tvShowList.addAll(movieResponse);
+            } catch (Exception e) {
+                Log.d("Exception", Objects.requireNonNull(e.getMessage()));
+            }
+            setRvMovies();
+            mAdapter.notifyDataSetChanged();
+        });
     }
-
-
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
