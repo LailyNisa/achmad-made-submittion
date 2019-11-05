@@ -19,7 +19,7 @@ public class NetworkInterceptor implements Interceptor {
         HttpUrl url = request.url().newBuilder()
                 .addQueryParameter("api_key", BuildConfig.API_KEY)
                 .addQueryParameter("with_original_language", "ja")
-                .addQueryParameter("with_genres", "35,10749")
+//                .addQueryParameter("with_genres", "35,10749") -> Comedy,Romance
                 .build();
 
         request = request.newBuilder().url(url).build();

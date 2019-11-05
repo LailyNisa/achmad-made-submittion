@@ -1,10 +1,10 @@
 package com.achmad.madeacademy.moviecataloguemvp.ui.detail;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.achmad.madeacademy.moviecataloguemvp.R;
 import com.achmad.madeacademy.moviecataloguemvp.data.remote.model.movie.Result;
+import com.achmad.madeacademy.moviecataloguemvp.ui.discover.DiscoverActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.github.lzyzsd.circleprogress.DonutProgress;
@@ -105,11 +106,9 @@ public class DetailMovieActivity extends AppCompatActivity {
         mViewModel.initDbMovieId(movie.getId());
         mViewModel.getMovieRepository().observe(this, results -> {
                     if (results.isEmpty()) {
-                        Toast.makeText(this, "Lagi kosong", Toast.LENGTH_SHORT).show();
                         imgButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_border_white_24dp));
                         mViewModel.setFavorite(false);
                     } else {
-                        Toast.makeText(this, "Ada isinya", Toast.LENGTH_SHORT).show();
                         imgButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_white_24dp));
                         mViewModel.setFavorite(true);
                     }
@@ -179,5 +178,13 @@ public class DetailMovieActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(DetailMovieActivity.this, DiscoverActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 }
