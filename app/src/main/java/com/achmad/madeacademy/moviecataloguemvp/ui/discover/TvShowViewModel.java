@@ -9,14 +9,22 @@ import com.achmad.madeacademy.moviecataloguemvp.data.remote.model.tvshow.TvShow;
 
 public class TvShowViewModel extends ViewModel {
     private MutableLiveData<TvShow> mutableTvShowData;
+    private NetworkRepository networkRepository;
 
-    public void init() {
-
+    public void initPopular() {
         if (mutableTvShowData != null) {
             return;
         }
-        NetworkRepository networkRepository = NetworkRepository.getInstance();
-        mutableTvShowData = networkRepository.getTvShow();
+        networkRepository = NetworkRepository.getInstance();
+        mutableTvShowData = networkRepository.getTvShow("popularity.desc");
+    }
+
+    public void initTopRated() {
+        if (mutableTvShowData != null) {
+            return;
+        }
+        networkRepository = NetworkRepository.getInstance();
+        mutableTvShowData = networkRepository.getTvShow("vote_average.desc");
     }
 
     LiveData<TvShow> getTvShowRepository() {

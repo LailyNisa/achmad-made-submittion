@@ -27,9 +27,9 @@ public class NetworkRepository {
         movieApi = NetworkConfig.getInstance();
     }
 
-    public MutableLiveData<Movie> getMovie() {
+    public MutableLiveData<Movie> getMovie(String sort) {
         final MutableLiveData<Movie> movieData = new MutableLiveData<>();
-        movieApi.getMovie().enqueue(new Callback<Movie>() {
+        movieApi.getMovie(sort).enqueue(new Callback<Movie>() {
             @Override
             public void onResponse(Call<Movie> call, Response<Movie> response) {
                 if (response.isSuccessful()) {
@@ -46,9 +46,9 @@ public class NetworkRepository {
     }
 
 
-    public MutableLiveData<TvShow> getTvShow() {
+    public MutableLiveData<TvShow> getTvShow(String sort) {
         final MutableLiveData<TvShow> tvShowMutableLiveData = new MutableLiveData<>();
-        movieApi.getTvShow().enqueue(new Callback<TvShow>() {
+        movieApi.getTvShow(sort).enqueue(new Callback<TvShow>() {
 
             @Override
             public void onResponse(Call<TvShow> call, Response<TvShow> response) {

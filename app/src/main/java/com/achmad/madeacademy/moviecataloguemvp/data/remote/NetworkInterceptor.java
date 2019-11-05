@@ -18,6 +18,8 @@ public class NetworkInterceptor implements Interceptor {
         Request request = chain.request();
         HttpUrl url = request.url().newBuilder()
                 .addQueryParameter("api_key", BuildConfig.API_KEY)
+                .addQueryParameter("with_original_language", "ja")
+                .addQueryParameter("with_genres", "35,10749")
                 .build();
 
         request = request.newBuilder().url(url).build();

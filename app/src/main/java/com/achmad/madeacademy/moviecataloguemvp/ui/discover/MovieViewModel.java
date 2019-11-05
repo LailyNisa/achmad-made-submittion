@@ -11,12 +11,20 @@ public class MovieViewModel extends ViewModel {
     private MutableLiveData<Movie> mutableLiveData;
     private NetworkRepository networkRepository;
 
-    public void init() {
+    public void initPopular() {
         if (mutableLiveData != null) {
             return;
         }
         networkRepository = NetworkRepository.getInstance();
-        mutableLiveData = networkRepository.getMovie();
+        mutableLiveData = networkRepository.getMovie("popularity.desc");
+    }
+
+    public void initTopRated() {
+        if (mutableLiveData != null) {
+            return;
+        }
+        networkRepository = NetworkRepository.getInstance();
+        mutableLiveData = networkRepository.getMovie("vote_average.desc");
     }
 
     LiveData<Movie> getMovieRepository() {

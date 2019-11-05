@@ -30,7 +30,6 @@ public class DiscoverActivity extends AppCompatActivity implements MovieAdapter.
     TabLayout tabLayout;
     Toolbar toolbar;
     AppPreference orderPreference;
-    String movieOrder;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,20 +50,7 @@ public class DiscoverActivity extends AppCompatActivity implements MovieAdapter.
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        movieOrder = orderPreference.getOrder();
         getMenuInflater().inflate(R.menu.main_menu, menu);
-        switch (movieOrder) {
-            case "popular_movies":
-                menu.findItem(R.id.action_popular_movies).setChecked(true);
-                break;
-            case "top_rated":
-                menu.findItem(R.id.action_top_rated).setChecked(true);
-                break;
-            case "from_db":
-                menu.findItem(R.id.action_now_playing).setChecked(true);
-                break;
-        }
-
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -83,20 +69,6 @@ public class DiscoverActivity extends AppCompatActivity implements MovieAdapter.
             startActivity(intentSetting);
             return true;
         }
-//        else if (item.getGroupId() == R.id.menu_sort_group){
-//            if(item.getItemId() == R.id.action_popular_movies){
-//                orderPreference.setOrder("popular_movies");
-//                item.setChecked(true);
-//            }else if(item.getItemId() == R.id.action_top_rated){
-//                orderPreference.setOrder("top_rated");
-//                item.setChecked(true);
-//            }else {
-//                orderPreference.setOrder("from_db");
-//                item.setChecked(true);
-//            }
-//        }
-
-//    return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -106,8 +78,6 @@ public class DiscoverActivity extends AppCompatActivity implements MovieAdapter.
         movie.setVoteAverage(movie.getVoteAverage());
         movie.setPosterPath(movie.getPosterPath());
         movie.setOverview(movie.getOverview());
-//        movie.setImg_featured_crew(movie.getImg_featured_crew());
-//        movie.setFeatured_crew(movie.getFeatured_crew());
         movie.setBackdropPath(movie.getBackdropPath());
         Intent moveToDetail = new Intent(this, DetailMovieActivity.class);
         moveToDetail.putExtra(DetailMovieActivity.EXTRA_OBJECT, movie);

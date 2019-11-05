@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.achmad.madeacademy.moviecataloguemvp.R;
 import com.achmad.madeacademy.moviecataloguemvp.data.remote.model.movie.Result;
-import com.achmad.madeacademy.moviecataloguemvp.pref.AppPreference;
 import com.achmad.madeacademy.moviecataloguemvp.ui.discover.adapter.MovieAdapter;
 import com.achmad.madeacademy.moviecataloguemvp.utils.CommonUtils;
 
@@ -37,7 +36,6 @@ public class MovieFragment extends Fragment {
     private MovieAdapter.OnFragmentInteractionListener mListener;
     private MovieAdapter mAdapter;
     private MovieViewModel movieViewModel;
-    private AppPreference orderPreference;
     public MovieFragment() {
     }
 
@@ -60,36 +58,21 @@ public class MovieFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         rvMovies = Objects.requireNonNull(getActivity()).findViewById(R.id.rv_movies);
         CommonUtils.showLoading(getActivity());
-        orderPreference = new AppPreference(getActivity());
+        movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String sortOrder = preferences.getString("reply","popular_movies");
         if (sortOrder.equals("popular_movies")){
-            initMovie();
+            initPopular();
+        } else if (sortOrder.equals("top_rated")) {
+            initTopRated();
         }else {
-            CommonUtils.hideLoading();
-            setRvMovies();
-            mAdapter.notifyDataSetChanged();
-            Toast.makeText(getActivity(),"Gak jelas",Toast.LENGTH_SHORT).show();
+            initDb();
         }
-//        movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
-//        movieViewModel.init();
-//        movieViewModel.getMovieRepository().observe(getViewLifecycleOwner(), movieResponse -> {
-//            CommonUtils.hideLoading();
-//            try {
-//                movieResult.addAll(movieResponse.getResults());
-//            } catch (Exception e) {
-//                Log.d("Exception", e.getMessage());
-//            }
-//
-//            setRvMovies();
-//            mAdapter.notifyDataSetChanged();
-//        });
 
     }
 
-    private void initMovie(){
-        movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
-        movieViewModel.init();
+    private void initPopular() {
+        movieViewModel.initPopular();
         movieViewModel.getMovieRepository().observe(getViewLifecycleOwner(), movieResponse -> {
             CommonUtils.hideLoading();
             try {
@@ -97,11 +80,32 @@ public class MovieFragment extends Fragment {
             } catch (Exception e) {
                 Log.d("Exception", Objects.requireNonNull(e.getMessage()));
             }
-
             setRvMovies();
             mAdapter.notifyDataSetChanged();
         });
     }
+
+    private void initTopRated() {
+        movieViewModel.initTopRated();
+        movieViewModel.getMovieRepository().observe(getViewLifecycleOwner(), movieResponse -> {
+            CommonUtils.hideLoading();
+            try {
+                movieResult.addAll(movieResponse.getResults());
+            } catch (Exception e) {
+                Log.d("Exception", Objects.requireNonNull(e.getMessage()));
+            }
+            setRvMovies();
+            mAdapter.notifyDataSetChanged();
+        });
+    }
+
+    private void initDb() {
+        CommonUtils.hideLoading();
+        setRvMovies();
+        mAdapter.notifyDataSetChanged();
+        Toast.makeText(getActivity(), "Gak jelas", Toast.LENGTH_SHORT).show();
+    }
+
 
     public static MovieFragment newInstance() {
         return new MovieFragment();
