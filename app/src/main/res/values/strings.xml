@@ -17,7 +17,7 @@
     <string name="Action_sort">Sort by</string>
     <string name="sort_popular">Popularity</string>
     <string name="sort_rate">Rating</string>
-    <string name="sort_now_playing">Now Playing</string>
+    <string name="sort_favorite">Your Favorite</string>
     <string name="menu_setting_language">Setting Language</string>
     <string name="btn_favorite">favorite</string>
     <string name="label_user_score">User Score</string>
@@ -26,7 +26,7 @@
     <string name="lbl_overview">Overview</string>
     <string name="tablayout_movie">Movies</string>
     <string name="tablayout_tvshow">Tv Show</string>
-    <string name="label_btn_empty_connection">No Internet Connection</string>
+    <string name="label_btn_empty_connection">No Data Found</string>
     <string name="menu_sort_order">Sort type</string>
     <string name="title_activity_settings">Settings</string>
 

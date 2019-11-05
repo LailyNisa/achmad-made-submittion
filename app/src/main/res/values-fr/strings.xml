@@ -18,7 +18,7 @@
     <string name="Action_sort">Trier par</string>
     <string name="sort_popular">Popularité</string>
     <string name="sort_rate">évaluation</string>
-    <string name="sort_now_playing">Lecture en cours</string>
+    <string name="sort_favorite">Votre favori</string>
     <string name="menu_setting_language">Réglage de la langue</string>
     <string name="btn_favorite">favorite</string>
     <string name="label_user_score">Score utilisateur</string>
@@ -27,7 +27,7 @@
     <string name="lbl_overview">Vue d ensemble</string>
     <string name="tablayout_movie">Films</string>
     <string name="tablayout_tvshow">Emission de télévision</string>
-    <string name="label_btn_empty_connection">Pas de connexion Internet</string>
+    <string name="label_btn_empty_connection">Aucune donnée disponible</string>
     <string name="menu_sort_order">Type de tri</string>
     <string name="title_activity_settings">Paramètres</string>
     <string name="reply_title">Trier par</string>

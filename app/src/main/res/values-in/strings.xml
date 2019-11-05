@@ -17,7 +17,7 @@
     <string name="Action_sort">Sort dengan</string>
     <string name="sort_popular">Popularitas</string>
     <string name="sort_rate">Rating</string>
-    <string name="sort_now_playing">Tayang hari ini</string>
+    <string name="sort_favorite">Kesukaan anda</string>
     <string name="menu_setting_language">Pengaturan Bahasa</string>
     <string name="btn_favorite">favorite</string>
     <string name="label_user_score">Skor Pengguna</string>
@@ -26,7 +26,7 @@
     <string name="lbl_overview">Gambaran</string>
     <string name="tablayout_movie">Film</string>
     <string name="tablayout_tvshow">Acara Tv</string>
-    <string name="label_btn_empty_connection">Tidak ada koneksi internet</string>
+    <string name="label_btn_empty_connection">Tidak ada data ditemukan</string>
     <string name="menu_sort_order">Jenis sortir</string>
     <string name="title_activity_settings">Pengaturan</string>
     <string name="reply_title">Sortir dengan</string>
