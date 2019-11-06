@@ -32,4 +32,6 @@
     <string name="title_activity_settings">Paramètres</string>
     <string name="reply_title">Trier par</string>
     <string name="messages_header">Court métrage / émission de télévision</string>
+    <string name="error_401">Clé d\'API invalide: une clé valide doit vous être accordée.</string>
+    <string name="error_404">La ressource que vous avez demandée est introuvable.</string>
 </resources>

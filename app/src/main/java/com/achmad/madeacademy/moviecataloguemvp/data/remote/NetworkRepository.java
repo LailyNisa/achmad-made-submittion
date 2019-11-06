@@ -28,7 +28,7 @@ public class NetworkRepository {
     private LiveData<List<Result>> mAllMovie;
     private MutableLiveData<List<Result>> mutableLiveDataMovie = new MutableLiveData<>();
     private LiveData<List<com.achmad.madeacademy.moviecataloguemvp.data.remote.model.tvshow.Result>> mAllTvShow;
-
+    private MutableLiveData<Integer> codeError = new MutableLiveData<>();
 
 //    public static NetworkRepository getInstance() {
 //        if (networkRepository == null) {
@@ -53,6 +53,8 @@ public class NetworkRepository {
             public void onResponse(Call<Movie> call, Response<Movie> response) {
                 if (response.isSuccessful()) {
                     movieData.setValue(response.body());
+                } else {
+                    codeError.setValue(response.code());
                 }
             }
 
@@ -62,6 +64,10 @@ public class NetworkRepository {
             }
         });
         return movieData;
+    }
+
+    public MutableLiveData<Integer> getErrorCode() {
+        return codeError;
     }
 
 

@@ -35,6 +35,8 @@
 
     <!-- Messages Preferences -->
     <string name="reply_title">Sort by</string>
-
+    <!-- API Error message -->
+    <string name="error_401">Invalid API key: You must be granted a valid key.</string>
+    <string name="error_404">The resource you requested could not be found.</string>
 
 </resources>

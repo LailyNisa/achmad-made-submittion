@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -67,8 +68,28 @@ public class MovieFragment extends Fragment {
         }else {
             initDb();
         }
-
+        movieViewModel.getCodeErro().observe(getViewLifecycleOwner(), integer -> {
+                    switch (integer) {
+                        case 401: {
+                            CommonUtils.hideLoading();
+                            Toast.makeText(getActivity(), getResources().getString(R.string.error_401), Toast.LENGTH_SHORT).show();
+                            break;
+                        }
+                        case 404: {
+                            CommonUtils.hideLoading();
+                            Toast.makeText(getActivity(), getResources().getString(R.string.error_404), Toast.LENGTH_SHORT).show();
+                            break;
+                        }
+                        default: {
+                            Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+        );
+        setRvMovies();
+        mAdapter.notifyDataSetChanged();
     }
+
 
     private void initPopular() {
         movieViewModel.initPopular();
@@ -79,6 +100,7 @@ public class MovieFragment extends Fragment {
             } catch (Exception e) {
                 Log.d("Exception", Objects.requireNonNull(e.getMessage()));
             }
+
             setRvMovies();
             mAdapter.notifyDataSetChanged();
         });
@@ -93,6 +115,7 @@ public class MovieFragment extends Fragment {
             } catch (Exception e) {
                 Log.d("Exception", Objects.requireNonNull(e.getMessage()));
             }
+
             setRvMovies();
             mAdapter.notifyDataSetChanged();
         });
@@ -110,6 +133,7 @@ public class MovieFragment extends Fragment {
             setRvMovies();
             mAdapter.notifyDataSetChanged();
         });
+
     }
 
 

@@ -31,4 +31,6 @@
     <string name="title_activity_settings">Pengaturan</string>
     <string name="reply_title">Sortir dengan</string>
     <string name="messages_header">Sortir film / acara TV</string>
+    <string name="error_401">API KEY tidak valid: Anda harus diberikan API KEY yang valid.</string>
+    <string name="error_404">Sumber daya yang Anda minta tidak dapat ditemukan.</string>
 </resources>
