@@ -10,6 +10,8 @@ import com.achmad.madeacademy.moviecataloguemvp.data.local.dao.MovieDao;
 import com.achmad.madeacademy.moviecataloguemvp.data.local.dao.TvShowDao;
 import com.achmad.madeacademy.moviecataloguemvp.data.remote.model.movie.Result;
 
+import static com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverContract.DISCOVER_DATABASE;
+
 @Database(entities = {Result.class, com.achmad.madeacademy.moviecataloguemvp.data.remote.model.tvshow.Result.class}, version = 1)
 public abstract class DiscoverDatabase extends RoomDatabase {
     private static volatile DiscoverDatabase INSTANCE;
@@ -19,7 +21,7 @@ public abstract class DiscoverDatabase extends RoomDatabase {
             synchronized (DiscoverDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            DiscoverDatabase.class, "discover_database")
+                            DiscoverDatabase.class, DISCOVER_DATABASE)
                             .build();
                 }
             }

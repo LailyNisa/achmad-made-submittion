@@ -15,7 +15,9 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity(tableName = "tvshow")
+import static com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverContract.TVSHOW_TABLE;
+
+@Entity(tableName = TVSHOW_TABLE)
 public class Result implements Parcelable {
 
     @SerializedName("original_name")

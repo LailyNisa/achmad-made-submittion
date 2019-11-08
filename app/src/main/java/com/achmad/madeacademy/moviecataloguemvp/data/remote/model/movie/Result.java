@@ -14,7 +14,9 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity(tableName = "movie")
+import static com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverContract.MOVIE_TABLE;
+
+@Entity(tableName = MOVIE_TABLE)
 public class Result implements Parcelable {
 
     @SerializedName("popularity")

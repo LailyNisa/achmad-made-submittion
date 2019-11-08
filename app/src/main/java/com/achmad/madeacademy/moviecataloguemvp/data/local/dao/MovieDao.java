@@ -1,5 +1,7 @@
 package com.achmad.madeacademy.moviecataloguemvp.data.local.dao;
 
+import android.database.Cursor;
+
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -22,8 +24,16 @@ public interface MovieDao {
     LiveData<List<com.achmad.madeacademy.moviecataloguemvp.data.remote.model.movie.Result>> getMovie(int movieId);
 
     @Transaction
+    @Query("SELECT * FROM movie WHERE movie.id= :movieId")
+    Cursor selectMovie(int movieId);
+
+    @Transaction
     @Query("SELECT * FROM movie")
     LiveData<List<com.achmad.madeacademy.moviecataloguemvp.data.remote.model.movie.Result>> getAllMovie();
+
+    @Transaction
+    @Query("SELECT * FROM movie")
+    Cursor getAllMovieCursor();
 
     @Query("DELETE FROM movie WHERE movie.id= :movieId ")
     void deleteId(int movieId);
