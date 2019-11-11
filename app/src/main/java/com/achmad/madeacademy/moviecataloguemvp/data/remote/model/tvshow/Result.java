@@ -63,7 +63,7 @@ public class Result implements Parcelable {
     @ColumnInfo(name = "id")
     @SerializedName("id")
     @Expose
-    private int id;
+    public int id;
 
     @ColumnInfo(name = "vote_average")
     @SerializedName("vote_average")

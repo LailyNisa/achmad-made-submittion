@@ -1,16 +1,19 @@
 package com.achmad.madeacademy.moviecataloguemvp.provider;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
 
 import androidx.room.Room;
 
+import com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverContract;
 import com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverDatabase;
-import com.achmad.madeacademy.moviecataloguemvp.data.local.dao.MovieDao;
-import com.achmad.madeacademy.moviecataloguemvp.data.local.dao.TvShowDao;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
@@ -34,49 +37,98 @@ public class MyContentProvider extends ContentProvider {
     }
 
     private DiscoverDatabase appDatabase;
-    private MovieDao movieDao;
-    private TvShowDao tvShowDao;
 
     public MyContentProvider() {
     }
 
     @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
+    public int delete(@NotNull Uri uri, String selection, String[] selectionArgs) {
         // Implement this to handle requests to delete one or more rows.
-        throw new UnsupportedOperationException("Not yet implemented");
+        final int count;
+        final Context context;
+        switch (sUriMatcher.match(uri)) {
+            case MOVIE:
+            case TVSHOW:
+                throw new IllegalArgumentException("Invalid URI, cannot update without ID" + uri);
+            case MOVIE_ID:
+                context = getContext();
+                if (context == null) {
+                    return 0;
+                }
+                count = appDatabase.movieDao().deleteId((int) ContentUris.parseId(uri));
+                context.getContentResolver().notifyChange(uri, null);
+                return count;
+            case TVSHOW_ID:
+                context = getContext();
+                if (context == null) {
+                    return 0;
+                }
+                count = appDatabase.tvShowDao().deleteId((int) ContentUris.parseId(uri));
+                context.getContentResolver().notifyChange(uri, null);
+                return count;
+            default:
+                throw new IllegalArgumentException("Unknown URI: " + uri);
+        }
     }
 
     @Override
-    public String getType(Uri uri) {
+    public String getType(@NotNull Uri uri) {
         // TODO: Implement this to handle requests for the MIME type of the data
         // at the given URI.
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override
-    public Uri insert(Uri uri, ContentValues values) {
-        // TODO: Implement this to handle requests to insert a new row.
-        throw new UnsupportedOperationException("Not yet implemented");
+    public Uri insert(@NotNull Uri uri, ContentValues values) {
+        final Context context;
+        final long id;
+        switch (sUriMatcher.match(uri)) {
+            case MOVIE:
+                context = getContext();
+                if (context == null) {
+                    return null;
+                }
+                id = appDatabase.movieDao().insertMovieProvider(DiscoverContract.movieFromContentValues(values));
+                context.getContentResolver().notifyChange(uri, null);
+                return ContentUris.withAppendedId(uri, id);
+            case MOVIE_ID:
+            case TVSHOW_ID:
+                throw new IllegalArgumentException("Invalid URI, cannot insert with ID: " + uri);
+            case TVSHOW:
+                context = getContext();
+                if (context == null) {
+                    return null;
+                }
+                id = appDatabase.tvShowDao().insertTvShowProvider(DiscoverContract.tvShowFromContentValues(values));
+                context.getContentResolver().notifyChange(uri, null);
+                return ContentUris.withAppendedId(uri, id);
+            default:
+                throw new IllegalArgumentException("Unknown URI: " + uri);
+        }
     }
 
     @Override
     public boolean onCreate() {
-        appDatabase = Room.databaseBuilder(getContext(), DiscoverDatabase.class, DISCOVER_DATABASE).build();
-        movieDao = appDatabase.movieDao();
-        tvShowDao = appDatabase.tvShowDao();
+        appDatabase = Room.databaseBuilder(Objects.requireNonNull(getContext()), DiscoverDatabase.class, DISCOVER_DATABASE).build();
         return true;
     }
 
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection,
+    public Cursor query(@NotNull Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
         Cursor cursor;
         switch (sUriMatcher.match(uri)) {
             case MOVIE:
-                cursor = movieDao.getAllMovieCursor();
+                cursor = appDatabase.movieDao().getAllMovieCursor();
                 break;
             case MOVIE_ID:
-                cursor = movieDao.selectMovie(Integer.parseInt(Objects.requireNonNull(uri.getLastPathSegment())));
+                cursor = appDatabase.movieDao().selectMovie(Integer.parseInt(Objects.requireNonNull(uri.getLastPathSegment())));
+                break;
+            case TVSHOW:
+                cursor = appDatabase.tvShowDao().getAllTvShowCursor();
+                break;
+            case TVSHOW_ID:
+                cursor = appDatabase.tvShowDao().selectTvhow(Integer.parseInt(Objects.requireNonNull(uri.getLastPathSegment())));
                 break;
             default:
                 cursor = null;

@@ -19,6 +19,9 @@ public interface MovieDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertMovie(Result movie);
 
+    @Insert
+    long insertMovieProvider(Result movie);
+
     @Transaction
     @Query("SELECT * FROM movie WHERE movie.id= :movieId")
     LiveData<List<com.achmad.madeacademy.moviecataloguemvp.data.remote.model.movie.Result>> getMovie(int movieId);
@@ -36,7 +39,7 @@ public interface MovieDao {
     Cursor getAllMovieCursor();
 
     @Query("DELETE FROM movie WHERE movie.id= :movieId ")
-    void deleteId(int movieId);
+    int deleteId(int movieId);
 
     @Delete
     void delete(Result movie);

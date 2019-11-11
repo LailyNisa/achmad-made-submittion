@@ -14,6 +14,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverContract.MOVIE_ID_COLUMN;
 import static com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverContract.MOVIE_TABLE;
 
 @Entity(tableName = MOVIE_TABLE)
@@ -35,10 +36,10 @@ public class Result implements Parcelable {
     private String posterPath;
 
     @PrimaryKey
-    @ColumnInfo(name = "id")
+    @ColumnInfo(name = MOVIE_ID_COLUMN)
     @SerializedName("id")
     @Expose
-    private int id;
+    public int id;
 
     @SerializedName("adult")
     @Expose
