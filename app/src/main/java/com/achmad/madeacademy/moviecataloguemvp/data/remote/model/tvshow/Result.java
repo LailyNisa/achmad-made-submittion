@@ -80,6 +80,21 @@ public class Result implements Parcelable {
     @Expose
     private String posterPath;
 
+    @Ignore
+    public Result(String originalName, String name, float popularity, int voteCount, String firstAirDate, String backdropPath, String originalLanguage, int id, float voteAverage, String overview, String posterPath) {
+        this.originalName = originalName;
+        this.name = name;
+        this.popularity = popularity;
+        this.voteCount = voteCount;
+        this.firstAirDate = firstAirDate;
+        this.backdropPath = backdropPath;
+        this.originalLanguage = originalLanguage;
+        this.id = id;
+        this.voteAverage = voteAverage;
+        this.overview = overview;
+        this.posterPath = posterPath;
+    }
+
     public String getOriginalName() {
         return originalName;
     }

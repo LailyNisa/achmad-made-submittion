@@ -25,7 +25,7 @@
             android:enabled="true"
             android:exported="true"
             android:readPermission="com.achmad.madeacademy.moviecataloguemvp.READ_DATABASE"
-            android:writePermission="com.achmad.madeacademy.moviecataloguemvp.WRITE_DATABASE"></provider>
+            android:writePermission="com.achmad.madeacademy.moviecataloguemvp.WRITE_DATABASE" />
 
         <activity
             android:name=".pref.SettingsActivity"

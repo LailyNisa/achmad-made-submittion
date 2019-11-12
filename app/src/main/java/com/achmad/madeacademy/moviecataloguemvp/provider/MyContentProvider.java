@@ -8,8 +8,6 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
 
-import androidx.room.Room;
-
 import com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverContract;
 import com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverDatabase;
 
@@ -18,7 +16,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 import static com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverContract.AUTHORITY;
-import static com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverContract.DISCOVER_DATABASE;
 import static com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverContract.MOVIE_TABLE;
 import static com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverContract.TVSHOW_TABLE;
 
@@ -37,9 +34,6 @@ public class MyContentProvider extends ContentProvider {
     }
 
     private DiscoverDatabase appDatabase;
-
-    public MyContentProvider() {
-    }
 
     @Override
     public int delete(@NotNull Uri uri, String selection, String[] selectionArgs) {
@@ -73,9 +67,7 @@ public class MyContentProvider extends ContentProvider {
 
     @Override
     public String getType(@NotNull Uri uri) {
-        // TODO: Implement this to handle requests for the MIME type of the data
-        // at the given URI.
-        throw new UnsupportedOperationException("Not yet implemented");
+        return null;
     }
 
     @Override
@@ -109,7 +101,8 @@ public class MyContentProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        appDatabase = Room.databaseBuilder(Objects.requireNonNull(getContext()), DiscoverDatabase.class, DISCOVER_DATABASE).build();
+//        appDatabase = Room.databaseBuilder(Objects.requireNonNull(getContext()), DiscoverDatabase.class, DISCOVER_DATABASE).build();
+        appDatabase = DiscoverDatabase.getDatabase(getContext());
         return true;
     }
 
@@ -131,17 +124,16 @@ public class MyContentProvider extends ContentProvider {
                 cursor = appDatabase.tvShowDao().selectTvhow(Integer.parseInt(Objects.requireNonNull(uri.getLastPathSegment())));
                 break;
             default:
-                cursor = null;
-                break;
+                throw new IllegalArgumentException("Unknown URI: " + uri);
         }
+//        Objects.requireNonNull(cursor).setNotificationUri(Objects.requireNonNull(context).getContentResolver(), uri);
         return cursor;
 
     }
 
     @Override
-    public int update(Uri uri, ContentValues values, String selection,
+    public int update(@NotNull Uri uri, ContentValues values, String selection,
                       String[] selectionArgs) {
-        // TODO: Implement this to handle requests to update one or more rows.
-        throw new UnsupportedOperationException("Not yet implemented");
+        return 0;
     }
 }

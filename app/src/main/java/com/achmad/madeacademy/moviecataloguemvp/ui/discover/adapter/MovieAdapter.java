@@ -17,6 +17,7 @@ import com.achmad.madeacademy.moviecataloguemvp.utils.BaseViewHolder;
 import com.bumptech.glide.Glide;
 import com.github.lzyzsd.circleprogress.DonutProgress;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.achmad.madeacademy.moviecataloguemvp.utils.Const.POSTER_PATH;
@@ -25,12 +26,16 @@ import static com.achmad.madeacademy.moviecataloguemvp.utils.Const.VIEW_TYPE_NOR
 
 public class MovieAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private final List<Result> mValues;
-
+    private final ArrayList<Result> mMovies = new ArrayList<>();
     private final OnFragmentInteractionListener mListener;
 
     public MovieAdapter(List<Result> mValues, OnFragmentInteractionListener mListener) {
         this.mValues = mValues;
         this.mListener = mListener;
+    }
+
+    public ArrayList<Result> getListMovies() {
+        return mMovies;
     }
 
     @Override

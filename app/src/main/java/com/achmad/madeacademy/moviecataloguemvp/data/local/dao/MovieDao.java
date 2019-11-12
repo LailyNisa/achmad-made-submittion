@@ -34,7 +34,6 @@ public interface MovieDao {
     @Query("SELECT * FROM movie")
     LiveData<List<com.achmad.madeacademy.moviecataloguemvp.data.remote.model.movie.Result>> getAllMovie();
 
-    @Transaction
     @Query("SELECT * FROM movie")
     Cursor getAllMovieCursor();
 

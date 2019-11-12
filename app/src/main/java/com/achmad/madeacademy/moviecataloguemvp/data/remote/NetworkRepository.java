@@ -1,21 +1,29 @@
 package com.achmad.madeacademy.moviecataloguemvp.data.remote;
 
 import android.app.Application;
+import android.content.Context;
+import android.database.Cursor;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverContract;
 import com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverDatabase;
 import com.achmad.madeacademy.moviecataloguemvp.data.local.dao.MovieDao;
 import com.achmad.madeacademy.moviecataloguemvp.data.local.dao.TvShowDao;
 import com.achmad.madeacademy.moviecataloguemvp.data.remote.model.movie.Movie;
 import com.achmad.madeacademy.moviecataloguemvp.data.remote.model.movie.Result;
 import com.achmad.madeacademy.moviecataloguemvp.data.remote.model.tvshow.TvShow;
+import com.achmad.madeacademy.moviecataloguemvp.ui.discover.LoadMovieCallBack;
+import com.achmad.madeacademy.moviecataloguemvp.utils.MappingHelper;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,14 +37,6 @@ public class NetworkRepository {
     private MutableLiveData<List<Result>> mutableLiveDataMovie = new MutableLiveData<>();
     private LiveData<List<com.achmad.madeacademy.moviecataloguemvp.data.remote.model.tvshow.Result>> mAllTvShow;
     private MutableLiveData<Integer> codeError = new MutableLiveData<>();
-
-//    public static NetworkRepository getInstance() {
-//        if (networkRepository == null) {
-//            networkRepository = new NetworkRepository();
-//        }
-//        return networkRepository;
-//    }
-
     private ApiService movieApi;
 
     public NetworkRepository(Application application) {
@@ -44,6 +44,10 @@ public class NetworkRepository {
         DiscoverDatabase db = DiscoverDatabase.getDatabase(application);
         movieDao = db.movieDao();
         tvShowDao = db.tvShowDao();
+    }
+
+    public MutableLiveData<Integer> getErrorCode() {
+        return codeError;
     }
 
     public MutableLiveData<Movie> getMovie(String sort) {
@@ -65,11 +69,6 @@ public class NetworkRepository {
         });
         return movieData;
     }
-
-    public MutableLiveData<Integer> getErrorCode() {
-        return codeError;
-    }
-
 
     public MutableLiveData<TvShow> getTvShow(String sort) {
         final MutableLiveData<TvShow> tvShowMutableLiveData = new MutableLiveData<>();
@@ -126,6 +125,34 @@ public class NetworkRepository {
         new deleteAsyncTaskTvShow(tvShowDao).execute(tvShow);
     }
 
+    public static class LoadMovieAsyncTask extends AsyncTask<Void, Void, ArrayList<Result>> {
+        private final WeakReference<Context> weakContext;
+        private final WeakReference<LoadMovieCallBack> weakCallBack;
+
+        public LoadMovieAsyncTask(Context context, LoadMovieCallBack callBack) {
+            weakContext = new WeakReference<>(context);
+            weakCallBack = new WeakReference<>(callBack);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            weakCallBack.get().preExecute();
+        }
+
+        @Override
+        protected ArrayList<Result> doInBackground(Void... voids) {
+            Context context = weakContext.get();
+            Cursor dataCursor = context.getContentResolver().query(DiscoverContract.MOVIE_URI, null, null, null, null);
+            return MappingHelper.mapCursorToAlMovie(Objects.requireNonNull(dataCursor));
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Result> results) {
+            super.onPostExecute(results);
+            weakCallBack.get().postExecute(results);
+        }
+    }
     private static class insertAsyncTaskMovie extends AsyncTask<Result, Void, Void> {
         private MovieDao movieAsyncDao;
 
@@ -183,4 +210,6 @@ public class NetworkRepository {
     }
 
 }
+
+
 
