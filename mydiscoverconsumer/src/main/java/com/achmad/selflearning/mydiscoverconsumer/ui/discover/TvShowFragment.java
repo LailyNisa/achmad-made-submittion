@@ -2,7 +2,6 @@ package com.achmad.selflearning.mydiscoverconsumer.ui.discover;
 
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -63,42 +61,7 @@ public class TvShowFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         tvShowViewModel = new ViewModelProvider(this).get(TvShowViewModel.class);
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Objects.requireNonNull(getActivity()));
-        String sortOrder = preferences.getString("reply", "popular_movies");
-        if (sortOrder.equals("popular_movies")) {
-            initPopular();
-        } else if (sortOrder.equals("top_rated")) {
-            initTopRated();
-        } else {
-            initDb();
-        }
-
-    }
-
-    private void initPopular() {
-        tvShowViewModel.initPopular();
-        tvShowViewModel.getTvShowRepository().observe(getViewLifecycleOwner(), movieResponse -> {
-            try {
-                tvShowList.addAll(movieResponse.getResults());
-            } catch (Exception e) {
-                Log.d("Exception", Objects.requireNonNull(e.getMessage()));
-            }
-            setRvMovies();
-            mAdapter.notifyDataSetChanged();
-        });
-    }
-
-    private void initTopRated() {
-        tvShowViewModel.initTopRated();
-        tvShowViewModel.getTvShowRepository().observe(getViewLifecycleOwner(), movieResponse -> {
-            try {
-                tvShowList.addAll(movieResponse.getResults());
-            } catch (Exception e) {
-                Log.d("Exception", Objects.requireNonNull(e.getMessage()));
-            }
-            setRvMovies();
-            mAdapter.notifyDataSetChanged();
-        });
+        initDb();
     }
 
     private void initDb() {

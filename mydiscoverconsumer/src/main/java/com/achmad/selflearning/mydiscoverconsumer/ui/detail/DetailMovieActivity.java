@@ -36,7 +36,7 @@ public class DetailMovieActivity extends AppCompatActivity {
     ImageButton imgButton;
     CollapsingToolbarLayout collapsingToolbarLayout;
     Result movie;
-    com.achmad.madeacademy.moviecataloguemvp.data.remote.model.tvshow.Result tvshow;
+    com.achmad.selflearning.mydiscoverconsumer.data.remote.model.tvshow.Result tvshow;
     private DiscoverDetailViewModel mViewModel;
 
     @Override
@@ -45,7 +45,7 @@ public class DetailMovieActivity extends AppCompatActivity {
         setTheme(R.style.BaseTheme);
         setContentView(R.layout.activity_detail_constraint);
         movie = new Result();
-        tvshow = new com.achmad.madeacademy.moviecataloguemvp.data.remote.model.tvshow.Result();
+        tvshow = new com.achmad.selflearning.mydiscoverconsumer.data.remote.model.tvshow.Result();
         movie = getIntent().getParcelableExtra(EXTRA_OBJECT);
         tvshow = getIntent().getParcelableExtra(EXTRA_OBJECT_TVSHOW);
         mViewModel = new ViewModelProvider(this).get(DiscoverDetailViewModel.class);
@@ -117,7 +117,7 @@ public class DetailMovieActivity extends AppCompatActivity {
 
     }
 
-    private void bindTvShow(com.achmad.madeacademy.moviecataloguemvp.data.remote.model.tvshow.Result tvShow) {
+    private void bindTvShow(com.achmad.selflearning.mydiscoverconsumer.data.remote.model.tvshow.Result tvShow) {
         tvTitle.setText(tvShow.getName());
         tvRelease.setText(tvShow.getFirstAirDate());
         dntProgressDetail.setProgress((Math.round(tvShow.getVoteAverage() * 100)) / 10);

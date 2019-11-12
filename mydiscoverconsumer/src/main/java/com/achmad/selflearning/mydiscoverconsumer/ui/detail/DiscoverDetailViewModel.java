@@ -16,8 +16,9 @@ import java.util.List;
 public class DiscoverDetailViewModel extends AndroidViewModel {
     private NetworkRepository mRepository;
     private LiveData<List<Result>> mAllMovie;
-    private LiveData<List<com.achmad.madeacademy.moviecataloguemvp.data.remote.model.tvshow.Result>> mAllTvShow;
+    private LiveData<List<com.achmad.selflearning.mydiscoverconsumer.data.remote.model.tvshow.Result>> mAllTvShow;
     private MutableLiveData<Integer> idLiveData = new MutableLiveData<>();
+
     private boolean isFavorite;
 
     public DiscoverDetailViewModel(@NonNull Application application) {
@@ -51,7 +52,7 @@ public class DiscoverDetailViewModel extends AndroidViewModel {
         mRepository.insertMovie(movie);
     }
 
-    public void insertTvShow(com.achmad.madeacademy.moviecataloguemvp.data.remote.model.tvshow.Result tvshow) {
+    public void insertTvShow(com.achmad.selflearning.mydiscoverconsumer.data.remote.model.tvshow.Result tvshow) {
         mRepository.insertTvShow(tvshow);
     }
 
@@ -59,7 +60,7 @@ public class DiscoverDetailViewModel extends AndroidViewModel {
         return mAllMovie;
     }
 
-    LiveData<List<com.achmad.madeacademy.moviecataloguemvp.data.remote.model.tvshow.Result>> getTvShowRepository() {
+    LiveData<List<com.achmad.selflearning.mydiscoverconsumer.data.remote.model.tvshow.Result>> getTvShowRepository() {
         return mAllTvShow;
     }
 
@@ -79,7 +80,7 @@ public class DiscoverDetailViewModel extends AndroidViewModel {
         mRepository.deleteDbMovie(movie);
     }
 
-    public void deleteTvshow(com.achmad.madeacademy.moviecataloguemvp.data.remote.model.tvshow.Result tvshow) {
+    public void deleteTvshow(com.achmad.selflearning.mydiscoverconsumer.data.remote.model.tvshow.Result tvshow) {
         mRepository.deleteDbTvShow(tvshow);
     }
 }
