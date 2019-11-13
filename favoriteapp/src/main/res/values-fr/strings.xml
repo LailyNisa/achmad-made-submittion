@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MovieCatalogueMvp</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tv_movie">Ini movie</string>
+    <string name="value_tv_judul">Lion King</string>
+    <string name="value_tv_releasedate">July 19, 2019</string>
+    <string name="value_overview">Simba idolises his father, King Mufasa, and takes to heart his own royal destiny. But not everyone in the kingdom celebrates the new cub\'s arrival. Scar, Mufasa\'s brother—and former heir to the throne—has plans…</string>
+    <string name="value_more_info">Plus d informations</string>
+    <string name="value_count_photos">6 Photos</string>
+    <string name="value_releasedate">19 August 2019</string>
+    <string name="value_btn">Regarder maintenant</string>
+    <string name="field_penggalang">Acteur vedette</string>
+    <string name="value_judul">Simba</string>
+    <string name="value_name">John Maer</string>
+    <string name="cds_img_poster">Movie Poster</string>
+    <string name="Action_sort">Trier par</string>
+    <string name="sort_popular">Popularité</string>
+    <string name="sort_rate">évaluation</string>
+    <string name="sort_favorite">Votre favori</string>
+    <string name="menu_setting_language">Réglage de la langue</string>
+    <string name="btn_favorite">favorite</string>
+    <string name="label_user_score">Score utilisateur</string>
+    <string name="tt_btn_favorite_detail">Marquer comme favori</string>
+    <string name="cd_backdrop_movie">Backdrop Movie</string>
+    <string name="lbl_overview">Vue d ensemble</string>
+    <string name="tablayout_movie">Films</string>
+    <string name="tablayout_tvshow">Emission de télévision</string>
+    <string name="label_btn_empty_connection">Aucune donnée disponible</string>
+    <string name="menu_sort_order">Type de tri</string>
+    <string name="title_activity_settings">Paramètres</string>
+    <string name="reply_title">Trier par</string>
+    <string name="messages_header">Court métrage / émission de télévision</string>
+    <string name="error_401">Clé d\'API invalide: une clé valide doit vous être accordée.</string>
+    <string name="error_404">La ressource que vous avez demandée est introuvable.</string>
+</resources>

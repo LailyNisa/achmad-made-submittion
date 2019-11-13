@@ -228,19 +228,19 @@ public class MovieFragment extends Fragment {
     }
 
     private void initDb() {
-//        movieViewModel.initDb();
-//        movieViewModel.getMovieDb().observe(getViewLifecycleOwner(), movieResponse -> {
-//            CommonUtils.hideLoading();
-//            try {
-//                movieResult.addAll(movieResponse);
-//            } catch (Exception e) {
-//                Log.d("Exception", Objects.requireNonNull(e.getMessage()));
-//            }
-//            setRvMovies();
-//            mAdapter.notifyDataSetChanged();
-//        });
+        movieViewModel.initDb();
+        movieViewModel.getMovieDb().observe(getViewLifecycleOwner(), movieResponse -> {
+            CommonUtils.hideLoading();
+            try {
+                movieResult.addAll(movieResponse);
+            } catch (Exception e) {
+                Log.d("Exception", Objects.requireNonNull(e.getMessage()));
+            }
+            setRvMovies();
+            mAdapter.notifyDataSetChanged();
+        });
 //        getSupportLoaderManager().initLoader(LOADER_CHEESES, null, mLoaderCallbacks);
-        getActivity().getSupportLoaderManager().initLoader(MOVIE, null, mLoaderCallback);
+//        getActivity().getSupportLoaderManager().initLoader(MOVIE, null, mLoaderCallback);
     }
 
 }

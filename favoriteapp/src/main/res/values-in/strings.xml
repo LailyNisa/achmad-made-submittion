@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">MovieCatalogueMvp</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tv_movie">Ini movie</string>
+    <string name="value_tv_judul">Lion King</string>
+    <string name="value_tv_releasedate">July 19, 2019</string>
+    <string name="value_overview">Simba idolises his father, King Mufasa, and takes to heart his own royal destiny. But not everyone in the kingdom celebrates the new cub\'s arrival. Scar, Mufasa\'s brother—and former heir to the throne—has plans…</string>
+    <string name="value_more_info">Info lebih lanjut</string>
+    <string name="value_count_photos">6 Photos</string>
+    <string name="value_releasedate">19 August 2019</string>
+    <string name="value_btn">Tonton Sekarang</string>
+    <string name="field_penggalang">Aktor Unggulan</string>
+    <string name="value_judul">Simba</string>
+    <string name="value_name">John Maer</string>
+    <string name="cds_img_poster">Movie Poster</string>
+    <string name="Action_sort">Sort dengan</string>
+    <string name="sort_popular">Popularitas</string>
+    <string name="sort_rate">Rating</string>
+    <string name="sort_favorite">Kesukaan anda</string>
+    <string name="menu_setting_language">Pengaturan Bahasa</string>
+    <string name="btn_favorite">favorite</string>
+    <string name="label_user_score">Skor Pengguna</string>
+    <string name="tt_btn_favorite_detail">Tandai sebagai Favorit</string>
+    <string name="cd_backdrop_movie">Backdrop Movie</string>
+    <string name="lbl_overview">Gambaran</string>
+    <string name="tablayout_movie">Film</string>
+    <string name="tablayout_tvshow">Acara Tv</string>
+    <string name="label_btn_empty_connection">Tidak ada data ditemukan</string>
+    <string name="menu_sort_order">Jenis sortir</string>
+    <string name="title_activity_settings">Pengaturan</string>
+    <string name="reply_title">Sortir dengan</string>
+    <string name="messages_header">Sortir film / acara TV</string>
+    <string name="error_401">API KEY tidak valid: Anda harus diberikan API KEY yang valid.</string>
+    <string name="error_404">Sumber daya yang Anda minta tidak dapat ditemukan.</string>
+</resources>
