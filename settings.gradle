@@ -1,2 +1,2 @@
-include ':app', ':mydiscoverconsumer'
+include ':app'
 rootProject.name='MovieCatalogueMvp'
