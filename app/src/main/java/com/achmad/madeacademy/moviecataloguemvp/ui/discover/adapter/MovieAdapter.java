@@ -34,8 +34,8 @@ public class MovieAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         this.mListener = mListener;
     }
 
-    public ArrayList<Result> getListMovies() {
-        return mMovies;
+    public List<Result> getListMovies() {
+        return mValues;
     }
 
     @Override

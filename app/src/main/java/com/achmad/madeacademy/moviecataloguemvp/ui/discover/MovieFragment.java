@@ -3,10 +3,9 @@ package com.achmad.madeacademy.moviecataloguemvp.ui.discover;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.database.ContentObserver;
+import android.database.Cursor;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.HandlerThread;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,16 +16,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.achmad.madeacademy.moviecataloguemvp.R;
 import com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverContract;
-import com.achmad.madeacademy.moviecataloguemvp.data.remote.NetworkRepository;
 import com.achmad.madeacademy.moviecataloguemvp.data.remote.model.movie.Result;
 import com.achmad.madeacademy.moviecataloguemvp.ui.discover.adapter.MovieAdapter;
 import com.achmad.madeacademy.moviecataloguemvp.utils.CommonUtils;
+import com.achmad.madeacademy.moviecataloguemvp.utils.MappingHelper;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -36,13 +38,15 @@ import java.util.Objects;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MovieFragment extends Fragment implements LoadMovieCallBack {
+public class MovieFragment extends Fragment {
     private RecyclerView rvMovies;
     private ArrayList<Result> movieResult = new ArrayList<>();
     private MovieAdapter.OnFragmentInteractionListener mListener;
     private MovieAdapter mAdapter;
     private MovieViewModel movieViewModel;
     private static final String EXTRA_STATE = "EXTRA_STATE";
+    private static final int MOVIE = 1;
+
     public MovieFragment() {
     }
 
@@ -60,11 +64,51 @@ public class MovieFragment extends Fragment implements LoadMovieCallBack {
         return view;
     }
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(EXTRA_STATE, mAdapter.getListMovies());
-    }
+    private LoaderManager.LoaderCallbacks<Cursor> mLoaderCallback = new LoaderManager.LoaderCallbacks<Cursor>() {
+        final String[] MOVIE_SUMMARY_PROJECTION = new String[]{
+                DiscoverContract.MovieColumns.ID,
+                DiscoverContract.MovieColumns.ADULT,
+                DiscoverContract.MovieColumns.BACKDROP_PATH,
+                DiscoverContract.MovieColumns.ORIGINAL_LANGUAGE,
+                DiscoverContract.MovieColumns.ORIGINAL_TITLE,
+                DiscoverContract.MovieColumns.OVERVIEW,
+                DiscoverContract.MovieColumns.POPULARITY,
+                DiscoverContract.MovieColumns.POSTER_PATH,
+                DiscoverContract.MovieColumns.RELEASE_DATE,
+                DiscoverContract.MovieColumns.TITLE,
+                DiscoverContract.MovieColumns.VIDEO,
+                DiscoverContract.MovieColumns.VOTE_AVERAGE,
+                DiscoverContract.MovieColumns.VOTE_COUNT,
+        };
+
+        @NonNull
+        @Override
+        public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
+            if (id == MOVIE) {
+                return new CursorLoader(getActivity(), DiscoverContract.MOVIE_URI
+                        , MOVIE_SUMMARY_PROJECTION, null, null, null);
+            }
+            throw new IllegalArgumentException();
+        }
+
+        @Override
+        public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
+            if (loader.getId() == MOVIE) {
+                movieResult.addAll(MappingHelper.mapCursorToAlMovie(data));
+                setRvMovies();
+                mAdapter.notifyDataSetChanged();
+            }
+        }
+
+        @Override
+        public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+            if (loader.getId() == MOVIE) {
+                movieResult.clear();
+                setRvMovies();
+                mAdapter.notifyDataSetChanged();
+            }
+        }
+    };
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -79,11 +123,6 @@ public class MovieFragment extends Fragment implements LoadMovieCallBack {
         } else if (sortOrder.equals("top_rated")) {
             initTopRated();
         }else {
-            HandlerThread handlerThread = new HandlerThread("DataObserver");
-            handlerThread.start();
-            Handler handler = new Handler(handlerThread.getLooper());
-            DataObserver myObserver = new DataObserver(handler, getActivity());
-            getActivity().getContentResolver().registerContentObserver(DiscoverContract.MOVIE_URI, true, myObserver);
             if (savedInstanceState == null) {
                 initDb();
                 Log.d("savedInstance", "Ada");
@@ -152,19 +191,10 @@ public class MovieFragment extends Fragment implements LoadMovieCallBack {
         });
     }
 
-    private void initDb() {
-//        movieViewModel.initDb();
-//        movieViewModel.getMovieDb().observe(getViewLifecycleOwner(), movieResponse -> {
-//            CommonUtils.hideLoading();
-//            try {
-//                movieResult.addAll(movieResponse);
-//            } catch (Exception e) {
-//                Log.d("Exception", Objects.requireNonNull(e.getMessage()));
-//            }
-//            setRvMovies();
-//            mAdapter.notifyDataSetChanged();
-//        });
-        new NetworkRepository.LoadMovieAsyncTask(getActivity(), this);
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(EXTRA_STATE, (ArrayList<? extends Parcelable>) mAdapter.getListMovies());
     }
 
 
@@ -197,37 +227,20 @@ public class MovieFragment extends Fragment implements LoadMovieCallBack {
         }
     }
 
-    @Override
-    public void preExecute() {
-        Objects.requireNonNull(getActivity()).runOnUiThread(() -> CommonUtils.showLoading(getActivity()));
+    private void initDb() {
+//        movieViewModel.initDb();
+//        movieViewModel.getMovieDb().observe(getViewLifecycleOwner(), movieResponse -> {
+//            CommonUtils.hideLoading();
+//            try {
+//                movieResult.addAll(movieResponse);
+//            } catch (Exception e) {
+//                Log.d("Exception", Objects.requireNonNull(e.getMessage()));
+//            }
+//            setRvMovies();
+//            mAdapter.notifyDataSetChanged();
+//        });
+//        getSupportLoaderManager().initLoader(LOADER_CHEESES, null, mLoaderCallbacks);
+        getActivity().getSupportLoaderManager().initLoader(MOVIE, null, mLoaderCallback);
     }
 
-    @Override
-    public void postExecute(ArrayList<Result> movie) {
-        CommonUtils.hideLoading();
-        movieResult.addAll(movie);
-        mAdapter = new MovieAdapter(movieResult, mListener);
-        rvMovies.setLayoutManager(new LinearLayoutManager(getActivity()));
-        rvMovies.setAdapter(mAdapter);
-        mAdapter.notifyDataSetChanged();
-    }
-
-    public static class DataObserver extends ContentObserver {
-        final Context context;
-
-        public DataObserver(Handler handler, Context context) {
-            super(handler);
-            this.context = context;
-        }
-
-        @Override
-        public void onChange(boolean selfChange) {
-            super.onChange(selfChange);
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-            String sortOrder = preferences.getString("reply", "from_db");
-            if (sortOrder.equals("from_db")) {
-                new NetworkRepository.LoadMovieAsyncTask(context, (LoadMovieCallBack) context).execute();
-            }
-        }
-    }
 }

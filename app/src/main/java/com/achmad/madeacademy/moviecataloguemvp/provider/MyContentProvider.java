@@ -13,10 +13,8 @@ import com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverDatabase;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
-
 import static com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverContract.AUTHORITY;
-import static com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverContract.MOVIE_TABLE;
+import static com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverContract.MovieColumns.MOVIE_TABLE;
 import static com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverContract.TVSHOW_TABLE;
 
 public class MyContentProvider extends ContentProvider {
@@ -103,32 +101,49 @@ public class MyContentProvider extends ContentProvider {
     public boolean onCreate() {
 //        appDatabase = Room.databaseBuilder(Objects.requireNonNull(getContext()), DiscoverDatabase.class, DISCOVER_DATABASE).build();
         appDatabase = DiscoverDatabase.getDatabase(getContext());
+        appDatabase.getOpenHelper().getWritableDatabase();
         return true;
     }
 
     @Override
     public Cursor query(@NotNull Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
-        Cursor cursor;
-        switch (sUriMatcher.match(uri)) {
-            case MOVIE:
+//        Cursor cursor;
+//        switch (sUriMatcher.match(uri)) {
+//            case MOVIE:
+//                cursor = appDatabase.movieDao().getAllMovieCursor();
+//                break;
+//            case MOVIE_ID:
+//                cursor = appDatabase.movieDao().selectMovie(Integer.parseInt(Objects.requireNonNull(uri.getLastPathSegment())));
+//                break;
+//            case TVSHOW:
+//                cursor = appDatabase.tvShowDao().getAllTvShowCursor();
+//                break;
+//            case TVSHOW_ID:
+//                cursor = appDatabase.tvShowDao().selectTvhow(Integer.parseInt(Objects.requireNonNull(uri.getLastPathSegment())));
+//                break;
+//            default:
+//                throw new IllegalArgumentException("Unknown URI: " + uri);
+//        }
+        final int code = sUriMatcher.match(uri);
+        if (code == MOVIE || code == MOVIE_ID) {
+            final Context context = getContext();
+            if (context == null) {
+                return null;
+            }
+//            MenuDao menu = SampleDatabase.getInstance(context).menu();
+            final Cursor cursor;
+            if (code == MOVIE) {
                 cursor = appDatabase.movieDao().getAllMovieCursor();
-                break;
-            case MOVIE_ID:
-                cursor = appDatabase.movieDao().selectMovie(Integer.parseInt(Objects.requireNonNull(uri.getLastPathSegment())));
-                break;
-            case TVSHOW:
-                cursor = appDatabase.tvShowDao().getAllTvShowCursor();
-                break;
-            case TVSHOW_ID:
-                cursor = appDatabase.tvShowDao().selectTvhow(Integer.parseInt(Objects.requireNonNull(uri.getLastPathSegment())));
-                break;
-            default:
-                throw new IllegalArgumentException("Unknown URI: " + uri);
+            } else {
+                cursor = appDatabase.movieDao().selectMovie((int) ContentUris.parseId(uri));
+            }
+            cursor.setNotificationUri(context.getContentResolver(), uri);
+            return cursor;
+        } else {
+            throw new IllegalArgumentException("Unknown URI: " + uri);
         }
 //        Objects.requireNonNull(cursor).setNotificationUri(Objects.requireNonNull(context).getContentResolver(), uri);
-        return cursor;
-
     }
 
     @Override

@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverContract.MOVIE_ID_COLUMN;
-import static com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverContract.MOVIE_TABLE;
+import static com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverContract.MovieColumns.MOVIE_TABLE;
 
 @Entity(tableName = MOVIE_TABLE)
 public class Result implements Parcelable {
