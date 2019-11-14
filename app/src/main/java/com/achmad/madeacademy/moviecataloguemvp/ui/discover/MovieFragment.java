@@ -123,20 +123,7 @@ public class MovieFragment extends Fragment {
         } else if (sortOrder.equals("top_rated")) {
             initTopRated();
         }else {
-            if (savedInstanceState == null) {
-                initDb();
-                Log.d("savedInstance", "Ada");
-            } else {
-                Log.d("savedInstance", "Tidak Ada");
-                ArrayList<Result> list = savedInstanceState.getParcelableArrayList(EXTRA_STATE);
-                if (list != null) {
-                    mAdapter = new MovieAdapter(list, mListener);
-                    rvMovies.setLayoutManager(new LinearLayoutManager(getActivity()));
-                    rvMovies.setAdapter(mAdapter);
-                    mAdapter.notifyDataSetChanged();
-                }
-            }
-//            initDb();
+            initDb();
         }
         movieViewModel.getCodeErro().observe(getViewLifecycleOwner(), integer -> {
                     switch (integer) {

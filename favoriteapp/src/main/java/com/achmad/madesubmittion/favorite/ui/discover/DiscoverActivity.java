@@ -62,6 +62,14 @@ public class DiscoverActivity extends AppCompatActivity implements MovieAdapter.
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        Intent i = new Intent(this, DiscoverActivity.class);
+        finish();
+        startActivity(i);
+    }
+
+    @Override
     public void onFragmentInteraction(Result movie) {
         movie.setId(movie.getId());
         movie.setTitle(movie.getTitle());

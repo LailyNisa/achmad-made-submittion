@@ -14,19 +14,24 @@ import java.util.List;
 
 public class MovieViewModel extends AndroidViewModel {
     private MutableLiveData<Movie> mutableLiveData;
-    private MutableLiveData<Result> mutableLiveDataMovie;
+    private MutableLiveData<List<Result>> mutableLiveDataMovie = new MutableLiveData<>();
     private LiveData<List<Result>> mutableMovieData;
     private LiveData<Integer> mutableErrorCode;
 
     public MovieViewModel(@NonNull Application application) {
         super(application);
+        mutableMovieData = new MovieFragment().getMovieBack();
     }
 
     LiveData<Movie> getMovieRepository() {
         return mutableLiveData;
     }
 
+    public void setMutableLiveDataMovie(List<Result> movie) {
+        mutableLiveDataMovie.setValue(movie);
+    }
+
     LiveData<List<Result>> getMovieDb() {
-        return mutableMovieData;
+        return mutableLiveDataMovie;
     }
 }
