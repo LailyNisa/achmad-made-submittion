@@ -1,6 +1,9 @@
 package com.achmad.madesubmittion.favorite.ui.detail;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -8,10 +11,14 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.achmad.madesubmittion.favorite.R;
+import com.achmad.madesubmittion.favorite.data.local.DiscoverContract;
 import com.achmad.madesubmittion.favorite.data.remote.model.movie.Result;
 import com.achmad.madesubmittion.favorite.ui.discover.DiscoverActivity;
+import com.achmad.madesubmittion.favorite.utils.MappingHelper;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.github.lzyzsd.circleprogress.DonutProgress;
@@ -20,6 +27,7 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.achmad.madesubmittion.favorite.data.local.DiscoverContract.MOVIE_URI;
 import static com.achmad.madesubmittion.favorite.utils.Const.BACKDROP_PATH;
 import static com.achmad.madesubmittion.favorite.utils.Const.POSTER_PATH;
 
@@ -36,7 +44,9 @@ public class DetailMovieActivity extends AppCompatActivity {
     CollapsingToolbarLayout collapsingToolbarLayout;
     Result movie;
     com.achmad.madesubmittion.favorite.data.remote.model.tvshow.Result tvshow;
-//    private DiscoverDetailViewModel mViewModel;
+    LiveData<Result> mAllMovie;
+    private Uri uriWithId;
+    private DiscoverDetailViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +57,7 @@ public class DetailMovieActivity extends AppCompatActivity {
         tvshow = new com.achmad.madesubmittion.favorite.data.remote.model.tvshow.Result();
         movie = getIntent().getParcelableExtra(EXTRA_OBJECT);
         tvshow = getIntent().getParcelableExtra(EXTRA_OBJECT_TVSHOW);
-//        mViewModel = new ViewModelProvider(this).get(DiscoverDetailViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(DiscoverDetailViewModel.class);
         initObject();
         setSupportActionBar(toolbar);
 
@@ -91,26 +101,52 @@ public class DetailMovieActivity extends AppCompatActivity {
         Glide.with(this)
                 .load(BACKDROP_PATH + movie.getBackdropPath())
                 .into(imgBackdrop);
-//        imgButton.setOnClickListener(view -> {
-//            mViewModel.onFavoriteClicked();
-//            if (!mViewModel.isFavorite()) {
-//                imgButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_border_white_24dp));
-//                mViewModel.deleteMovie(movie);
-//            } else {
-//                imgButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_white_24dp));
-//                mViewModel.insertMovie(movie);
-//            }
-//
-//        });
+        uriWithId = Uri.parse(MOVIE_URI + "/" + movie.getId());
+        Cursor cursor = getContentResolver().query(uriWithId, null, null, null, null);
+        if (cursor != null) {
+            mViewModel.setMovieResult(MappingHelper.mapMovieCursorToObject(cursor));
+            cursor.close();
+        }
+        imgButton.setOnClickListener(view -> {
+            mViewModel.onFavoriteClicked();
+            if (!mViewModel.isFavorite()) {
+                imgButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_border_white_24dp));
+                getContentResolver().delete(uriWithId, null, null);
+            } else if (movie.getId() != 0) {
+                imgButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_white_24dp));
+                ContentValues values = new ContentValues();
+                values.put(DiscoverContract.MovieColumns.POPULARITY, movie.getPopularity());
+                values.put(DiscoverContract.MovieColumns.VOTE_COUNT, movie.getVoteCount());
+                int isVideo = movie.isVideo() ? 1 : 0;
+                values.put(DiscoverContract.MovieColumns.VIDEO, isVideo);
+                values.put(DiscoverContract.MovieColumns.POSTER_PATH, movie.getPosterPath());
+                values.put(DiscoverContract.MovieColumns.ID, movie.getId());
+                int isAdult = movie.isAdult() ? 1 : 0;
+                values.put(DiscoverContract.MovieColumns.ADULT, isAdult);
+                values.put(DiscoverContract.MovieColumns.BACKDROP_PATH, movie.getBackdropPath());
+                values.put(DiscoverContract.MovieColumns.ORIGINAL_LANGUAGE, movie.getOriginalLanguage());
+                values.put(DiscoverContract.MovieColumns.ORIGINAL_TITLE, movie.getOriginalTitle());
+                values.put(DiscoverContract.MovieColumns.TITLE, movie.getTitle());
+                values.put(DiscoverContract.MovieColumns.VOTE_AVERAGE, movie.getVoteAverage());
+                values.put(DiscoverContract.MovieColumns.OVERVIEW, movie.getOverview());
+                values.put(DiscoverContract.MovieColumns.RELEASE_DATE, movie.getReleaseDate());
+                getContentResolver().insert(MOVIE_URI, values);
+            } else {
+                Intent backToParent = new Intent(this, DiscoverActivity.class);
+                startActivity(backToParent);
+                finish();
+            }
+
+        });
 //        mViewModel.initDbMovieId(movie.getId());
 //        mViewModel.getMovieRepository().observe(this, results -> {
-//                    if (results.isEmpty()) {
-//                        imgButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_border_white_24dp));
-//                        mViewModel.setFavorite(false);
-//                    } else {
-//                        imgButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_white_24dp));
-//                        mViewModel.setFavorite(true);
-//                    }
+        if (cursor == null) {
+            imgButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_border_white_24dp));
+            mViewModel.setFavorite(false);
+        } else {
+            imgButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_white_24dp));
+            mViewModel.setFavorite(true);
+        }
 //                }
 //        );
 
@@ -151,6 +187,17 @@ public class DetailMovieActivity extends AppCompatActivity {
 //                }
 //        );
     }
+
+//    public LiveData<Result> getMovieDb(int id) {
+//        uriWithId = Uri.parse(MOVIE_URI + "/" + id);
+//        Cursor cursor = getContentResolver().query(uriWithId, null, null, null, null);
+//        if (cursor != null) {
+//            mAllMovie = MappingHelper.mapMovieCursorToObject(cursor);
+//            cursor.close();
+//        }
+//
+//        return mAllMovie;
+//    }
 
     private void handleCollapsedToolbarTitle() {
         appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {

@@ -1,6 +1,7 @@
 package com.achmad.madesubmittion.favorite.ui.detail;
 
 import android.app.Application;
+import android.net.Uri;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -12,13 +13,27 @@ import com.achmad.madesubmittion.favorite.data.remote.model.movie.Result;
 import java.util.List;
 
 public class DiscoverDetailViewModel extends AndroidViewModel {
-    private LiveData<List<Result>> mAllMovie;
+    private LiveData<Result> mAllMovie;
     private LiveData<List<com.achmad.madesubmittion.favorite.data.remote.model.tvshow.Result>> mAllTvShow;
     private MutableLiveData<Integer> idLiveData = new MutableLiveData<>();
+    private MutableLiveData<Result> movieDataResultLive = new MutableLiveData<>();
     private boolean isFavorite;
-
+    private Uri uriWithId;
+    private Result movie;
     public DiscoverDetailViewModel(@NonNull Application application) {
         super(application);
+    }
+
+    //    public void initDbMovieId(int id) {
+//        if (mAllMovie != null) {
+//            return;
+//        }
+//        mAllMovie = Transformations.switchMap(idLiveData,
+//                setMovieResult();
+//        setIdLiveData(id);
+//    }
+    LiveData<Result> getMovieRepository() {
+        return mAllMovie;
     }
 
 
@@ -36,5 +51,13 @@ public class DiscoverDetailViewModel extends AndroidViewModel {
 
     public void setFavorite(boolean favorite) {
         isFavorite = favorite;
+    }
+
+    private void setIdLiveData(int id) {
+        idLiveData.setValue(id);
+    }
+
+    public void setMovieResult(Result movie) {
+        movieDataResultLive.setValue(movie);
     }
 }

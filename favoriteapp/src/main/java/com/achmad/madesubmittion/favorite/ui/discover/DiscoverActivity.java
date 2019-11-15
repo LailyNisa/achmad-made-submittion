@@ -64,9 +64,9 @@ public class DiscoverActivity extends AppCompatActivity implements MovieAdapter.
     @Override
     protected void onPause() {
         super.onPause();
-        Intent i = new Intent(this, DiscoverActivity.class);
-        finish();
-        startActivity(i);
+//        Intent i = new Intent(this, DiscoverActivity.class);
+//        finish();
+//        startActivity(i);
     }
 
     @Override

@@ -22,18 +22,18 @@ public class Result implements Parcelable {
 
     @SerializedName("popularity")
     @Expose
-    private float popularity;
+    public float popularity;
     @SerializedName("vote_count")
     @Expose
-    private int voteCount;
+    public int voteCount;
     @SerializedName("video")
     @Expose
-    private boolean video;
+    public boolean video;
 
     @ColumnInfo(name = "poster_path")
     @SerializedName("poster_path")
     @Expose
-    private String posterPath;
+    public String posterPath;
 
     @PrimaryKey
     @ColumnInfo(name = MOVIE_ID_COLUMN)
@@ -43,18 +43,18 @@ public class Result implements Parcelable {
 
     @SerializedName("adult")
     @Expose
-    private boolean adult;
+    public boolean adult;
 
     @ColumnInfo(name = "backdrop_path")
     @SerializedName("backdrop_path")
     @Expose
-    private String backdropPath;
+    public String backdropPath;
     @SerializedName("original_language")
     @Expose
-    private String originalLanguage;
+    public String originalLanguage;
     @SerializedName("original_title")
     @Expose
-    private String originalTitle;
+    public String originalTitle;
     @Ignore
     @SerializedName("genre_ids")
     @Expose
@@ -63,22 +63,22 @@ public class Result implements Parcelable {
     @ColumnInfo(name = "title")
     @SerializedName("title")
     @Expose
-    private String title;
+    public String title;
 
     @ColumnInfo(name = "vote_average")
     @SerializedName("vote_average")
     @Expose
-    private float voteAverage;
+    public float voteAverage;
 
     @ColumnInfo(name = "overview")
     @SerializedName("overview")
     @Expose
-    private String overview;
+    public String overview;
 
     @ColumnInfo(name = "release_date")
     @SerializedName("release_date")
     @Expose
-    private String releaseDate;
+    public String releaseDate;
 
     @Ignore
     public Result(float popularity, int voteCount, boolean video, String posterPath, int id, boolean adult, String backdropPath, String originalLanguage, String originalTitle, String title, float voteAverage, String overview, String releaseDate) {

@@ -10,6 +10,7 @@ import android.net.Uri;
 
 import com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverContract;
 import com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverDatabase;
+import com.achmad.madeacademy.moviecataloguemvp.utils.MappingHelper;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -78,7 +79,7 @@ public class MyContentProvider extends ContentProvider {
                 if (context == null) {
                     return null;
                 }
-                id = appDatabase.movieDao().insertMovieProvider(DiscoverContract.movieFromContentValues(values));
+                id = appDatabase.movieDao().insertMovieProvider(MappingHelper.fromContentValues(values));
                 context.getContentResolver().notifyChange(uri, null);
                 return ContentUris.withAppendedId(uri, id);
             case MOVIE_ID:

@@ -144,10 +144,6 @@ public class MovieFragment extends Fragment {
         getActivity().getContentResolver().registerContentObserver(MOVIE_URI, true, myObserver);
         if (savedInstanceState == null) {
             initDb();
-//            movieViewModel.getMovieDb().observe(getViewLifecycleOwner(), results -> {
-
-//            });
-            Log.d("savedInstance", "Ada");
         } else {
             CommonUtils.hideLoading();
             ArrayList<Result> list = savedInstanceState.getParcelableArrayList(EXTRA_STATE);
@@ -182,7 +178,7 @@ public class MovieFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        Log.d("lifecycle", "pause");
+//        getActivity().finish();
     }
 
 
@@ -216,7 +212,7 @@ public class MovieFragment extends Fragment {
     }
 
     public class DataObserver extends ContentObserver {
-
+        private LoaderManager.LoaderCallbacks mCallback;
         final Context context;
 
         public DataObserver(Handler handler, Context context) {
@@ -227,7 +223,9 @@ public class MovieFragment extends Fragment {
         @Override
         public void onChange(boolean selfChange) {
             super.onChange(selfChange);
-            getActivity().getSupportLoaderManager().initLoader(MOVIE, null, mLoaderCallback);
+//            getActivity().getSupportLoaderManager().initLoader(MOVIE, null, mLoaderCallback);
+//            getActivity().finish();
+//            Log.d("mboh","mboh");
         }
     }
 }
