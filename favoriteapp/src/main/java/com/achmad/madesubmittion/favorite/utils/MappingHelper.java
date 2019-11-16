@@ -52,22 +52,28 @@ public class MappingHelper {
 
     public static Result mapMovieCursorToObject(Cursor movie) {
 //        MutableLiveData<Result> movieResult = new MutableLiveData<>();
-        movie.moveToFirst();
-        int id = movie.getInt(movie.getColumnIndexOrThrow("id"));
-        float popularity = movie.getFloat(movie.getColumnIndexOrThrow("popularity"));
-        int voteCount = movie.getInt(movie.getColumnIndexOrThrow("voteCount"));
-        boolean video = movie.getInt(movie.getColumnIndexOrThrow("video")) > 0;
-        String poster_path = movie.getString(movie.getColumnIndexOrThrow("poster_path"));
-        boolean adult = movie.getInt(movie.getColumnIndexOrThrow("adult")) > 0;
-        String backdrop_path = movie.getString(movie.getColumnIndexOrThrow("backdrop_path"));
-        String originalLanguage = movie.getString(movie.getColumnIndexOrThrow("originalLanguage"));
-        String originalTitle = movie.getString(movie.getColumnIndexOrThrow("originalTitle"));
-        String title = movie.getString(movie.getColumnIndexOrThrow("title"));
-        float vote_average = movie.getFloat(movie.getColumnIndexOrThrow("vote_average"));
-        String overview = movie.getString(movie.getColumnIndexOrThrow("overview"));
-        String release_date = movie.getString(movie.getColumnIndexOrThrow("release_date"));
+        if (movie != null) {
+            movie.moveToFirst();
+            int id = movie.getInt(movie.getColumnIndexOrThrow("id"));
+            float popularity = movie.getFloat(movie.getColumnIndexOrThrow("popularity"));
+            int voteCount = movie.getInt(movie.getColumnIndexOrThrow("voteCount"));
+            boolean video = movie.getInt(movie.getColumnIndexOrThrow("video")) > 0;
+            String poster_path = movie.getString(movie.getColumnIndexOrThrow("poster_path"));
+            boolean adult = movie.getInt(movie.getColumnIndexOrThrow("adult")) > 0;
+            String backdrop_path = movie.getString(movie.getColumnIndexOrThrow("backdrop_path"));
+            String originalLanguage = movie.getString(movie.getColumnIndexOrThrow("originalLanguage"));
+            String originalTitle = movie.getString(movie.getColumnIndexOrThrow("originalTitle"));
+            String title = movie.getString(movie.getColumnIndexOrThrow("title"));
+            float vote_average = movie.getFloat(movie.getColumnIndexOrThrow("vote_average"));
+            String overview = movie.getString(movie.getColumnIndexOrThrow("overview"));
+            String release_date = movie.getString(movie.getColumnIndexOrThrow("release_date"));
+            return new Result(popularity, voteCount, video, poster_path, id, adult, backdrop_path, originalLanguage, originalTitle, title, vote_average, overview, release_date);
+        } else {
+            return new Result();
+        }
+
 //        movieResult.setValue(new Result(popularity, voteCount, video, poster_path, id, adult, backdrop_path, originalLanguage, originalTitle, title, vote_average, overview, release_date));
-        return new Result(popularity, voteCount, video, poster_path, id, adult, backdrop_path, originalLanguage, originalTitle, title, vote_average, overview, release_date);
+
     }
 
     public static Result fromContentValues(ContentValues values) {

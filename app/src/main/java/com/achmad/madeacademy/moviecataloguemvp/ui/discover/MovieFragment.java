@@ -3,7 +3,6 @@ package com.achmad.madeacademy.moviecataloguemvp.ui.discover;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
@@ -16,19 +15,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.CursorLoader;
-import androidx.loader.content.Loader;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.achmad.madeacademy.moviecataloguemvp.R;
-import com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverContract;
 import com.achmad.madeacademy.moviecataloguemvp.data.remote.model.movie.Result;
 import com.achmad.madeacademy.moviecataloguemvp.ui.discover.adapter.MovieAdapter;
 import com.achmad.madeacademy.moviecataloguemvp.utils.CommonUtils;
-import com.achmad.madeacademy.moviecataloguemvp.utils.MappingHelper;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -63,52 +57,6 @@ public class MovieFragment extends Fragment {
         }
         return view;
     }
-
-    private LoaderManager.LoaderCallbacks<Cursor> mLoaderCallback = new LoaderManager.LoaderCallbacks<Cursor>() {
-        final String[] MOVIE_SUMMARY_PROJECTION = new String[]{
-                DiscoverContract.MovieColumns.ID,
-                DiscoverContract.MovieColumns.ADULT,
-                DiscoverContract.MovieColumns.BACKDROP_PATH,
-                DiscoverContract.MovieColumns.ORIGINAL_LANGUAGE,
-                DiscoverContract.MovieColumns.ORIGINAL_TITLE,
-                DiscoverContract.MovieColumns.OVERVIEW,
-                DiscoverContract.MovieColumns.POPULARITY,
-                DiscoverContract.MovieColumns.POSTER_PATH,
-                DiscoverContract.MovieColumns.RELEASE_DATE,
-                DiscoverContract.MovieColumns.TITLE,
-                DiscoverContract.MovieColumns.VIDEO,
-                DiscoverContract.MovieColumns.VOTE_AVERAGE,
-                DiscoverContract.MovieColumns.VOTE_COUNT,
-        };
-
-        @NonNull
-        @Override
-        public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
-            if (id == MOVIE) {
-                return new CursorLoader(getActivity(), DiscoverContract.MOVIE_URI
-                        , MOVIE_SUMMARY_PROJECTION, null, null, null);
-            }
-            throw new IllegalArgumentException();
-        }
-
-        @Override
-        public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
-            if (loader.getId() == MOVIE) {
-                movieResult.addAll(MappingHelper.mapCursorToAlMovie(data));
-                setRvMovies();
-                mAdapter.notifyDataSetChanged();
-            }
-        }
-
-        @Override
-        public void onLoaderReset(@NonNull Loader<Cursor> loader) {
-            if (loader.getId() == MOVIE) {
-                movieResult.clear();
-                setRvMovies();
-                mAdapter.notifyDataSetChanged();
-            }
-        }
-    };
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -226,8 +174,6 @@ public class MovieFragment extends Fragment {
             setRvMovies();
             mAdapter.notifyDataSetChanged();
         });
-//        getSupportLoaderManager().initLoader(LOADER_CHEESES, null, mLoaderCallbacks);
-//        getActivity().getSupportLoaderManager().initLoader(MOVIE, null, mLoaderCallback);
     }
 
 }

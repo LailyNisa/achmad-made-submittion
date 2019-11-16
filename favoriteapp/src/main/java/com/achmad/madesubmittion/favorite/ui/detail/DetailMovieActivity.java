@@ -2,7 +2,6 @@ package com.achmad.madesubmittion.favorite.ui.detail;
 
 import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ImageButton;
@@ -18,7 +17,6 @@ import com.achmad.madesubmittion.favorite.R;
 import com.achmad.madesubmittion.favorite.data.local.DiscoverContract;
 import com.achmad.madesubmittion.favorite.data.remote.model.movie.Result;
 import com.achmad.madesubmittion.favorite.ui.discover.DiscoverActivity;
-import com.achmad.madesubmittion.favorite.utils.MappingHelper;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.github.lzyzsd.circleprogress.DonutProgress;
@@ -33,7 +31,9 @@ import static com.achmad.madesubmittion.favorite.utils.Const.POSTER_PATH;
 
 public class DetailMovieActivity extends AppCompatActivity {
     public static final String EXTRA_OBJECT = "object_extra_movie";
+    public static final String EXTRA_OBJECT_MOVIE = "object_extra_movie_instance";
     public static final String EXTRA_OBJECT_TVSHOW = "object_extra_tvshow";
+
     TextView tvTitle, tvRelease, tvOverView, tvCast, tvTitleBar;
     DonutProgress dntProgressDetail;
     ImageView imgPoster, imgBackdrop;
@@ -60,7 +60,6 @@ public class DetailMovieActivity extends AppCompatActivity {
         mViewModel = new ViewModelProvider(this).get(DiscoverDetailViewModel.class);
         initObject();
         setSupportActionBar(toolbar);
-
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
@@ -71,6 +70,14 @@ public class DetailMovieActivity extends AppCompatActivity {
             bindTvShow(tvshow);
             handleCollapsedToolbarTitle();
         }
+    }
+
+    private Result getMovie() {
+        return movie;
+    }
+
+    private void setMovie(Result movie) {
+        this.movie = movie;
     }
 
     private void initObject() {
@@ -102,11 +109,6 @@ public class DetailMovieActivity extends AppCompatActivity {
                 .load(BACKDROP_PATH + movie.getBackdropPath())
                 .into(imgBackdrop);
         uriWithId = Uri.parse(MOVIE_URI + "/" + movie.getId());
-        Cursor cursor = getContentResolver().query(uriWithId, null, null, null, null);
-        if (cursor != null) {
-            mViewModel.setMovieResult(MappingHelper.mapMovieCursorToObject(cursor));
-            cursor.close();
-        }
         imgButton.setOnClickListener(view -> {
             mViewModel.onFavoriteClicked();
             if (!mViewModel.isFavorite()) {
@@ -138,17 +140,17 @@ public class DetailMovieActivity extends AppCompatActivity {
             }
 
         });
-//        mViewModel.initDbMovieId(movie.getId());
-//        mViewModel.getMovieRepository().observe(this, results -> {
-        if (cursor == null) {
+        mViewModel.initDbMovieId(movie.getId());
+        mViewModel.getMovieRepository().observe(this, results -> {
+                    if (results == null) {
             imgButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_border_white_24dp));
             mViewModel.setFavorite(false);
         } else {
             imgButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_white_24dp));
             mViewModel.setFavorite(true);
         }
-//                }
-//        );
+                }
+        );
 
     }
 
@@ -187,17 +189,6 @@ public class DetailMovieActivity extends AppCompatActivity {
 //                }
 //        );
     }
-
-//    public LiveData<Result> getMovieDb(int id) {
-//        uriWithId = Uri.parse(MOVIE_URI + "/" + id);
-//        Cursor cursor = getContentResolver().query(uriWithId, null, null, null, null);
-//        if (cursor != null) {
-//            mAllMovie = MappingHelper.mapMovieCursorToObject(cursor);
-//            cursor.close();
-//        }
-//
-//        return mAllMovie;
-//    }
 
     private void handleCollapsedToolbarTitle() {
         appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
