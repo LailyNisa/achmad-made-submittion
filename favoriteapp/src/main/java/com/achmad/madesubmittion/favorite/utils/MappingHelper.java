@@ -11,43 +11,52 @@ import java.util.ArrayList;
 public class MappingHelper {
     public static ArrayList<com.achmad.madesubmittion.favorite.data.remote.model.movie.Result> mapCursorToAlMovie(Cursor movie) {
         ArrayList<com.achmad.madesubmittion.favorite.data.remote.model.movie.Result> movieList = new ArrayList<>();
-        while (movie.moveToNext()) {
-            int id = movie.getInt(movie.getColumnIndexOrThrow("id"));
-            float popularity = movie.getFloat(movie.getColumnIndexOrThrow("popularity"));
-            int voteCount = movie.getInt(movie.getColumnIndexOrThrow("voteCount"));
-            boolean video = movie.getInt(movie.getColumnIndexOrThrow("video")) > 0;
-            String poster_path = movie.getString(movie.getColumnIndexOrThrow("poster_path"));
-            boolean adult = movie.getInt(movie.getColumnIndexOrThrow("adult")) > 0;
-            String backdrop_path = movie.getString(movie.getColumnIndexOrThrow("backdrop_path"));
-            String originalLanguage = movie.getString(movie.getColumnIndexOrThrow("originalLanguage"));
-            String originalTitle = movie.getString(movie.getColumnIndexOrThrow("originalTitle"));
-            String title = movie.getString(movie.getColumnIndexOrThrow("title"));
-            float vote_average = movie.getFloat(movie.getColumnIndexOrThrow("vote_average"));
-            String overview = movie.getString(movie.getColumnIndexOrThrow("overview"));
-            String release_date = movie.getString(movie.getColumnIndexOrThrow("release_date"));
-            movieList.add(new Result(popularity, voteCount, video, poster_path, id, adult, backdrop_path, originalLanguage, originalTitle, title, vote_average, overview, release_date));
+        if (movie != null) {
+            while (movie.moveToNext()) {
+                int id = movie.getInt(movie.getColumnIndexOrThrow("id"));
+                float popularity = movie.getFloat(movie.getColumnIndexOrThrow("popularity"));
+                int voteCount = movie.getInt(movie.getColumnIndexOrThrow("voteCount"));
+                boolean video = movie.getInt(movie.getColumnIndexOrThrow("video")) > 0;
+                String poster_path = movie.getString(movie.getColumnIndexOrThrow("poster_path"));
+                boolean adult = movie.getInt(movie.getColumnIndexOrThrow("adult")) > 0;
+                String backdrop_path = movie.getString(movie.getColumnIndexOrThrow("backdrop_path"));
+                String originalLanguage = movie.getString(movie.getColumnIndexOrThrow("originalLanguage"));
+                String originalTitle = movie.getString(movie.getColumnIndexOrThrow("originalTitle"));
+                String title = movie.getString(movie.getColumnIndexOrThrow("title"));
+                float vote_average = movie.getFloat(movie.getColumnIndexOrThrow("vote_average"));
+                String overview = movie.getString(movie.getColumnIndexOrThrow("overview"));
+                String release_date = movie.getString(movie.getColumnIndexOrThrow("release_date"));
+                movieList.add(new Result(popularity, voteCount, video, poster_path, id, adult, backdrop_path, originalLanguage, originalTitle, title, vote_average, overview, release_date));
+            }
+            movie.close();
+        } else {
+            movieList.add(new Result());
         }
-        movie.close();
+
         return movieList;
     }
 
     public static ArrayList<com.achmad.madesubmittion.favorite.data.remote.model.tvshow.Result> mapCursorToAlTvShow(Cursor tvShow) {
         ArrayList<com.achmad.madesubmittion.favorite.data.remote.model.tvshow.Result> tvShowList = new ArrayList<>();
-        while (tvShow.moveToNext()) {
-            String originalName = tvShow.getString(tvShow.getColumnIndexOrThrow(DiscoverContract.TvShowColumns.ORIGINAL_NAME));
-            String name = tvShow.getString(tvShow.getColumnIndexOrThrow(DiscoverContract.TvShowColumns.NAME));
-            float popularity = tvShow.getFloat(tvShow.getColumnIndexOrThrow(DiscoverContract.TvShowColumns.POPULARITY));
-            int voteCount = tvShow.getInt(tvShow.getColumnIndexOrThrow(DiscoverContract.TvShowColumns.VOTE_COUNT));
-            String firstAirDate = tvShow.getString(tvShow.getColumnIndexOrThrow(DiscoverContract.TvShowColumns.FIRSTAIRDATE));
-            String backdropPath = tvShow.getString(tvShow.getColumnIndexOrThrow(DiscoverContract.TvShowColumns.BACKDROPPATH));
-            String originalLanguage = tvShow.getString(tvShow.getColumnIndexOrThrow(DiscoverContract.TvShowColumns.ORIGINAL_LANGUAGE));
-            int id = tvShow.getInt(tvShow.getColumnIndexOrThrow(DiscoverContract.TvShowColumns.ID));
-            float voteAverage = tvShow.getFloat(tvShow.getColumnIndexOrThrow(DiscoverContract.TvShowColumns.VOTE_AVERAGE));
-            String overview = tvShow.getString(tvShow.getColumnIndexOrThrow(DiscoverContract.TvShowColumns.OVERVIEW));
-            String posterPath = tvShow.getString(tvShow.getColumnIndexOrThrow(DiscoverContract.TvShowColumns.POSTERPATH));
-            tvShowList.add(new com.achmad.madesubmittion.favorite.data.remote.model.tvshow.Result(originalName, name, popularity, voteCount, firstAirDate, backdropPath, originalLanguage, id, voteAverage, overview, posterPath));
+        if (tvShow != null) {
+            while (tvShow.moveToNext()) {
+                String originalName = tvShow.getString(tvShow.getColumnIndexOrThrow(DiscoverContract.TvShowColumns.ORIGINAL_NAME));
+                String name = tvShow.getString(tvShow.getColumnIndexOrThrow(DiscoverContract.TvShowColumns.NAME));
+                float popularity = tvShow.getFloat(tvShow.getColumnIndexOrThrow(DiscoverContract.TvShowColumns.POPULARITY));
+                int voteCount = tvShow.getInt(tvShow.getColumnIndexOrThrow(DiscoverContract.TvShowColumns.VOTE_COUNT));
+                String firstAirDate = tvShow.getString(tvShow.getColumnIndexOrThrow(DiscoverContract.TvShowColumns.FIRSTAIRDATE));
+                String backdropPath = tvShow.getString(tvShow.getColumnIndexOrThrow(DiscoverContract.TvShowColumns.BACKDROPPATH));
+                String originalLanguage = tvShow.getString(tvShow.getColumnIndexOrThrow(DiscoverContract.TvShowColumns.ORIGINAL_LANGUAGE));
+                int id = tvShow.getInt(tvShow.getColumnIndexOrThrow(DiscoverContract.TvShowColumns.ID));
+                float voteAverage = tvShow.getFloat(tvShow.getColumnIndexOrThrow(DiscoverContract.TvShowColumns.VOTE_AVERAGE));
+                String overview = tvShow.getString(tvShow.getColumnIndexOrThrow(DiscoverContract.TvShowColumns.OVERVIEW));
+                String posterPath = tvShow.getString(tvShow.getColumnIndexOrThrow(DiscoverContract.TvShowColumns.POSTERPATH));
+                tvShowList.add(new com.achmad.madesubmittion.favorite.data.remote.model.tvshow.Result(originalName, name, popularity, voteCount, firstAirDate, backdropPath, originalLanguage, id, voteAverage, overview, posterPath));
+            }
+            tvShow.close();
+        } else {
+            tvShowList.add(new com.achmad.madesubmittion.favorite.data.remote.model.tvshow.Result());
         }
-        tvShow.close();
         return tvShowList;
     }
 
