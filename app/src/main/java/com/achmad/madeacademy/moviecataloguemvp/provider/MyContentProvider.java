@@ -8,15 +8,16 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
 
-import com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverContract;
 import com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverDatabase;
 import com.achmad.madeacademy.moviecataloguemvp.utils.MappingHelper;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 import static com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverContract.AUTHORITY;
 import static com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverContract.MovieColumns.MOVIE_TABLE;
-import static com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverContract.TVSHOW_TABLE;
+import static com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverContract.TvShowColumns.TVSHOW_TABLE;
 
 public class MyContentProvider extends ContentProvider {
     private static final int MOVIE = 1;
@@ -90,7 +91,7 @@ public class MyContentProvider extends ContentProvider {
                 if (context == null) {
                     return null;
                 }
-                id = appDatabase.tvShowDao().insertTvShowProvider(DiscoverContract.tvShowFromContentValues(values));
+                id = appDatabase.tvShowDao().insertTvShowProvider(MappingHelper.tvShowfromContentValues(values));
                 context.getContentResolver().notifyChange(uri, null);
                 return ContentUris.withAppendedId(uri, id);
             default:
@@ -109,41 +110,42 @@ public class MyContentProvider extends ContentProvider {
     @Override
     public Cursor query(@NotNull Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
-//        Cursor cursor;
-//        switch (sUriMatcher.match(uri)) {
-//            case MOVIE:
-//                cursor = appDatabase.movieDao().getAllMovieCursor();
-//                break;
-//            case MOVIE_ID:
-//                cursor = appDatabase.movieDao().selectMovie(Integer.parseInt(Objects.requireNonNull(uri.getLastPathSegment())));
-//                break;
-//            case TVSHOW:
-//                cursor = appDatabase.tvShowDao().getAllTvShowCursor();
-//                break;
-//            case TVSHOW_ID:
-//                cursor = appDatabase.tvShowDao().selectTvhow(Integer.parseInt(Objects.requireNonNull(uri.getLastPathSegment())));
-//                break;
-//            default:
-//                throw new IllegalArgumentException("Unknown URI: " + uri);
-//        }
-        final int code = sUriMatcher.match(uri);
-        if (code == MOVIE || code == MOVIE_ID) {
-            final Context context = getContext();
-            if (context == null) {
-                return null;
-            }
-//            MenuDao menu = SampleDatabase.getInstance(context).menu();
-            final Cursor cursor;
-            if (code == MOVIE) {
+        Cursor cursor;
+        switch (sUriMatcher.match(uri)) {
+            case MOVIE:
                 cursor = appDatabase.movieDao().getAllMovieCursor();
-            } else {
-                cursor = appDatabase.movieDao().selectMovie((int) ContentUris.parseId(uri));
-            }
-            cursor.setNotificationUri(context.getContentResolver(), uri);
-            return cursor;
-        } else {
-            throw new IllegalArgumentException("Unknown URI: " + uri);
+                break;
+            case MOVIE_ID:
+                cursor = appDatabase.movieDao().selectMovie(Integer.parseInt(Objects.requireNonNull(uri.getLastPathSegment())));
+                break;
+            case TVSHOW:
+                cursor = appDatabase.tvShowDao().getAllTvShowCursor();
+                break;
+            case TVSHOW_ID:
+                cursor = appDatabase.tvShowDao().selectTvhow(Integer.parseInt(Objects.requireNonNull(uri.getLastPathSegment())));
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown URI: " + uri);
         }
+        return cursor;
+//        final int code = sUriMatcher.match(uri);
+//        if (code == MOVIE || code == MOVIE_ID) {
+//            final Context context = getContext();
+//            if (context == null) {
+//                return null;
+//            }
+////            MenuDao menu = SampleDatabase.getInstance(context).menu();
+//            final Cursor cursor;
+//            if (code == MOVIE) {
+//                cursor = appDatabase.movieDao().getAllMovieCursor();
+//            } else {
+//                cursor = appDatabase.movieDao().selectMovie((int) ContentUris.parseId(uri));
+//            }
+//            cursor.setNotificationUri(context.getContentResolver(), uri);
+//            return cursor;
+//        } else {
+//            throw new IllegalArgumentException("Unknown URI: " + uri);
+//        }
 //        Objects.requireNonNull(cursor).setNotificationUri(Objects.requireNonNull(context).getContentResolver(), uri);
     }
 

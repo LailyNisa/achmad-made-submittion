@@ -26,6 +26,7 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.achmad.madesubmittion.favorite.data.local.DiscoverContract.MOVIE_URI;
+import static com.achmad.madesubmittion.favorite.data.local.DiscoverContract.TVSHOW_URI;
 import static com.achmad.madesubmittion.favorite.utils.Const.BACKDROP_PATH;
 import static com.achmad.madesubmittion.favorite.utils.Const.POSTER_PATH;
 
@@ -166,28 +167,41 @@ public class DetailMovieActivity extends AppCompatActivity {
         Glide.with(this)
                 .load(BACKDROP_PATH + tvShow.getBackdropPath())
                 .into(imgBackdrop);
-//        imgButton.setOnClickListener(view -> {
-//            mViewModel.onFavoriteClicked();
-//            if (!mViewModel.isFavorite()) {
-//                imgButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_border_white_24dp));
-//                mViewModel.deleteTvshow(tvShow);
-//            } else {
-//                imgButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_white_24dp));
-//                mViewModel.insertTvShow(tvShow);
-//            }
-//
-//        });
-//        mViewModel.initTvShow(tvShow.getId());
-//        mViewModel.getTvShowRepository().observe(this, results -> {
-//                    if (results.isEmpty()) {
-//                        imgButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_border_white_24dp));
-//                        mViewModel.setFavorite(false);
-//                    } else {
-//                        imgButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_white_24dp));
-//                        mViewModel.setFavorite(true);
-//                    }
-//                }
-//        );
+        uriWithId = Uri.parse(TVSHOW_URI + "/" + tvShow.getId());
+        imgButton.setOnClickListener(view -> {
+            mViewModel.onFavoriteClicked();
+            if (!mViewModel.isFavorite()) {
+                imgButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_border_white_24dp));
+                getContentResolver().delete(uriWithId, null, null);
+            } else {
+                imgButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_white_24dp));
+                ContentValues values = new ContentValues();
+                values.put(DiscoverContract.TvShowColumns.ORIGINAL_NAME, tvShow.getOriginalName());
+                values.put(DiscoverContract.TvShowColumns.NAME, tvShow.getName());
+                values.put(DiscoverContract.TvShowColumns.POPULARITY, tvShow.getPopularity());
+                values.put(DiscoverContract.TvShowColumns.VOTE_COUNT, tvShow.getVoteCount());
+                values.put(DiscoverContract.TvShowColumns.FIRSTAIRDATE, tvShow.getFirstAirDate());
+                values.put(DiscoverContract.TvShowColumns.BACKDROPPATH, tvShow.getBackdropPath());
+                values.put(DiscoverContract.TvShowColumns.ORIGINAL_LANGUAGE, tvShow.getOriginalLanguage());
+                values.put(DiscoverContract.TvShowColumns.ID, tvShow.getId());
+                values.put(DiscoverContract.TvShowColumns.VOTE_AVERAGE, tvShow.getVoteAverage());
+                values.put(DiscoverContract.TvShowColumns.OVERVIEW, tvShow.getOverview());
+                values.put(DiscoverContract.TvShowColumns.POSTERPATH, tvShow.getPosterPath());
+                getContentResolver().insert(TVSHOW_URI, values);
+            }
+        });
+
+        mViewModel.initDbTvShowId(tvShow.getId());
+        mViewModel.getTvShowRepository().observe(this, results -> {
+                    if (results == null) {
+                        imgButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_border_white_24dp));
+                        mViewModel.setFavorite(false);
+                    } else {
+                        imgButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_white_24dp));
+                        mViewModel.setFavorite(true);
+                    }
+                }
+        );
     }
 
     private void handleCollapsedToolbarTitle() {

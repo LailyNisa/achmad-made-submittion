@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide;
 import com.github.lzyzsd.circleprogress.DonutProgress;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.achmad.madesubmittion.favorite.utils.Const.POSTER_PATH;
 import static com.achmad.madesubmittion.favorite.utils.Const.VIEW_TYPE_EMPTY;
@@ -30,6 +31,10 @@ public class TvShowAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     public TvShowAdapter(ArrayList<Result> mValues, OnFragmentInteractionListener mListener) {
         this.mValues = mValues;
         this.mListener = mListener;
+    }
+
+    public List<Result> getListTvShow() {
+        return mValues;
     }
 
     @NonNull

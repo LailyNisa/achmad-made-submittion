@@ -122,4 +122,42 @@ public class MappingHelper {
         return movie;
     }
 
+    public static com.achmad.madeacademy.moviecataloguemvp.data.remote.model.tvshow.Result tvShowfromContentValues(ContentValues values) {
+        final com.achmad.madeacademy.moviecataloguemvp.data.remote.model.tvshow.Result tvshow = new com.achmad.madeacademy.moviecataloguemvp.data.remote.model.tvshow.Result();
+        if (values.containsKey(DiscoverContract.TvShowColumns.ORIGINAL_NAME)) {
+            tvshow.originalName = values.getAsString(DiscoverContract.TvShowColumns.ORIGINAL_NAME);
+        }
+        if (values.containsKey(DiscoverContract.TvShowColumns.POPULARITY)) {
+            tvshow.popularity = values.getAsInteger(DiscoverContract.TvShowColumns.POPULARITY);
+        }
+        if (values.containsKey(DiscoverContract.TvShowColumns.VOTE_COUNT)) {
+            tvshow.voteCount = values.getAsInteger(DiscoverContract.TvShowColumns.VOTE_COUNT);
+        }
+        if (values.containsKey(DiscoverContract.TvShowColumns.POSTERPATH)) {
+            tvshow.posterPath = values.getAsString(DiscoverContract.TvShowColumns.POSTERPATH);
+        }
+        if (values.containsKey(DiscoverContract.TvShowColumns.ID)) {
+            tvshow.id = values.getAsInteger(DiscoverContract.TvShowColumns.ID);
+        }
+        if (values.containsKey(DiscoverContract.TvShowColumns.BACKDROPPATH)) {
+            tvshow.backdropPath = values.getAsString(DiscoverContract.TvShowColumns.BACKDROPPATH);
+        }
+        if (values.containsKey(DiscoverContract.TvShowColumns.ORIGINAL_LANGUAGE)) {
+            tvshow.originalLanguage = values.getAsString(DiscoverContract.TvShowColumns.ORIGINAL_LANGUAGE);
+        }
+        if (values.containsKey(DiscoverContract.TvShowColumns.FIRSTAIRDATE)) {
+            tvshow.firstAirDate = values.getAsString(DiscoverContract.TvShowColumns.FIRSTAIRDATE);
+        }
+        if (values.containsKey(DiscoverContract.TvShowColumns.VOTE_AVERAGE)) {
+            tvshow.voteAverage = values.getAsFloat(DiscoverContract.TvShowColumns.VOTE_AVERAGE);
+        }
+        if (values.containsKey(DiscoverContract.TvShowColumns.OVERVIEW)) {
+            tvshow.overview = values.getAsString(DiscoverContract.TvShowColumns.OVERVIEW);
+        }
+        if (values.containsKey(DiscoverContract.TvShowColumns.NAME)) {
+            tvshow.name = values.getAsString(DiscoverContract.TvShowColumns.NAME);
+        }
+        return tvshow;
+    }
+
 }

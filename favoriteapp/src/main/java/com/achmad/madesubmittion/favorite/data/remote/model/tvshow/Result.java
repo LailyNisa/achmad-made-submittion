@@ -15,7 +15,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.achmad.madesubmittion.favorite.data.local.DiscoverContract.TVSHOW_TABLE;
+import static com.achmad.madesubmittion.favorite.data.local.DiscoverContract.TvShowColumns.TVSHOW_TABLE;
 
 @Entity(tableName = TVSHOW_TABLE)
 public class Result implements Parcelable {

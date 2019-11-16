@@ -15,14 +15,14 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverContract.TVSHOW_TABLE;
+import static com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverContract.TvShowColumns.TVSHOW_TABLE;
 
 @Entity(tableName = TVSHOW_TABLE)
 public class Result implements Parcelable {
 
     @SerializedName("original_name")
     @Expose
-    private String originalName;
+    public String originalName;
     @Ignore
     @SerializedName("genre_ids")
     @Expose
@@ -31,32 +31,32 @@ public class Result implements Parcelable {
     @ColumnInfo(name = "name")
     @SerializedName("name")
     @Expose
-    private String name;
+    public String name;
 
     @SerializedName("popularity")
     @Expose
-    private float popularity;
+    public float popularity;
     @Ignore
     @SerializedName("origin_country")
     @Expose
     private List<String> originCountry = null;
     @SerializedName("vote_count")
     @Expose
-    private int voteCount;
+    public int voteCount;
 
     @ColumnInfo(name = "first_air_date")
     @SerializedName("first_air_date")
     @Expose
-    private String firstAirDate;
+    public String firstAirDate;
 
     @ColumnInfo(name = "backdrop_path")
     @SerializedName("backdrop_path")
     @Expose
-    private String backdropPath;
+    public String backdropPath;
 
     @SerializedName("original_language")
     @Expose
-    private String originalLanguage;
+    public String originalLanguage;
 
     @NonNull
     @PrimaryKey
@@ -68,17 +68,17 @@ public class Result implements Parcelable {
     @ColumnInfo(name = "vote_average")
     @SerializedName("vote_average")
     @Expose
-    private float voteAverage;
+    public float voteAverage;
 
     @ColumnInfo(name = "overview")
     @SerializedName("overview")
     @Expose
-    private String overview;
+    public String overview;
 
     @ColumnInfo(name = "poster_path")
     @SerializedName("poster_path")
     @Expose
-    private String posterPath;
+    public String posterPath;
 
     @Ignore
     public Result(String originalName, String name, float popularity, int voteCount, String firstAirDate, String backdropPath, String originalLanguage, int id, float voteAverage, String overview, String posterPath) {

@@ -15,12 +15,14 @@ import com.achmad.madesubmittion.favorite.utils.MappingHelper;
 import java.util.List;
 
 import static com.achmad.madesubmittion.favorite.data.local.DiscoverContract.MOVIE_URI;
+import static com.achmad.madesubmittion.favorite.data.local.DiscoverContract.TVSHOW_URI;
 
 public class DiscoverDetailViewModel extends AndroidViewModel {
     private LiveData<Result> mAllMovie;
     private LiveData<List<com.achmad.madesubmittion.favorite.data.remote.model.tvshow.Result>> mAllTvShow;
     private MutableLiveData<Integer> idLiveData = new MutableLiveData<>();
     private MutableLiveData<Result> movieDataResultLive = new MutableLiveData<>();
+    private MutableLiveData<com.achmad.madesubmittion.favorite.data.remote.model.tvshow.Result> tvshowDataResultLive = new MutableLiveData<>();
     private boolean isFavorite;
     private int idMovie;
     private Uri uriWithId;
@@ -35,20 +37,27 @@ public class DiscoverDetailViewModel extends AndroidViewModel {
 //        if (movieDataResultLive.getValue() != null) {
 //            return;
 //        }
-
-//        mAllMovie = Transformations.switchMap(idLiveData, this::getMovieDb);
         setIdMovie(id);
         if (getIdMovie() == 0) {
             getMovieDb(0);
         }
         getMovieDb(getIdMovie());
-
         setIdLiveData(id);
+    }
 
+    public void initDbTvShowId(int id) {
+//        if (tvshowDataResultLive.getValue() != null) {
+//            return;
+//        }
+        setIdMovie(id);
+        if (getIdMovie() == 0) {
+            getTvShowDb(0);
+        }
+        getTvShowDb(getIdMovie());
+        setIdLiveData(id);
     }
 
     public LiveData<Result> getMovieDb(int id) {
-
         uriWithId = Uri.parse(MOVIE_URI + "/" + id);
         Cursor cursor = application.getContentResolver().query(uriWithId, null, null, null, null);
         if (cursor != null && cursor.moveToFirst()) {
@@ -57,21 +66,28 @@ public class DiscoverDetailViewModel extends AndroidViewModel {
         } else {
             movieDataResultLive.postValue(null);
         }
-
-//            mAllMovie = movieDataResultLive;
         return movieDataResultLive;
     }
 
-    public void setmAllMovie(Result movie) {
-        movieDataResultLive.setValue(movie);
+    public LiveData<com.achmad.madesubmittion.favorite.data.remote.model.tvshow.Result> getTvShowDb(int id) {
+        uriWithId = Uri.parse(TVSHOW_URI + "/" + id);
+        Cursor cursor = application.getContentResolver().query(uriWithId, null, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            tvshowDataResultLive.postValue(MappingHelper.mapTvShowCursorToObject(cursor));
+            cursor.close();
+        } else {
+            tvshowDataResultLive.postValue(null);
+        }
+        return tvshowDataResultLive;
     }
+
     LiveData<Result> getMovieRepository() {
         return movieDataResultLive;
     }
 
 
-    LiveData<List<com.achmad.madesubmittion.favorite.data.remote.model.tvshow.Result>> getTvShowRepository() {
-        return mAllTvShow;
+    LiveData<com.achmad.madesubmittion.favorite.data.remote.model.tvshow.Result> getTvShowRepository() {
+        return tvshowDataResultLive;
     }
 
     public void onFavoriteClicked() {
