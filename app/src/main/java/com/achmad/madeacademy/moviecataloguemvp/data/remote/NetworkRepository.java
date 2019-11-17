@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -144,6 +145,15 @@ public class NetworkRepository {
         protected ArrayList<Result> doInBackground(Void... voids) {
             Context context = weakContext.get();
             Cursor dataCursor = context.getContentResolver().query(DiscoverContract.MOVIE_URI, null, null, null, null);
+            if (dataCursor == null) {
+                Log.d("Provider", "kosong");
+            } else if (dataCursor.getCount() < 1) {
+                Log.d("provider", "rahono");
+            } else {
+                while (dataCursor.moveToNext()) {
+                    Log.w("...Provider...", dataCursor.getString(0) + "-" + dataCursor.getString(1) + "-" + dataCursor.getString(2));
+                }
+            }
             return MappingHelper.mapCursorToAlMovie(Objects.requireNonNull(dataCursor));
         }
 

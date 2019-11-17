@@ -1,4 +1,4 @@
-package com.achmad.madeacademy.moviecataloguemvp.ui.discover.adapter;
+package com.achmad.madesubmittion.favorite.ui.discover.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,36 +11,30 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.achmad.madeacademy.moviecataloguemvp.R;
-import com.achmad.madeacademy.moviecataloguemvp.data.remote.model.movie.Result;
-import com.achmad.madeacademy.moviecataloguemvp.utils.BaseViewHolder;
+import com.achmad.madesubmittion.favorite.R;
+import com.achmad.madesubmittion.favorite.data.remote.model.tvshow.Result;
+import com.achmad.madesubmittion.favorite.utils.BaseViewHolder;
 import com.bumptech.glide.Glide;
 import com.github.lzyzsd.circleprogress.DonutProgress;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.achmad.madeacademy.moviecataloguemvp.utils.Const.POSTER_PATH;
-import static com.achmad.madeacademy.moviecataloguemvp.utils.Const.VIEW_TYPE_EMPTY;
-import static com.achmad.madeacademy.moviecataloguemvp.utils.Const.VIEW_TYPE_NORMAL;
+import static com.achmad.madesubmittion.favorite.utils.Const.POSTER_PATH;
+import static com.achmad.madesubmittion.favorite.utils.Const.VIEW_TYPE_EMPTY;
+import static com.achmad.madesubmittion.favorite.utils.Const.VIEW_TYPE_NORMAL;
 
-public class MovieAdapter extends RecyclerView.Adapter<BaseViewHolder> {
-    private final List<Result> mValues;
-    private final ArrayList<Result> mMovies = new ArrayList<>();
+public class TvShowAdapter extends RecyclerView.Adapter<BaseViewHolder> {
+    private final ArrayList<Result> mValues;
     private final OnFragmentInteractionListener mListener;
 
-    public MovieAdapter(List<Result> mValues, OnFragmentInteractionListener mListener) {
+    public TvShowAdapter(ArrayList<Result> mValues, OnFragmentInteractionListener mListener) {
         this.mValues = mValues;
         this.mListener = mListener;
     }
 
-    public List<Result> getListMovies() {
+    public List<Result> getListTvShow() {
         return mValues;
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull BaseViewHolder holder, int position) {
-        holder.onBind(position);
     }
 
     @NonNull
@@ -65,7 +59,11 @@ public class MovieAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         } else {
             return VIEW_TYPE_EMPTY;
         }
-//        return super.getItemViewType(position);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull BaseViewHolder holder, int position) {
+        holder.onBind(position);
     }
 
     @Override
@@ -77,13 +75,17 @@ public class MovieAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         }
     }
 
-    public class ViewHolder extends BaseViewHolder {
+    public interface OnFragmentInteractionListener {
+        void onFragmentInteraction(Result tvShow);
+    }
+
+    class ViewHolder extends BaseViewHolder {
         TextView tvTitle, tvRelease, tvOverview, tvMore;
         ImageView imgPhoto;
         DonutProgress dntProgress;
         ProgressBar progressBar;
 
-        ViewHolder(View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tv_title);
             tvRelease = itemView.findViewById(R.id.tv_date_release);
@@ -97,20 +99,20 @@ public class MovieAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         @Override
         public void onBind(int position) {
             super.onBind(position);
-            final Result movie = mValues.get(position);
+            final Result tvShow = mValues.get(position);
 
-            tvTitle.setText(movie.getTitle());
+            tvTitle.setText(tvShow.getName());
             final View.OnClickListener onClickListener = view -> mListener.onFragmentInteraction(mValues.get(getAdapterPosition()));
             tvTitle.setOnClickListener(onClickListener);
-            tvRelease.setText(movie.getReleaseDate());
-            dntProgress.setProgress((Math.round(movie.getVoteAverage() * 100)) / 10);
+            tvRelease.setText(tvShow.getFirstAirDate());
+            dntProgress.setProgress((Math.round(tvShow.getVoteAverage() * 100)) / 10);
             Glide.with(itemView.getContext())
-                    .load(POSTER_PATH + movie.getPosterPath())
+                    .load(POSTER_PATH + tvShow.getPosterPath())
                     .into(imgPhoto);
             imgPhoto.setOnClickListener(onClickListener);
-            tvOverview.setText(movie.getOverview());
+            tvOverview.setText(tvShow.getOverview());
             tvMore.setOnClickListener(onClickListener);
-            if (movie.getTitle() != null) {
+            if (tvShow.getOriginalName() != null) {
                 progressBar.setVisibility(View.GONE);
             } else {
                 progressBar.setVisibility(View.VISIBLE);
@@ -123,7 +125,7 @@ public class MovieAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         }
     }
 
-    public class EmptyViewHolder extends BaseViewHolder {
+    private class EmptyViewHolder extends BaseViewHolder {
         Button buttonRetry;
 
         EmptyViewHolder(View itemView) {
@@ -136,11 +138,4 @@ public class MovieAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
         }
     }
-
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Result movie);
-
-    }
-
-
 }

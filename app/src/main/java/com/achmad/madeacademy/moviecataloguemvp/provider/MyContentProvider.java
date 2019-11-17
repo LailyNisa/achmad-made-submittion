@@ -8,16 +8,16 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
 
-import com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverContract;
 import com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverDatabase;
+import com.achmad.madeacademy.moviecataloguemvp.utils.MappingHelper;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
 import static com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverContract.AUTHORITY;
-import static com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverContract.MOVIE_TABLE;
-import static com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverContract.TVSHOW_TABLE;
+import static com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverContract.MovieColumns.MOVIE_TABLE;
+import static com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverContract.TvShowColumns.TVSHOW_TABLE;
 
 public class MyContentProvider extends ContentProvider {
     private static final int MOVIE = 1;
@@ -80,7 +80,7 @@ public class MyContentProvider extends ContentProvider {
                 if (context == null) {
                     return null;
                 }
-                id = appDatabase.movieDao().insertMovieProvider(DiscoverContract.movieFromContentValues(values));
+                id = appDatabase.movieDao().insertMovieProvider(MappingHelper.fromContentValues(values));
                 context.getContentResolver().notifyChange(uri, null);
                 return ContentUris.withAppendedId(uri, id);
             case MOVIE_ID:
@@ -91,7 +91,7 @@ public class MyContentProvider extends ContentProvider {
                 if (context == null) {
                     return null;
                 }
-                id = appDatabase.tvShowDao().insertTvShowProvider(DiscoverContract.tvShowFromContentValues(values));
+                id = appDatabase.tvShowDao().insertTvShowProvider(MappingHelper.tvShowfromContentValues(values));
                 context.getContentResolver().notifyChange(uri, null);
                 return ContentUris.withAppendedId(uri, id);
             default:
@@ -103,6 +103,7 @@ public class MyContentProvider extends ContentProvider {
     public boolean onCreate() {
 //        appDatabase = Room.databaseBuilder(Objects.requireNonNull(getContext()), DiscoverDatabase.class, DISCOVER_DATABASE).build();
         appDatabase = DiscoverDatabase.getDatabase(getContext());
+        appDatabase.getOpenHelper().getWritableDatabase();
         return true;
     }
 
@@ -126,9 +127,26 @@ public class MyContentProvider extends ContentProvider {
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri);
         }
-//        Objects.requireNonNull(cursor).setNotificationUri(Objects.requireNonNull(context).getContentResolver(), uri);
         return cursor;
-
+//        final int code = sUriMatcher.match(uri);
+//        if (code == MOVIE || code == MOVIE_ID) {
+//            final Context context = getContext();
+//            if (context == null) {
+//                return null;
+//            }
+////            MenuDao menu = SampleDatabase.getInstance(context).menu();
+//            final Cursor cursor;
+//            if (code == MOVIE) {
+//                cursor = appDatabase.movieDao().getAllMovieCursor();
+//            } else {
+//                cursor = appDatabase.movieDao().selectMovie((int) ContentUris.parseId(uri));
+//            }
+//            cursor.setNotificationUri(context.getContentResolver(), uri);
+//            return cursor;
+//        } else {
+//            throw new IllegalArgumentException("Unknown URI: " + uri);
+//        }
+//        Objects.requireNonNull(cursor).setNotificationUri(Objects.requireNonNull(context).getContentResolver(), uri);
     }
 
     @Override

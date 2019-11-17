@@ -1,4 +1,4 @@
-package com.achmad.madeacademy.moviecataloguemvp.data.local;
+package com.achmad.madesubmittion.favorite.data.local;
 
 import android.net.Uri;
 import android.provider.BaseColumns;
@@ -18,6 +18,7 @@ public class DiscoverContract {
             .build();
 
     public DiscoverContract() {
+
     }
 
     public static final class MovieColumns implements BaseColumns {

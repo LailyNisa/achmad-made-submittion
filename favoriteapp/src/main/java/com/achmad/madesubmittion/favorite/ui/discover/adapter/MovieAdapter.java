@@ -1,4 +1,4 @@
-package com.achmad.madeacademy.moviecataloguemvp.ui.discover.adapter;
+package com.achmad.madesubmittion.favorite.ui.discover.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,18 +11,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.achmad.madeacademy.moviecataloguemvp.R;
-import com.achmad.madeacademy.moviecataloguemvp.data.remote.model.movie.Result;
-import com.achmad.madeacademy.moviecataloguemvp.utils.BaseViewHolder;
+import com.achmad.madesubmittion.favorite.R;
+import com.achmad.madesubmittion.favorite.data.remote.model.movie.Result;
+import com.achmad.madesubmittion.favorite.utils.BaseViewHolder;
 import com.bumptech.glide.Glide;
 import com.github.lzyzsd.circleprogress.DonutProgress;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.achmad.madeacademy.moviecataloguemvp.utils.Const.POSTER_PATH;
-import static com.achmad.madeacademy.moviecataloguemvp.utils.Const.VIEW_TYPE_EMPTY;
-import static com.achmad.madeacademy.moviecataloguemvp.utils.Const.VIEW_TYPE_NORMAL;
+import static com.achmad.madesubmittion.favorite.utils.Const.POSTER_PATH;
+import static com.achmad.madesubmittion.favorite.utils.Const.VIEW_TYPE_EMPTY;
+import static com.achmad.madesubmittion.favorite.utils.Const.VIEW_TYPE_NORMAL;
 
 public class MovieAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private final List<Result> mValues;
@@ -75,6 +75,11 @@ public class MovieAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         } else {
             return 1;
         }
+    }
+
+    public interface OnFragmentInteractionListener {
+        void onFragmentInteraction(Result movie);
+
     }
 
     public class ViewHolder extends BaseViewHolder {
@@ -135,11 +140,6 @@ public class MovieAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         protected void clear() {
 
         }
-    }
-
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Result movie);
-
     }
 
 

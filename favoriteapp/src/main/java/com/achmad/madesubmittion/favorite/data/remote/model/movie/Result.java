@@ -1,4 +1,4 @@
-package com.achmad.madeacademy.moviecataloguemvp.data.remote.model.movie;
+package com.achmad.madesubmittion.favorite.data.remote.model.movie;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -14,12 +14,28 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverContract.MOVIE_ID_COLUMN;
-import static com.achmad.madeacademy.moviecataloguemvp.data.local.DiscoverContract.MovieColumns.MOVIE_TABLE;
+import static com.achmad.madesubmittion.favorite.data.local.DiscoverContract.MOVIE_ID_COLUMN;
+import static com.achmad.madesubmittion.favorite.data.local.DiscoverContract.MovieColumns.MOVIE_TABLE;
 
 @Entity(tableName = MOVIE_TABLE)
 public class Result implements Parcelable {
 
+    public static final Creator<Result> CREATOR = new Creator<Result>() {
+        @Override
+        public Result createFromParcel(Parcel source) {
+            return new Result(source);
+        }
+
+        @Override
+        public Result[] newArray(int size) {
+            return new Result[size];
+        }
+    };
+    @PrimaryKey
+    @ColumnInfo(name = MOVIE_ID_COLUMN)
+    @SerializedName("id")
+    @Expose
+    public int id;
     @SerializedName("popularity")
     @Expose
     public float popularity;
@@ -29,22 +45,13 @@ public class Result implements Parcelable {
     @SerializedName("video")
     @Expose
     public boolean video;
-
     @ColumnInfo(name = "poster_path")
     @SerializedName("poster_path")
     @Expose
     public String posterPath;
-
-    @PrimaryKey
-    @ColumnInfo(name = MOVIE_ID_COLUMN)
-    @SerializedName("id")
-    @Expose
-    public int id;
-
     @SerializedName("adult")
     @Expose
     public boolean adult;
-
     @ColumnInfo(name = "backdrop_path")
     @SerializedName("backdrop_path")
     @Expose
@@ -59,26 +66,23 @@ public class Result implements Parcelable {
     @SerializedName("genre_ids")
     @Expose
     private List<Integer> genreIds = null;
-
     @ColumnInfo(name = "title")
     @SerializedName("title")
     @Expose
     public String title;
-
     @ColumnInfo(name = "vote_average")
     @SerializedName("vote_average")
     @Expose
     public float voteAverage;
-
     @ColumnInfo(name = "overview")
     @SerializedName("overview")
     @Expose
     public String overview;
-
     @ColumnInfo(name = "release_date")
     @SerializedName("release_date")
     @Expose
     public String releaseDate;
+
 
     @Ignore
     public Result(float popularity, int voteCount, boolean video, String posterPath, int id, boolean adult, String backdropPath, String originalLanguage, String originalTitle, String title, float voteAverage, String overview, String releaseDate) {
@@ -97,6 +101,26 @@ public class Result implements Parcelable {
         this.releaseDate = releaseDate;
     }
 
+    public Result() {
+    }
+
+    protected Result(Parcel in) {
+        this.popularity = in.readFloat();
+        this.voteCount = in.readInt();
+        this.video = in.readByte() != 0;
+        this.posterPath = in.readString();
+        this.id = in.readInt();
+        this.adult = in.readByte() != 0;
+        this.backdropPath = in.readString();
+        this.originalLanguage = in.readString();
+        this.originalTitle = in.readString();
+        this.genreIds = new ArrayList<>();
+        in.readList(this.genreIds, Integer.class.getClassLoader());
+        this.title = in.readString();
+        this.voteAverage = in.readFloat();
+        this.overview = in.readString();
+        this.releaseDate = in.readString();
+    }
 
     public float getPopularity() {
         return popularity;
@@ -232,37 +256,4 @@ public class Result implements Parcelable {
         dest.writeString(this.overview);
         dest.writeString(this.releaseDate);
     }
-
-    public Result() {
-    }
-
-    protected Result(Parcel in) {
-        this.popularity = in.readFloat();
-        this.voteCount = in.readInt();
-        this.video = in.readByte() != 0;
-        this.posterPath = in.readString();
-        this.id = in.readInt();
-        this.adult = in.readByte() != 0;
-        this.backdropPath = in.readString();
-        this.originalLanguage = in.readString();
-        this.originalTitle = in.readString();
-        this.genreIds = new ArrayList<>();
-        in.readList(this.genreIds, Integer.class.getClassLoader());
-        this.title = in.readString();
-        this.voteAverage = in.readFloat();
-        this.overview = in.readString();
-        this.releaseDate = in.readString();
-    }
-
-    public static final Parcelable.Creator<Result> CREATOR = new Parcelable.Creator<Result>() {
-        @Override
-        public Result createFromParcel(Parcel source) {
-            return new Result(source);
-        }
-
-        @Override
-        public Result[] newArray(int size) {
-            return new Result[size];
-        }
-    };
 }

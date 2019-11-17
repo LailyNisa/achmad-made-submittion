@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">FavoriteApp</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tv_movie">Ini movie</string>
+    <string name="value_tv_judul">Lion King</string>
+    <string name="value_tv_releasedate">July 19, 2019</string>
+    <string name="value_overview">Simba idolises his father, King Mufasa, and takes to heart his own royal destiny. But not everyone in the kingdom celebrates the new cub\'s arrival. Scar, Mufasa\'s brother—and former heir to the throne—has plans…</string>
+    <string name="value_more_info">More Info</string>
+    <string name="value_count_photos">6 Photos</string>
+    <string name="value_releasedate">19 August 2019</string>
+    <string name="value_btn">Tonton Sekarang</string>
+    <string name="field_penggalang">Featured Actor</string>
+    <string name="value_judul">Simba</string>
+    <string name="value_name">John Maer</string>
+    <string name="cds_img_poster">Movie Poster</string>
+    <string name="Action_sort">Sort by</string>
+    <string name="sort_popular">Popularity</string>
+    <string name="sort_rate">Rating</string>
+    <string name="sort_favorite">Your Favorite</string>
+    <string name="menu_setting_language">Setting Language</string>
+    <string name="btn_favorite">favorite</string>
+    <string name="label_user_score">User Score</string>
+    <string name="tt_btn_favorite_detail">Mark as Favorite</string>
+    <string name="cd_backdrop_movie">Backdrop Movie</string>
+    <string name="lbl_overview">Overview</string>
+    <string name="tablayout_movie">Movies</string>
+    <string name="tablayout_tvshow">Tv Show</string>
+    <string name="label_btn_empty_connection">No Data Found</string>
+    <string name="menu_sort_order">Sort type</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Sort movie/tvShow</string>
+
+    <!-- Messages Preferences -->
+    <string name="reply_title">Sort by</string>
+    <!-- API Error message -->
+    <string name="error_401">Invalid API key: You must be granted a valid key.</string>
+    <string name="error_404">The resource you requested could not be found.</string>
+
+</resources>

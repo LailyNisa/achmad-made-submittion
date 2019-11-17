@@ -15,6 +15,7 @@ import java.util.List;
 
 public class MovieViewModel extends AndroidViewModel {
     private MutableLiveData<Movie> mutableLiveData;
+    private MutableLiveData<Result> mutableLiveDataMovie;
     private LiveData<List<Result>> mutableMovieData;
     private LiveData<Integer> mutableErrorCode;
     private NetworkRepository networkRepository;
@@ -52,6 +53,7 @@ public class MovieViewModel extends AndroidViewModel {
     LiveData<List<Result>> getMovieDb() {
         return mutableMovieData;
     }
+
 
     LiveData<Integer> getCodeErro() {
         mutableErrorCode = networkRepository.getErrorCode();
