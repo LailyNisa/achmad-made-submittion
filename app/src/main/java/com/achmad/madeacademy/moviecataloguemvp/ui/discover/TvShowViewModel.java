@@ -23,22 +23,19 @@ public class TvShowViewModel extends AndroidViewModel {
         networkRepository = new NetworkRepository(application);
     }
 
-    public void initPopular() {
-        if (mutableTvShowData != null) {
-            return;
-        }
+    void initTvSearch(String search) {
+        mutableTvShowData = networkRepository.getTvShowSearch(search);
+    }
+
+    void initPopular() {
         mutableTvShowData = networkRepository.getTvShow("popularity.desc");
     }
 
-    public void initTopRated() {
-        if (mutableTvShowData != null) {
-            return;
-        }
-
+    void initTopRated() {
         mutableTvShowData = networkRepository.getTvShow("vote_average.desc");
     }
 
-    public void initDb() {
+    void initDb() {
         if (liveShowData != null) {
             return;
         }

@@ -55,7 +55,7 @@ public class NetworkRepository {
         final MutableLiveData<Movie> movieData = new MutableLiveData<>();
         movieApi.getMovie(sort).enqueue(new Callback<Movie>() {
             @Override
-            public void onResponse(Call<Movie> call, Response<Movie> response) {
+            public void onResponse(@NotNull Call<Movie> call, @NotNull Response<Movie> response) {
                 if (response.isSuccessful()) {
                     movieData.setValue(response.body());
                 } else {
@@ -64,11 +64,50 @@ public class NetworkRepository {
             }
 
             @Override
-            public void onFailure(Call<Movie> call, Throwable t) {
+            public void onFailure(@NotNull Call<Movie> call, @NotNull Throwable t) {
                 movieData.setValue(null);
             }
         });
         return movieData;
+    }
+
+    public MutableLiveData<Movie> getMovieSearch(String search) {
+        final MutableLiveData<Movie> movieData = new MutableLiveData<>();
+        movieApi.getMovieSearch(search).enqueue(new Callback<Movie>() {
+            @Override
+            public void onResponse(@NotNull Call<Movie> call, @NotNull Response<Movie> response) {
+                if (response.isSuccessful()) {
+                    movieData.setValue(response.body());
+                } else {
+                    codeError.setValue(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<Movie> call, @NotNull Throwable t) {
+                movieData.setValue(null);
+            }
+        });
+        return movieData;
+    }
+
+    public MutableLiveData<TvShow> getTvShowSearch(String search) {
+        final MutableLiveData<TvShow> tvShowMutableLiveData = new MutableLiveData<>();
+        movieApi.getTvShowSearch(search).enqueue(new Callback<TvShow>() {
+
+            @Override
+            public void onResponse(@NotNull Call<TvShow> call, @NotNull Response<TvShow> response) {
+                if (response.isSuccessful()) {
+                    tvShowMutableLiveData.setValue(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<TvShow> call, @NotNull Throwable t) {
+                tvShowMutableLiveData.setValue(null);
+            }
+        });
+        return tvShowMutableLiveData;
     }
 
     public MutableLiveData<TvShow> getTvShow(String sort) {
@@ -76,7 +115,7 @@ public class NetworkRepository {
         movieApi.getTvShow(sort).enqueue(new Callback<TvShow>() {
 
             @Override
-            public void onResponse(Call<TvShow> call, Response<TvShow> response) {
+            public void onResponse(@NotNull Call<TvShow> call, @NotNull Response<TvShow> response) {
                 if (response.isSuccessful()) {
                     tvShowMutableLiveData.setValue(response.body());
                 }

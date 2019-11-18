@@ -58,6 +58,7 @@ public class MovieAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         }
     }
 
+
     @Override
     public int getItemViewType(int position) {
         if (mValues != null && mValues.size() > 0) {

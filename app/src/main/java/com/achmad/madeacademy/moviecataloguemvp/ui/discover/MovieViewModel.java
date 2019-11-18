@@ -25,21 +25,25 @@ public class MovieViewModel extends AndroidViewModel {
         networkRepository = new NetworkRepository(application);
     }
 
-    public void initPopular() {
-        if (mutableLiveData != null) {
-            return;
-        }
+    void initMovieSearch(String search) {
+        mutableLiveData = networkRepository.getMovieSearch(search);
+    }
+
+    void initPopular() {
+//        if (mutableLiveData != null) {
+//            return;
+//        }
         mutableLiveData = networkRepository.getMovie("popularity.desc");
     }
 
-    public void initTopRated() {
-        if (mutableLiveData != null) {
-            return;
-        }
+    void initTopRated() {
+//        if (mutableLiveData != null) {
+//            return;
+//        }
         mutableLiveData = networkRepository.getMovie("vote_average.desc");
     }
 
-    public void initDb() {
+    void initDb() {
         if (mutableMovieData != null) {
             return;
         }
