@@ -74,13 +74,7 @@ public class TvShowFragment extends Fragment {
         tvShowViewModel = new ViewModelProvider(this).get(TvShowViewModel.class);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Objects.requireNonNull(getActivity()));
         sortOrder = preferences.getString("reply", "popular_movies");
-        if (sortOrder.equals("popular_movies")) {
-            initPopular();
-        } else if (sortOrder.equals("top_rated")) {
-            initTopRated();
-        } else {
-            initDb();
-        }
+        reloadData();
         setRvMovies();
         mAdapter.notifyDataSetChanged();
     }
@@ -170,18 +164,22 @@ public class TvShowFragment extends Fragment {
                 }
             });
             searchView.setOnCloseListener(() -> {
-                if (sortOrder.equals("popular_movies")) {
-                    initPopular();
-                } else if (sortOrder.equals("top_rated")) {
-                    initTopRated();
-                } else {
-                    initDb();
-                }
+                reloadData();
                 return false;
             });
+            searchView.setOnFocusChangeListener((view, b) -> reloadData());
         }
-
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    private void reloadData() {
+        if (sortOrder.equals("popular_movies")) {
+            initPopular();
+        } else if (sortOrder.equals("top_rated")) {
+            initTopRated();
+        } else {
+            initDb();
+        }
     }
 
     @Override

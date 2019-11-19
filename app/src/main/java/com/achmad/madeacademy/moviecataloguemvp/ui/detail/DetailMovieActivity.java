@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -92,6 +93,10 @@ public class DetailMovieActivity extends AppCompatActivity {
         Glide.with(this)
                 .load(BACKDROP_PATH + movie.getBackdropPath())
                 .into(imgBackdrop);
+        imgButton.setOnLongClickListener(view -> {
+            ShowMessageForLongClick("Click for favorite this movies");
+            return true;
+        });
         imgButton.setOnClickListener(view -> {
             mViewModel.onFavoriteClicked();
             if (!mViewModel.isFavorite()) {
@@ -129,6 +134,10 @@ public class DetailMovieActivity extends AppCompatActivity {
         Glide.with(this)
                 .load(BACKDROP_PATH + tvShow.getBackdropPath())
                 .into(imgBackdrop);
+        imgButton.setOnLongClickListener(view -> {
+            ShowMessageForLongClick("Click for favorite this movies");
+            return true;
+        });
         imgButton.setOnClickListener(view -> {
             mViewModel.onFavoriteClicked();
             if (!mViewModel.isFavorite()) {
@@ -153,6 +162,9 @@ public class DetailMovieActivity extends AppCompatActivity {
         );
     }
 
+    private void ShowMessageForLongClick(String text) {
+        Toast.makeText(this, text, Toast.LENGTH_LONG).show();
+    }
     private void handleCollapsedToolbarTitle() {
         appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             boolean isShow = true;

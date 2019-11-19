@@ -29,7 +29,6 @@ import com.achmad.madeacademy.moviecataloguemvp.data.remote.model.movie.Result;
 import com.achmad.madeacademy.moviecataloguemvp.pref.SettingsActivity;
 import com.achmad.madeacademy.moviecataloguemvp.ui.discover.adapter.MovieAdapter;
 import com.achmad.madeacademy.moviecataloguemvp.utils.CommonUtils;
-import com.ferfalk.simplesearchview.SimpleSearchView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -45,8 +44,6 @@ public class MovieFragment extends Fragment {
     private MovieAdapter.OnFragmentInteractionListener mListener;
     private MovieAdapter mAdapter;
     private MovieViewModel movieViewModel;
-    private SimpleSearchView searchView;
-    private SimpleSearchView.OnQueryTextListener queryTextListener;
     private String sortOrder;
     public MovieFragment() {
     }
@@ -70,17 +67,10 @@ public class MovieFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
         rvMovies = Objects.requireNonNull(getActivity()).findViewById(R.id.rv_movies);
-        CommonUtils.showLoading(getActivity());
         movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         sortOrder = preferences.getString("reply", "popular_movies");
-        if (sortOrder.equals("popular_movies")){
-            initPopular();
-        } else if (sortOrder.equals("top_rated")) {
-            initTopRated();
-        }else {
-            initDb();
-        }
+        reloadData();
         movieViewModel.getCodeErro().observe(getViewLifecycleOwner(), integer -> {
                     switch (integer) {
                         case 401: {
@@ -184,17 +174,23 @@ public class MovieFragment extends Fragment {
                 }
             });
             searchView.setOnCloseListener(() -> {
-                if (sortOrder.equals("popular_movies")) {
-                    initPopular();
-                } else if (sortOrder.equals("top_rated")) {
-                    initTopRated();
-                } else {
-                    initDb();
-                }
+                reloadData();
                 return false;
             });
+            searchView.setOnFocusChangeListener((view, b) -> reloadData());
         }
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    private void reloadData() {
+        CommonUtils.showLoading(getActivity());
+        if (sortOrder.equals("popular_movies")) {
+            initPopular();
+        } else if (sortOrder.equals("top_rated")) {
+            initTopRated();
+        } else {
+            initDb();
+        }
     }
 
     @Override

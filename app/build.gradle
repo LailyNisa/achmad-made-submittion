@@ -23,7 +23,7 @@ android {
     }
 
     buildTypes.each {
-        it.buildConfigField 'String', 'API_KEY', '"3cb2fe68a8656785a033a36a33812000"'
+        it.buildConfigField 'String', 'API_KEY', '"yourapikey"'
     }
 }
 
@@ -60,6 +60,7 @@ dependencies {
 
 // UI
     implementation "com.google.android.material:material:$rootProject.materialVersion"
+    implementation 'com.github.yash786agg:AnimatedLoadingIndicator:v1.3'
 
 // Testing
     androidTestImplementation "androidx.arch.core:core-testing:$rootProject.coreTestingVersion"

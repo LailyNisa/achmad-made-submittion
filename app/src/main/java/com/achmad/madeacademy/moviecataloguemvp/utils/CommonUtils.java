@@ -1,6 +1,6 @@
 package com.achmad.madeacademy.moviecataloguemvp.utils;
 
-import android.app.ProgressDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -8,20 +8,19 @@ import android.graphics.drawable.ColorDrawable;
 import com.achmad.madeacademy.moviecataloguemvp.R;
 
 public class CommonUtils {
-    private static ProgressDialog progressDialog;
+    private static Dialog progressDialog;
     private static final String TAG = "CommonUtils";
 
     public CommonUtils() {
     }
 
-    public static ProgressDialog showLoading(Context context) {
-        progressDialog = new ProgressDialog(context);
+    public static Dialog showLoading(Context context) {
+        progressDialog = new Dialog(context);
         progressDialog.show();
         if (progressDialog.getWindow() != null) {
             progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
         progressDialog.setContentView(R.layout.progress_dialog);
-        progressDialog.setIndeterminate(true);
         progressDialog.setCancelable(false);
         progressDialog.setCanceledOnTouchOutside(false);
         return progressDialog;

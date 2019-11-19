@@ -34,4 +34,5 @@
     <string name="error_401">API KEY tidak valid: Anda harus diberikan API KEY yang valid.</string>
     <string name="error_404">Sumber daya yang Anda minta tidak dapat ditemukan.</string>
     <string name="action_search">Cari</string>
+    <string name="loading_text">Memuat…</string>
 </resources>
