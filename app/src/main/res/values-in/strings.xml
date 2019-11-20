@@ -35,4 +35,9 @@
     <string name="error_404">Sumber daya yang Anda minta tidak dapat ditemukan.</string>
     <string name="action_search">Cari</string>
     <string name="loading_text">Memuat…</string>
+    <string name="setting_notification_title">Pengaturan Notifikasi</string>
+    <string name="setting_release_title">Pengingat Release</string>
+    <string name="setting_release_value">Pengingat menunjukkan film yang dirilis hari ini</string>
+    <string name="setting_daily_title">Pengingat Harian</string>
+    <string name="setting_daily_value">Pengingat untuk kembali ke aplikasi</string>
 </resources>

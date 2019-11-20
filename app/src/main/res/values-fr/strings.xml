@@ -36,4 +36,9 @@
     <string name="error_404">La ressource que vous avez demandée est introuvable.</string>
     <string name="action_search">chercher</string>
     <string name="loading_text">Chargement…</string>
+    <string name="setting_notification_title">Paramètre de notification</string>
+    <string name="setting_release_title">Rappel de sortie</string>
+    <string name="setting_release_value">Rappel du film sorti aujourd\'hui</string>
+    <string name="setting_daily_title">Rappel quotidien</string>
+    <string name="setting_daily_value">Rappel pour le retour à l\'application</string>
 </resources>

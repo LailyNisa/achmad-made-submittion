@@ -1,11 +1,14 @@
 package com.achmad.madeacademy.moviecataloguemvp.ui.discover;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.achmad.madeacademy.moviecataloguemvp.R;
@@ -14,6 +17,7 @@ import com.achmad.madeacademy.moviecataloguemvp.ui.detail.DetailMovieActivity;
 import com.achmad.madeacademy.moviecataloguemvp.ui.discover.adapter.DiscoverTabLayoutAdapter;
 import com.achmad.madeacademy.moviecataloguemvp.ui.discover.adapter.MovieAdapter;
 import com.achmad.madeacademy.moviecataloguemvp.ui.discover.adapter.TvShowAdapter;
+import com.achmad.madeacademy.moviecataloguemvp.utils.AlarmReceiver;
 import com.google.android.material.tabs.TabLayout;
 
 public class DiscoverActivity extends AppCompatActivity implements MovieAdapter.OnFragmentInteractionListener, TvShowAdapter.OnFragmentInteractionListener {
@@ -22,6 +26,8 @@ public class DiscoverActivity extends AppCompatActivity implements MovieAdapter.
     ViewPager viewPager;
     TabLayout tabLayout;
     Toolbar toolbar;
+    Boolean dailyReminder;
+    private AlarmReceiver alarmReceiver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +43,29 @@ public class DiscoverActivity extends AppCompatActivity implements MovieAdapter.
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Movie Catalogue");
         }
+        alarmReceiver = new AlarmReceiver();
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        dailyReminder = preferences.getBoolean("daily_notification", false);
+        boolean setReminder = alarmReceiver.isAlarmSet(this, AlarmReceiver.TYPE_REPEATING);
+        if (dailyReminder) {
+            String repeatTime = "14:17";
+            String repeatMessage = "Hy I Miss you";
+            if (setReminder) {
+                Log.d("ReminderAlarm", "Already set");
+            } else {
+                alarmReceiver.setRepeatingAlarm(this, AlarmReceiver.TYPE_REPEATING,
+                        repeatTime, repeatMessage);
+            }
+
+        } else {
+            if (setReminder) {
+                alarmReceiver.cancelAlarm(this, AlarmReceiver.TYPE_REPEATING);
+            } else {
+                Log.d("ReminderAlarm", "No Alarm Set");
+            }
+
+        }
+
     }
 
     @Override
@@ -66,4 +95,6 @@ public class DiscoverActivity extends AppCompatActivity implements MovieAdapter.
         moveToDetail.putExtra(DetailMovieActivity.EXTRA_OBJECT_TVSHOW, tvShow);
         startActivity(moveToDetail);
     }
+
+
 }

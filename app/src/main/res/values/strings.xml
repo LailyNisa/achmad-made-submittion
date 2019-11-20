@@ -41,5 +41,10 @@
     <string name="error_401">Invalid API key: You must be granted a valid key.</string>
     <string name="error_404">The resource you requested could not be found.</string>
     <string name="loading_text">Loading…</string>
+    <string name="setting_notification_title">Notification Setting</string>
+    <string name="setting_release_title">Release Reminder</string>
+    <string name="setting_release_value">Reminder showing the movie that release today</string>
+    <string name="setting_daily_title">Daily Reminder</string>
+    <string name="setting_daily_value">Reminder for return to app</string>
 
 </resources>

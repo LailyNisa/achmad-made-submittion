@@ -15,9 +15,21 @@
   -->
 
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <PreferenceCategory app:title="@string/messages_header">
-
+    <PreferenceCategory
+        app:key="notification_category"
+        app:title="@string/setting_notification_title">
+        <SwitchPreferenceCompat
+            app:key="release_notification"
+            app:summary="@string/setting_release_value"
+            app:title="@string/setting_release_title" />
+        <SwitchPreferenceCompat
+            app:key="daily_notification"
+            app:summary="@string/setting_daily_value"
+            app:title="@string/setting_daily_title" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        app:key="sort_category"
+        app:title="@string/messages_header">
         <ListPreference
             app:defaultValue="reply"
             app:entries="@array/reply_entries"

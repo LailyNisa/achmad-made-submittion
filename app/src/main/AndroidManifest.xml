@@ -19,6 +19,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <receiver
+            android:name=".utils.AlarmReceiver"
+            android:enabled="true"
+            android:exported="true"></receiver>
+
         <provider
             android:name=".provider.MyContentProvider"
             android:authorities="com.achmad.madeacademy.moviecataloguemvp"
