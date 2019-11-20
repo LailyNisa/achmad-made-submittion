@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -26,7 +27,9 @@ public class DiscoverActivity extends AppCompatActivity implements MovieAdapter.
     ViewPager viewPager;
     TabLayout tabLayout;
     Toolbar toolbar;
-    Boolean dailyReminder;
+    boolean dailyReminder;
+    boolean releaseReminder;
+    boolean isReminderSet;
     private AlarmReceiver alarmReceiver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,25 +49,10 @@ public class DiscoverActivity extends AppCompatActivity implements MovieAdapter.
         alarmReceiver = new AlarmReceiver();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         dailyReminder = preferences.getBoolean("daily_notification", false);
-        boolean setReminder = alarmReceiver.isAlarmSet(this, AlarmReceiver.TYPE_REPEATING);
-        if (dailyReminder) {
-            String repeatTime = "14:17";
-            String repeatMessage = "Hy I Miss you";
-            if (setReminder) {
-                Log.d("ReminderAlarm", "Already set");
-            } else {
-                alarmReceiver.setRepeatingAlarm(this, AlarmReceiver.TYPE_REPEATING,
-                        repeatTime, repeatMessage);
-            }
-
-        } else {
-            if (setReminder) {
-                alarmReceiver.cancelAlarm(this, AlarmReceiver.TYPE_REPEATING);
-            } else {
-                Log.d("ReminderAlarm", "No Alarm Set");
-            }
-
-        }
+        releaseReminder = preferences.getBoolean("release_notification", false);
+        isReminderSet = alarmReceiver.isAlarmSet(this, AlarmReceiver.TYPE_REPEATING);
+        loadReleaseReminder();
+        loadDailyReminder();
 
     }
 
@@ -96,5 +84,31 @@ public class DiscoverActivity extends AppCompatActivity implements MovieAdapter.
         startActivity(moveToDetail);
     }
 
+    private void loadDailyReminder() {
+        if (dailyReminder) {
+            String repeatTime = "08:00";
+            String repeatMessage = "Hy I Miss you";
+            if (isReminderSet) {
+                Log.d("ReminderAlarm", "Already set");
+            } else {
+                alarmReceiver.setRepeatingAlarm(this, AlarmReceiver.TYPE_REPEATING,
+                        repeatTime, repeatMessage);
+            }
+        } else {
+            if (isReminderSet) {
+                alarmReceiver.cancelAlarm(this, AlarmReceiver.TYPE_REPEATING);
+            } else {
+                Log.d("ReminderAlarm", "No Alarm Set");
+            }
+        }
+    }
+
+    private void loadReleaseReminder() {
+        if (releaseReminder) {
+            Toast.makeText(this, "Ada release", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Gak ada release", Toast.LENGTH_SHORT).show();
+        }
+    }
 
 }

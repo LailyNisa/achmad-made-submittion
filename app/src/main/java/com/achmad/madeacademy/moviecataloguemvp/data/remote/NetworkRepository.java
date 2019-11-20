@@ -62,7 +62,6 @@ public class NetworkRepository {
                     codeError.setValue(response.code());
                 }
             }
-
             @Override
             public void onFailure(@NotNull Call<Movie> call, @NotNull Throwable t) {
                 movieData.setValue(null);
@@ -72,6 +71,26 @@ public class NetworkRepository {
     }
 
     public MutableLiveData<Movie> getMovieSearch(String search) {
+        final MutableLiveData<Movie> movieData = new MutableLiveData<>();
+        movieApi.getMovieSearch(search).enqueue(new Callback<Movie>() {
+            @Override
+            public void onResponse(@NotNull Call<Movie> call, @NotNull Response<Movie> response) {
+                if (response.isSuccessful()) {
+                    movieData.setValue(response.body());
+                } else {
+                    codeError.setValue(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<Movie> call, @NotNull Throwable t) {
+                movieData.setValue(null);
+            }
+        });
+        return movieData;
+    }
+
+    public MutableLiveData<Movie> getMovieSearchByDate(String search) {
         final MutableLiveData<Movie> movieData = new MutableLiveData<>();
         movieApi.getMovieSearch(search).enqueue(new Callback<Movie>() {
             @Override

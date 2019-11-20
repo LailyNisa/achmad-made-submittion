@@ -43,7 +43,7 @@ public class MovieFragment extends Fragment {
     private ArrayList<Result> movieResult = new ArrayList<>();
     private MovieAdapter.OnFragmentInteractionListener mListener;
     private MovieAdapter mAdapter;
-    private MovieViewModel movieViewModel;
+    private DiscoverViewModel movieViewModel;
     private String sortOrder;
     public MovieFragment() {
     }
@@ -67,7 +67,7 @@ public class MovieFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
         rvMovies = Objects.requireNonNull(getActivity()).findViewById(R.id.rv_movies);
-        movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
+        movieViewModel = new ViewModelProvider(this).get(DiscoverViewModel.class);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         sortOrder = preferences.getString("reply", "popular_movies");
         reloadData();
@@ -100,7 +100,7 @@ public class MovieFragment extends Fragment {
 
 
     private void initPopular() {
-        movieViewModel.initPopular();
+        movieViewModel.initPopularMovie();
         movieViewModel.getMovieRepository().observe(getViewLifecycleOwner(), movieResponse -> {
             CommonUtils.hideLoading();
             movieResult.clear();
@@ -116,7 +116,7 @@ public class MovieFragment extends Fragment {
     }
 
     private void initTopRated() {
-        movieViewModel.initTopRated();
+        movieViewModel.initTopRatedMovie();
         movieViewModel.getMovieRepository().observe(getViewLifecycleOwner(), movieResponse -> {
             CommonUtils.hideLoading();
             movieResult.clear();
@@ -126,6 +126,20 @@ public class MovieFragment extends Fragment {
                 Log.d("Exception", Objects.requireNonNull(e.getMessage()));
             }
 
+            setRvMovies();
+            mAdapter.notifyDataSetChanged();
+        });
+    }
+
+    private void initDb() {
+        movieViewModel.initDbMovie();
+        movieViewModel.getMovieDb().observe(getViewLifecycleOwner(), movieResponse -> {
+            CommonUtils.hideLoading();
+            try {
+                movieResult.addAll(movieResponse);
+            } catch (Exception e) {
+                Log.d("Exception", Objects.requireNonNull(e.getMessage()));
+            }
             setRvMovies();
             mAdapter.notifyDataSetChanged();
         });
@@ -146,29 +160,22 @@ public class MovieFragment extends Fragment {
         }
 
         if (searchView != null) {
+            searchView.setQuery(movieViewModel.getTextMovie().getValue(), true);
             searchView.setQueryHint(getString(R.string.action_search));
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
                 @Override
                 public boolean onQueryTextSubmit(String query) {
-                    return false;
+                    loadMovieSearch();
+                    return true;
                 }
 
                 @Override
                 public boolean onQueryTextChange(String newText) {
                     // Here is where we are going to implement the filter logic
                     if (!newText.isEmpty()) {
-                        movieViewModel.initMovieSearch(newText);
-                        movieViewModel.getMovieRepository().observe(getViewLifecycleOwner(), movieResponse -> {
-                            movieResult.clear();
-                            try {
-                                movieResult.addAll(movieResponse.getResults());
-                            } catch (Exception e) {
-                                Log.d("Exception", Objects.requireNonNull(e.getMessage()));
-                            }
-                        });
-                        setRvMovies();
-                        mAdapter.notifyDataSetChanged();
+                        movieViewModel.setTextMovieSearch(newText);
+                        loadMovieSearch();
                     }
                     return true;
                 }
@@ -177,11 +184,23 @@ public class MovieFragment extends Fragment {
                 reloadData();
                 return false;
             });
-            searchView.setOnFocusChangeListener((view, b) -> reloadData());
         }
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    private void loadMovieSearch() {
+        movieViewModel.initMovieSearch();
+        movieViewModel.getMovieRepository().observe(getViewLifecycleOwner(), movieResponse -> {
+            movieResult.clear();
+            try {
+                movieResult.addAll(movieResponse.getResults());
+            } catch (Exception e) {
+                Log.d("Exception", Objects.requireNonNull(e.getMessage()));
+            }
+        });
+        setRvMovies();
+        mAdapter.notifyDataSetChanged();
+    }
     private void reloadData() {
         CommonUtils.showLoading(getActivity());
         if (sortOrder.equals("popular_movies")) {
@@ -230,19 +249,4 @@ public class MovieFragment extends Fragment {
             rvMovies.setAdapter(mAdapter);
         }
     }
-
-    private void initDb() {
-        movieViewModel.initDb();
-        movieViewModel.getMovieDb().observe(getViewLifecycleOwner(), movieResponse -> {
-            CommonUtils.hideLoading();
-            try {
-                movieResult.addAll(movieResponse);
-            } catch (Exception e) {
-                Log.d("Exception", Objects.requireNonNull(e.getMessage()));
-            }
-            setRvMovies();
-            mAdapter.notifyDataSetChanged();
-        });
-    }
-
 }

@@ -41,7 +41,7 @@ public class TvShowFragment extends Fragment {
     private ArrayList<Result> tvShowList = new ArrayList<>();
     private TvShowAdapter.OnFragmentInteractionListener mListener;
     private TvShowAdapter mAdapter;
-    private TvShowViewModel tvShowViewModel;
+    private DiscoverViewModel tvShowViewModel;
     private String sortOrder;
     public TvShowFragment() {
         // Required empty public constructor
@@ -71,7 +71,7 @@ public class TvShowFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        tvShowViewModel = new ViewModelProvider(this).get(TvShowViewModel.class);
+        tvShowViewModel = new ViewModelProvider(this).get(DiscoverViewModel.class);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Objects.requireNonNull(getActivity()));
         sortOrder = preferences.getString("reply", "popular_movies");
         reloadData();
@@ -80,7 +80,7 @@ public class TvShowFragment extends Fragment {
     }
 
     private void initPopular() {
-        tvShowViewModel.initPopular();
+        tvShowViewModel.initPopularTvShow();
         tvShowViewModel.getTvShowRepository().observe(getViewLifecycleOwner(), movieResponse -> {
             tvShowList.clear();
             try {
@@ -94,7 +94,7 @@ public class TvShowFragment extends Fragment {
     }
 
     private void initTopRated() {
-        tvShowViewModel.initTopRated();
+        tvShowViewModel.initTopRatedTvShow();
         tvShowViewModel.getTvShowRepository().observe(getViewLifecycleOwner(), movieResponse -> {
             tvShowList.clear();
             try {
@@ -107,7 +107,7 @@ public class TvShowFragment extends Fragment {
         });
     }
     private void initDb() {
-        tvShowViewModel.initDb();
+        tvShowViewModel.initDbTvShow();
         tvShowViewModel.getTvShowDb().observe(getViewLifecycleOwner(), movieResponse -> {
             CommonUtils.hideLoading();
             try {
@@ -128,48 +128,51 @@ public class TvShowFragment extends Fragment {
         } else {
             inflater.inflate(R.menu.search_menu_tvfragment, menu);
         }
-        androidx.appcompat.widget.SearchView searchView = null;
+        SearchView searchView = null;
         MenuItem item = menu.findItem(R.id.action_search_tvfragment);
-        if (item != null) {
-            searchView = (androidx.appcompat.widget.SearchView) item.getActionView();
-        }
+
+        searchView = (SearchView) item.getActionView();
 
         if (searchView != null) {
+            searchView.setQuery(tvShowViewModel.getTextTvSearch().getValue(), true);
+            searchView.setQueryHint(getString(R.string.action_search));
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-
                 @Override
                 public boolean onQueryTextSubmit(String query) {
-                    return false;
+                    loadTvSearch();
+                    return true;
                 }
-
                 @Override
                 public boolean onQueryTextChange(String newText) {
                     if (!newText.isEmpty()) {
-                        tvShowViewModel.initTvSearch(newText);
-                        tvShowViewModel.getTvShowRepository().observe(getViewLifecycleOwner(), tvShowResponse -> {
-                            tvShowList.clear();
-                            try {
-                                tvShowList.addAll(tvShowResponse.getResults());
-                            } catch (Exception e) {
-                                Log.d("Exception", Objects.requireNonNull(e.getMessage()));
-                            }
-                        });
-                        setRvMovies();
-                        mAdapter.notifyDataSetChanged();
-                        Log.i("onQueryTextTvSubmit", newText);
+                        tvShowViewModel.setTextTvSearch(newText);
+                        loadTvSearch();
                     }
                     // Here is where we are going to implement the filter logic
-
                     return true;
                 }
             });
             searchView.setOnCloseListener(() -> {
+                tvShowViewModel.setTextTvSearch("");
                 reloadData();
                 return false;
             });
-            searchView.setOnFocusChangeListener((view, b) -> reloadData());
         }
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    private void loadTvSearch() {
+        tvShowViewModel.initTvSearch();
+        tvShowViewModel.getTvShowRepository().observe(getViewLifecycleOwner(), tvShowResponse -> {
+            tvShowList.clear();
+            try {
+                tvShowList.addAll(tvShowResponse.getResults());
+            } catch (Exception e) {
+                Log.d("Exception", Objects.requireNonNull(e.getMessage()));
+            }
+        });
+        setRvMovies();
+        mAdapter.notifyDataSetChanged();
     }
 
     private void reloadData() {
