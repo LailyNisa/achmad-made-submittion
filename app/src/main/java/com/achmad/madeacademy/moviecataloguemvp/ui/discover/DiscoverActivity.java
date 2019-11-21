@@ -9,6 +9,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
 
@@ -21,6 +22,8 @@ import com.achmad.madeacademy.moviecataloguemvp.ui.discover.adapter.TvShowAdapte
 import com.achmad.madeacademy.moviecataloguemvp.utils.AlarmReceiver;
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.ArrayList;
+
 public class DiscoverActivity extends AppCompatActivity implements MovieAdapter.OnFragmentInteractionListener, TvShowAdapter.OnFragmentInteractionListener {
 
     DiscoverTabLayoutAdapter adapter;
@@ -30,7 +33,9 @@ public class DiscoverActivity extends AppCompatActivity implements MovieAdapter.
     boolean dailyReminder;
     boolean releaseReminder;
     boolean isReminderSet;
+    boolean isReminderReleaseSet;
     private AlarmReceiver alarmReceiver;
+    private DiscoverViewModel discoverViewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,10 +52,12 @@ public class DiscoverActivity extends AppCompatActivity implements MovieAdapter.
             getSupportActionBar().setTitle("Movie Catalogue");
         }
         alarmReceiver = new AlarmReceiver();
+        discoverViewModel = new ViewModelProvider(this).get(DiscoverViewModel.class);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         dailyReminder = preferences.getBoolean("daily_notification", false);
         releaseReminder = preferences.getBoolean("release_notification", false);
         isReminderSet = alarmReceiver.isAlarmSet(this, AlarmReceiver.TYPE_REPEATING);
+        isReminderReleaseSet = alarmReceiver.isAlarmSet(this, AlarmReceiver.TYPE_ONE_TIME);
         loadReleaseReminder();
         loadDailyReminder();
 
@@ -86,8 +93,8 @@ public class DiscoverActivity extends AppCompatActivity implements MovieAdapter.
 
     private void loadDailyReminder() {
         if (dailyReminder) {
-            String repeatTime = "08:00";
-            String repeatMessage = "Hy I Miss you";
+            String repeatTime = "15:31";
+            String repeatMessage = "Hy I Miss you i'm daily reminder";
             if (isReminderSet) {
                 Log.d("ReminderAlarm", "Already set");
             } else {
@@ -105,9 +112,28 @@ public class DiscoverActivity extends AppCompatActivity implements MovieAdapter.
 
     private void loadReleaseReminder() {
         if (releaseReminder) {
-            Toast.makeText(this, "Ada release", Toast.LENGTH_SHORT).show();
+            String repeatTime = "15:32";
+            String repeatMessage = "Hay release cooy";
+            ArrayList<Result> movieResult = new ArrayList<>();
+            discoverViewModel.initMovieReleaseToday("2019-01-31");
+            discoverViewModel.getMovieRelease().observe(this, movie -> {
+                movieResult.addAll(movie.getResults());
+            });
+            if (isReminderReleaseSet) {
+                Log.d("ReminderAlarm", "Already set");
+            } else {
+                alarmReceiver.setRepeatingAlarmRelease(this, AlarmReceiver.TYPE_ONE_TIME,
+                        repeatTime, repeatMessage);
+            }
+
         } else {
-            Toast.makeText(this, "Gak ada release", Toast.LENGTH_SHORT).show();
+            if (isReminderReleaseSet) {
+                alarmReceiver.cancelAlarm(this, AlarmReceiver.TYPE_ONE_TIME);
+            } else {
+                Log.d("ReminderAlarm", "No Alarm Set");
+                Toast.makeText(this, "Gak ada release", Toast.LENGTH_SHORT).show();
+            }
+
         }
     }
 

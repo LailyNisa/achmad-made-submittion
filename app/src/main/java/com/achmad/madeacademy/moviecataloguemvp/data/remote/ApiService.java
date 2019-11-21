@@ -11,6 +11,9 @@ public interface ApiService {
     @GET("discover/movie")
     Call<Movie> getMovie(@Query("sort_by") String sort);
 
+    @GET("discover/movie")
+    Call<Movie> getMovieByDate(@Query("primary_release_date.gte") String search1, @Query("primary_release_date.lte") String search2);
+
     @GET("discover/tv")
     Call<TvShow> getTvShow(@Query("sort_by") String sort);
 

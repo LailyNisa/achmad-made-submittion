@@ -115,7 +115,7 @@ public class DiscoverViewModel extends AndroidViewModel {
     Discover Activity DataSource
      */
     void initMovieReleaseToday(String date) {
-        mutableLiveDataMovieByDate = networkRepository.getMovieSearchByDate("vote_average.desc");
+        mutableLiveDataMovieByDate = networkRepository.getMovieSearchByDate(date);
     }
 
     LiveData<Movie> getMovieRelease() {
