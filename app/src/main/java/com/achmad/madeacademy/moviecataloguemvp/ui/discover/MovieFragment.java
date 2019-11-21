@@ -28,11 +28,15 @@ import com.achmad.madeacademy.moviecataloguemvp.R;
 import com.achmad.madeacademy.moviecataloguemvp.data.remote.model.movie.Result;
 import com.achmad.madeacademy.moviecataloguemvp.pref.SettingsActivity;
 import com.achmad.madeacademy.moviecataloguemvp.ui.discover.adapter.MovieAdapter;
+import com.achmad.madeacademy.moviecataloguemvp.utils.AlarmReceiver;
 import com.achmad.madeacademy.moviecataloguemvp.utils.CommonUtils;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -45,6 +49,11 @@ public class MovieFragment extends Fragment {
     private MovieAdapter mAdapter;
     private DiscoverViewModel movieViewModel;
     private String sortOrder;
+    private boolean dailyReminder;
+    private boolean releaseReminder;
+    private boolean isReminderSet;
+    private boolean isReminderReleaseSet;
+    private AlarmReceiver alarmReceiver;
     public MovieFragment() {
     }
 
@@ -68,8 +77,15 @@ public class MovieFragment extends Fragment {
         setHasOptionsMenu(true);
         rvMovies = Objects.requireNonNull(getActivity()).findViewById(R.id.rv_movies);
         movieViewModel = new ViewModelProvider(this).get(DiscoverViewModel.class);
+        alarmReceiver = new AlarmReceiver();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         sortOrder = preferences.getString("reply", "popular_movies");
+        dailyReminder = preferences.getBoolean("daily_notification", false);
+        releaseReminder = preferences.getBoolean("release_notification", false);
+        isReminderSet = alarmReceiver.isAlarmSet(getActivity(), AlarmReceiver.TYPE_DAILY);
+        isReminderReleaseSet = alarmReceiver.isAlarmSet(getActivity(), AlarmReceiver.TYPE_RELEASE);
+        loadReleaseReminder();
+        loadDailyReminder();
         reloadData();
         movieViewModel.getCodeErro().observe(getViewLifecycleOwner(), integer -> {
                     switch (integer) {
@@ -109,10 +125,10 @@ public class MovieFragment extends Fragment {
             } catch (Exception e) {
                 Log.d("Exception", Objects.requireNonNull(e.getMessage()));
             }
-
             setRvMovies();
             mAdapter.notifyDataSetChanged();
         });
+
     }
 
     private void initTopRated() {
@@ -143,6 +159,52 @@ public class MovieFragment extends Fragment {
             setRvMovies();
             mAdapter.notifyDataSetChanged();
         });
+    }
+
+    private void loadDailyReminder() {
+        if (dailyReminder) {
+            String repeatTime = "07:00";
+            String repeatMessage = "Hy I Miss you i'm daily reminder";
+            if (isReminderSet) {
+                Log.d("ReminderAlarm", "Already set");
+            } else {
+                alarmReceiver.setRepeatingAlarm(getActivity(), AlarmReceiver.TYPE_DAILY,
+                        repeatTime, repeatMessage);
+            }
+        } else {
+            if (isReminderSet) {
+                alarmReceiver.cancelAlarm(Objects.requireNonNull(getActivity()), AlarmReceiver.TYPE_DAILY);
+            } else {
+                Log.d("ReminderAlarm", "No Alarm Set");
+            }
+        }
+    }
+
+    private void loadReleaseReminder() {
+        if (releaseReminder) {
+            String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+            String repeatTime = "08:00";
+            ArrayList<Result> movieResultDate = new ArrayList<>();
+            movieViewModel.initMovieReleaseToday(date);
+            movieViewModel.getMovieRelease().observe(getViewLifecycleOwner(), movie -> {
+                movieResultDate.addAll(movie.getResults());
+                if (isReminderReleaseSet) {
+                    Log.d("ReminderAlarm", "Already set");
+                } else {
+                    alarmReceiver.setRepeatingAlarmRelease(getActivity(), AlarmReceiver.TYPE_RELEASE,
+                            repeatTime, movieResultDate.get(0).getTitle(), movieResultDate.get(1).getTitle(), movieResultDate.get(2).getTitle(), movie.getTotalResults());
+                }
+            });
+
+
+        } else {
+            if (isReminderReleaseSet) {
+                alarmReceiver.cancelAlarm(Objects.requireNonNull(getActivity()), AlarmReceiver.TYPE_RELEASE);
+            } else {
+                Log.d("ReminderAlarm", "No Alarm Set");
+            }
+
+        }
     }
 
     @Override
