@@ -1,10 +1,14 @@
 package com.achmad.madeacademy.moviecataloguemvp.data.remote;
 
+import android.os.Build;
+import android.os.LocaleList;
+
 import com.achmad.madeacademy.moviecataloguemvp.BuildConfig;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
@@ -18,11 +22,28 @@ public class NetworkInterceptor implements Interceptor {
         Request request = chain.request();
         HttpUrl url = request.url().newBuilder()
                 .addQueryParameter("api_key", BuildConfig.API_KEY)
-//                .addQueryParameter("with_original_language", "ja") -> Region set
-//                .addQueryParameter("with_genres", "35,10749") -> Comedy,Romance
+                .addQueryParameter("language", getSystemLocale())
                 .build();
 
         request = request.newBuilder().url(url).build();
         return chain.proceed(request);
+    }
+
+    private String getSystemLocale() {
+        String locale;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            locale = LocaleList.getDefault().get(0).getLanguage();
+        } else {
+            locale = Locale.getDefault().getLanguage();
+        }
+        String localeSet;
+        if (locale.equals("fr") ||
+                locale.equals("id") ||
+                locale.equals("en")) {
+            localeSet = locale;
+        } else {
+            localeSet = "en";
+        }
+        return localeSet;
     }
 }

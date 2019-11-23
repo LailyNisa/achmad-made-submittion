@@ -18,6 +18,8 @@ public class DiscoverViewModel extends AndroidViewModel {
     private LiveData<Integer> mutableErrorCode;
     private NetworkRepository networkRepository;
     private MutableLiveData<Movie> mutableLiveDataMovieByDate;
+    private String locale;
+
     //Movie
     private MutableLiveData<Movie> mutableLiveData;
     private MutableLiveData<String> mutableMovieSearchText = new MutableLiveData<>();
@@ -131,6 +133,5 @@ public class DiscoverViewModel extends AndroidViewModel {
         mutableErrorCode = networkRepository.getErrorCode();
         return mutableErrorCode;
     }
-
 
 }

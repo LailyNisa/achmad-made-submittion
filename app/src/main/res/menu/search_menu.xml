@@ -10,10 +10,6 @@
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_setting_order"
-        android:title="@string/menu_sort_order"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/action_setting_language"
-        android:title="@string/menu_setting_language"
+        android:title="@string/title_activity_settings"
         app:showAsAction="never" />
 </menu>

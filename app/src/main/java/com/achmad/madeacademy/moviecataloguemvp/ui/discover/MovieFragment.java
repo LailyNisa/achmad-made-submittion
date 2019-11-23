@@ -220,7 +220,6 @@ public class MovieFragment extends Fragment {
         if (item != null) {
             searchView = (androidx.appcompat.widget.SearchView) item.getActionView();
         }
-
         if (searchView != null) {
             searchView.setQuery(movieViewModel.getTextMovie().getValue(), true);
             searchView.setQueryHint(getString(R.string.action_search));
@@ -302,6 +301,12 @@ public class MovieFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onResume() {
+        Objects.requireNonNull(getActivity()).invalidateOptionsMenu();
+        super.onResume();
     }
 
     private void setRvMovies() {

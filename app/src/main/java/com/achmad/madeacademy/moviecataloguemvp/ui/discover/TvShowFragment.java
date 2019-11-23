@@ -128,11 +128,11 @@ public class TvShowFragment extends Fragment {
         } else {
             inflater.inflate(R.menu.search_menu_tvfragment, menu);
         }
-        SearchView searchView = null;
+        androidx.appcompat.widget.SearchView searchView = null;
         MenuItem item = menu.findItem(R.id.action_search_tvfragment);
-
-        searchView = (SearchView) item.getActionView();
-
+        if (item != null) {
+            searchView = (androidx.appcompat.widget.SearchView) item.getActionView();
+        }
         if (searchView != null) {
             searchView.setQuery(tvShowViewModel.getTextTvSearch().getValue(), true);
             searchView.setQueryHint(getString(R.string.action_search));
