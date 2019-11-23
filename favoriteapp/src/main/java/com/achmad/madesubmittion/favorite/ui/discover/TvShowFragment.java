@@ -66,9 +66,13 @@ public class TvShowFragment extends Fragment {
         @Override
         public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
             if (loader.getId() == TVSHOW) {
-                tvShowList.addAll(MappingHelper.mapCursorToAlTvShow(data));
-                setRvMovies();
-                mAdapter.notifyDataSetChanged();
+                if (isResumed()) {
+                    if (tvShowList.size() == 0) {
+                        tvShowList.addAll(MappingHelper.mapCursorToAlTvShow(data));
+                        setRvMovies();
+                        mAdapter.notifyDataSetChanged();
+                    }
+                }
             }
         }
 
@@ -148,12 +152,7 @@ public class TvShowFragment extends Fragment {
             rvTvShow.setAdapter(mAdapter);
         }
     }
-
     private void initDb() {
-//        tvShowList.addAll(new ArrayList<>());
-//
-//        setRvMovies();
-//        mAdapter.notifyDataSetChanged();
         getActivity().getSupportLoaderManager().initLoader(TVSHOW, null, mTvShowLoaderCallback);
     }
 }
